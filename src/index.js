@@ -23,11 +23,11 @@ const config = {
   height: HEIGHT,
   pixelArt: true,
   physics: {
-    default: "arcade",
-    arcade: {
-      debug: true,
-    },
+    default: "matter",
     matter: {
+      gravity: {
+        y: 10,
+      },
       debug: true,
     },
   },
