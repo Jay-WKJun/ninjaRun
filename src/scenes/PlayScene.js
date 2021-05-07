@@ -9,18 +9,11 @@ class PlayScene extends BaseScene {
   create() {
     super.create();
 
-    this.character = this.physics.add.image(200, 300, "character")
+    this.character = this.matter.add.image(200, 300, "character", null, { isStatic: true })
       .setScale(0.4)
       .setOrigin(0.5);
 
-    this.add.image(100, 200, "rope")
-      .setScale(0.5)
-      .setOrigin(0);
-
-    this.celling = this.physics.add.image(0, 0, "celling")
-      .setImmovable(true)
-      .setOrigin(0, 0.1);
-    this.celling.body.setSize(this.celling.body.width, 50, false);
+    this.celling = this.matter.add.sprite(400, 10, "celling", null, { isStatic: true });
 
     this.add.text(50, 50, "000", {
       fontSize: "50px",
@@ -34,14 +27,12 @@ class PlayScene extends BaseScene {
       const yVelocity = Math.sin(angle);
       const xVelocity = Math.cos(angle);
       console.log(xVelocity, yVelocity);
-      this.shuriken = this.physics.add.image(this.character.x, this.character.y, "shuriken")
-        .setScale(0.5)
-        .setGravity(0, 300)
-        .setVelocity(xVelocity * 900, yVelocity * 900);
-      this.physics.add.collider(this.shuriken, this.celling, () => {
-        this.shuriken.setGravity(0);
-        this.shuriken.setVelocity(0);
-      }, null, this);
+      this.shuriken = this.matter.add.image(this.character.x, this.character.y, "shuriken");
+      this.shuriken.setVelocity(xVelocity * 10, yVelocity * 10);
+    });
+
+    this.matter.world.on("collisionStart", (e, b1, b2) => {
+      console.log(e, b1, b2);
     });
   }
 }

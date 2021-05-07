@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "phaser": "^3.54.0",
+    "phaser-matter-collision-plugin": "^0.10.2",
     "webpack-merge": "^5.7.3"
   },
   "devDependencies": {
