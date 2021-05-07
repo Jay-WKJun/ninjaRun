@@ -27,6 +27,9 @@ const config = {
     arcade: {
       debug: true,
     },
+    matter: {
+      debug: true,
+    },
   },
   scene: initScenes,
 };
