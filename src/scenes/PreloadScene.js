@@ -7,6 +7,7 @@ class PreloadScene extends Phaser.Scene {
 
   preload() {
     this.load.image("background", "assets/images/ForestBG.png");
+    this.load.image("character", "assets/images/character_rope.png");
   }
 
   create() {

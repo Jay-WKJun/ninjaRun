@@ -3,8 +3,8 @@ import Phaser from "phaser";
 import PreloadScene from "./scenes/PreloadScene";
 import PlayScene from "./scenes/PlayScene";
 
-const WIDTH = 800;
-const HEIGHT = 600;
+const WIDTH = 1152;
+const HEIGHT = 647;
 const BIRD_POSITION = { x: WIDTH / 10, y: HEIGHT / 2 };
 
 const SHARED_CONFIG = {

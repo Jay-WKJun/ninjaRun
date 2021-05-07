@@ -7,6 +7,9 @@ class PlayScene extends BaseScene {
 
   create() {
     super.create();
+    this.add.image(100, 300, "character")
+      .setScale(0.5)
+      .setOrigin(0);
   }
 }
 
