@@ -11,7 +11,7 @@ class BaseScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(0, 0, "background")
+    this.background = this.add.image(0, 0, "background")
       .setScale(0.6)
       .setOrigin(0);
   }
