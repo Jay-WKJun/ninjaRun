@@ -1,5 +1,7 @@
 import Phaser from "phaser";
 
+import { BACKGOURND } from "../constants/textureNames";
+
 class BaseScene extends Phaser.Scene {
   constructor(key, config) {
     super(key);
@@ -11,7 +13,7 @@ class BaseScene extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.image(0, 0, "background")
+    this.background = this.add.image(0, 0, BACKGOURND)
       .setScale(0.6)
       .setOrigin(0);
   }

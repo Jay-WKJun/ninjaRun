@@ -10,9 +10,4 @@ export default class Shuriken extends Phaser.Physics.Matter.Image {
     this.startX = x;
     this.startY = y;
   };
-
-  moveAlongWithOthers(xVelocity) {
-    console.log(xVelocity);
-    this.setVelocityX(xVelocity);
-  }
 }
