@@ -26,7 +26,7 @@ const config = {
     default: "matter",
     matter: {
       gravity: {
-        y: 0,
+        y: 0.1,
       },
       debug: true,
     },
