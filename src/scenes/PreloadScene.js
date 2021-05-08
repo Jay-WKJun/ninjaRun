@@ -7,7 +7,7 @@ class PreloadScene extends Phaser.Scene {
 
   preload() {
     this.load.image("background", "assets/images/ForestBG.png");
-    this.load.image("character", "assets/images/character_rope.png");
+    this.load.image("character", "assets/images/ninja_hanging_fit.png");
     this.load.image("celling", "assets/images/celling.png");
     this.load.image("rope", "assets/images/rope.png");
     this.load.image("shuriken", "assets/images/shuriken.png");
@@ -16,6 +16,7 @@ class PreloadScene extends Phaser.Scene {
   }
 
   create() {
+    this.matter.world.update60Hz();
     this.scene.start("PlayScene");
   }
 }

@@ -9,7 +9,7 @@ class PlayScene extends BaseScene {
   create() {
     super.create();
 
-    this.character = this.matter.add.image(200, 300, "character", null, { isStatic: true })
+    this.character = this.matter.add.image(200, 300, "character")
       .setScale(0.4)
       .setOrigin(0.5);
 
@@ -23,12 +23,10 @@ class PlayScene extends BaseScene {
 
     this.input.on("pointerdown", (e) => {
       const angle = Phaser.Math.Angle.Between(this.character.x, this.character.y, e.position.x, e.position.y);
-      console.log(e.position.x, e.position.y);
       const yVelocity = Math.sin(angle);
       const xVelocity = Math.cos(angle);
-      console.log(xVelocity, yVelocity);
-      this.shuriken = this.matter.add.image(this.character.x, this.character.y, "shuriken");
-      this.shuriken.setVelocity(xVelocity * 10, yVelocity * 10);
+      this.shuriken = this.matter.add.image(this.character.x + 70 * Math.cos(angle), this.character.y + 70 * Math.sin(angle), "shuriken").setScale(0.5);
+      this.shuriken.setVelocity(xVelocity * 20, yVelocity * 20);
     });
 
     this.matter.world.on("collisionStart", (e, b1, b2) => {
