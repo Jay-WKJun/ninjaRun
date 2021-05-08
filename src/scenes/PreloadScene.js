@@ -1,24 +1,33 @@
 import Phaser from "phaser";
 
+import {
+  BACKGOURND,
+  CHARACTER,
+  CELLING,
+  SHURIKEN,
+  SHURIKEN_SPIN,
+  PAD
+} from "../constants/textureNames";
+
+import { PLAY_SCENE } from "../constants/scenes";
+
 class PreloadScene extends Phaser.Scene {
   constructor() {
     super("PreloadScene");
   }
 
   preload() {
-    this.load.image("background", "assets/images/ForestBG.png");
-    this.load.image("character", "assets/images/ninja_hanging_fit.png");
-    this.load.image("celling", "assets/images/celling.png");
-    this.load.image("rope", "assets/images/rope.png");
-    this.load.image("shuriken", "assets/images/shuriken.png");
-    this.load.image("shurikenSpin", "assets/images/shuriken_spin.png");
-    this.load.image("log", "assets/images/log.png");
-    this.load.image("pad", "assets/images/pad.png");
+    this.load.image(BACKGOURND, "assets/images/ForestBG.png");
+    this.load.image(CHARACTER, "assets/images/ninja_hanging_fit.png");
+    this.load.image(CELLING, "assets/images/celling.png");
+    this.load.image(SHURIKEN, "assets/images/shuriken.png");
+    this.load.image(SHURIKEN_SPIN, "assets/images/shuriken_spin.png");
+    this.load.image(PAD, "assets/images/pad.png");
   }
 
   create() {
     this.matter.world.update60Hz();
-    this.scene.start("PlayScene");
+    this.scene.start(PLAY_SCENE);
   }
 }
 
