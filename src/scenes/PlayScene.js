@@ -100,7 +100,8 @@ class PlayScene extends BaseScene {
 
     // world를 벗어나면 수리검을 없앤다
     if ((this.shuriken && !this.rope)) {
-      if ((this.shuriken.x > this.config.width) ||
+      if (
+        (this.shuriken.x > this.config.width) ||
         (this.shuriken.x < 0) ||
         (this.shuriken.y > this.config.height) ||
         (this.shuriken.y < 0)
@@ -119,6 +120,17 @@ class PlayScene extends BaseScene {
           .setScale(0.3);
         this.pad.moveHorizontally();
         this.pads.push(this.pad);
+      }
+    }
+
+    if (this.character) {
+      if (
+        (this.character.x > this.config.deadZone.maxX) ||
+        (this.character.x < this.config.deadZone.minX) ||
+        (this.character.y > this.config.deadZone.maxY) ||
+        (this.character.y < this.config.deadZone.minY)
+      ) {
+        console.log("Dead!!");
       }
     }
   };
