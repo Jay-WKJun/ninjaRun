@@ -14,6 +14,8 @@ import Character from "../objects/Character";
 class PlayScene extends BaseScene {
   constructor(config) {
     super(PLAY_SCENE, config);
+    this.minHeigh = this.config.height * 0.65;
+    this.padInterval = 400;
   };
 
   create() {
@@ -23,9 +25,6 @@ class PlayScene extends BaseScene {
     this.shuriken = null;
     this.rope = null;
     this.attatchedTarget = null;
-
-    this.minHeigh = this.config.height * 0.65;
-    this.padInterval = 400;
 
     for (let i = 0; i < 4; i++) {
       const height = Number(Math.random() * this.minHeigh);
@@ -55,6 +54,8 @@ class PlayScene extends BaseScene {
         this.rope = null;
         this.attatchedTarget = null;
         this.character.setRotation(0);
+        this.line.clear();
+        this.line = null;
         return;
       }
 
@@ -96,6 +97,13 @@ class PlayScene extends BaseScene {
     if (this.rope) {
       const angle = Phaser.Math.Angle.Between(this.character.x, this.character.y, this.attatchedTarget.position.x, this.attatchedTarget.position.y);
       this.character.setRotation(Math.cos(angle));
+      if (!this.line) {
+        this.line = this.add.graphics();
+      }
+
+      this.line.clear();
+
+      this.matter.world.renderConstraint(this.rope, this.line, 0xffffff, 1, 2, 1, 0x00, 1);
     }
 
     // world를 벗어나면 수리검을 없앤다
