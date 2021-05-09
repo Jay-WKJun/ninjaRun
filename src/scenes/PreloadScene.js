@@ -5,7 +5,9 @@ import {
   CHARACTER,
   SHURIKEN,
   SHURIKEN_SPIN,
-  PAD
+  PAD,
+  ENEMY_BIRD1,
+  ENEMY_BIRD2
 } from "../constants/textureNames";
 import { PLAY_SCENE } from "../constants/scenes";
 
@@ -20,6 +22,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.image(SHURIKEN, "assets/images/shuriken.png");
     this.load.image(SHURIKEN_SPIN, "assets/images/shuriken_spin.png");
     this.load.image(PAD, "assets/images/pad_small.png");
+    this.load.spritesheet(ENEMY_BIRD1, "assets/images/red_bird.png", { frameWidth: 663, frameHeight: 637 });
+    this.load.spritesheet(ENEMY_BIRD2, "assets/images/yellow_bird.png", { frameWidth: 625, frameHeight: 621 });
   };
 
   create() {
