@@ -6,7 +6,7 @@ import PlayScene from "./scenes/PlayScene";
 const WIDTH = 1152;
 const HEIGHT = 647;
 const START_POSITION = { x: WIDTH / 3, y: HEIGHT / 2 };
-const GRAVITY = 0.2;
+const GRAVITY = 0.5;
 const DEAD_ZONE_RANGE = 100;
 const DEAD_ZONE = {
   minX: 0 - DEAD_ZONE_RANGE,
