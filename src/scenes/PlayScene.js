@@ -10,6 +10,7 @@ import {
   SHURIKEN
 } from "../constants/textureNames";
 import { PLAY_SCENE } from "../constants/scenes";
+import Character from "../objects/Character";
 
 class PlayScene extends BaseScene {
   constructor(config) {
@@ -28,8 +29,7 @@ class PlayScene extends BaseScene {
       .setScale(0.3);
     this.pad.moveHorizontally();
 
-    this.character = this.matter.add.image(200, 300, CHARACTER)
-      .setScale(0.4)
+    this.character = new Character(this, 200, 300, CHARACTER)
       .setOrigin(0.5);
 
     this.celling = this.matter.add.sprite(400, 10, CELLING, null, { isStatic: true });
@@ -51,6 +51,8 @@ class PlayScene extends BaseScene {
         this.character.setRotation(0);
         return;
       }
+
+      if (this.shuriken) return;
 
       const angle = Phaser.Math.Angle.Between(this.character.x, this.character.y, e.position.x, e.position.y);
       const yVelocity = Math.sin(angle);
@@ -74,6 +76,7 @@ class PlayScene extends BaseScene {
     });
 
     this.matter.world.on("collisionstart", (e, b1, b2) => {
+      console.log(e, b1, b2);
       if ((b1.label === SHURIKEN || b2.label === SHURIKEN) && !this.rope) {
         this.attatchedTarget = b1.label === SHURIKEN ? b2 : b1;
         const distance = Phaser.Math.Distance.Between(this.character.x, this.character.y, this.attatchedTarget.x, this.attatchedTarget.y);
@@ -84,9 +87,21 @@ class PlayScene extends BaseScene {
   };
 
   update() {
+    // hanging rotation
     if (this.rope) {
       const angle = Phaser.Math.Angle.Between(this.character.x, this.character.y, this.attatchedTarget.position.x, this.attatchedTarget.position.y);
       this.character.setRotation(Math.cos(angle));
+    }
+
+    // world를 벗어나면 수리검을 없앤다
+    if ((this.shuriken && !this.rope)) {
+      if ((this.shuriken.x > this.config.width) ||
+      (this.shuriken.x < 0) ||
+      (this.shuriken.y > this.config.height) ||
+      (this.shuriken.y < 0)) {
+        this.shuriken.destroy();
+        this.shuriken = null;
+      }
     }
   };
 }
