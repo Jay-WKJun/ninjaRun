@@ -14,8 +14,8 @@ export default class MovingPlatform extends Phaser.Physics.Matter.Image {
   moveHorizontally() {
     this.scene.tweens.addCounter({
       from: 0,
-      to: -1800,
-      duration: 15000,
+      to: -10000,
+      duration: 100000,
       ease: 0,
       repeat: 0,
       yoyo: false,

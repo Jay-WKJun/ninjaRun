@@ -6,7 +6,6 @@ import Shuriken from "../objects/Shuriken";
 import {
   PAD,
   CHARACTER,
-  CELLING,
   SHURIKEN
 } from "../constants/textureNames";
 import { PLAY_SCENE } from "../constants/scenes";
@@ -25,23 +24,22 @@ class PlayScene extends BaseScene {
     this.rope = null;
     this.attatchedTarget = null;
 
-    this.minHeigh = this.config.height * 0.6;
+    this.minHeigh = this.config.height * 0.65;
+    this.padInterval = 400;
 
-    for (let i = 0; i < 5; i++) {
-      setTimeout(() => {
-        const height = Number(Math.random() * this.minHeigh);
-        this.pad = new MovingPlatform(this, 1600, height, PAD, { isStatic: true })
-          .setScale(0.3);
-        this.pad.moveHorizontally();
-        this.pads.push(this.pad);
-      }, (3000 * i));
+    for (let i = 0; i < 4; i++) {
+      const height = Number(Math.random() * this.minHeigh);
+      this.pad = new MovingPlatform(this, this.config.startPosition.x + (this.padInterval * i), height, PAD, { isStatic: true })
+        .setScale(0.3);
+      this.pad.moveHorizontally();
+      this.pads.push(this.pad);
     }
 
-    this.character = new Character(this, 200, 300, CHARACTER)
+    this.character = new Character(this, -50, 100, CHARACTER)
       .setOrigin(0.5);
-
-    this.celling = this.matter.add.sprite(400, 10, CELLING, null, { isStatic: true });
-    this.celling.body.label = "wall";
+    setTimeout(() => {
+      this.character.setVelocity(10, 0);
+    }, 500);
 
     this.add.text(50, 50, "000", {
       fontSize: "50px",

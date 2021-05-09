@@ -3,7 +3,6 @@ import Phaser from "phaser";
 import {
   BACKGOURND,
   CHARACTER,
-  CELLING,
   SHURIKEN,
   SHURIKEN_SPIN,
   PAD
@@ -18,7 +17,6 @@ class PreloadScene extends Phaser.Scene {
   preload() {
     this.load.image(BACKGOURND, "assets/images/ForestBG.png");
     this.load.image(CHARACTER, "assets/images/ninja_hanging_fit.png");
-    this.load.image(CELLING, "assets/images/celling.png");
     this.load.image(SHURIKEN, "assets/images/shuriken.png");
     this.load.image(SHURIKEN_SPIN, "assets/images/shuriken_spin.png");
     this.load.image(PAD, "assets/images/pad_small.png");
