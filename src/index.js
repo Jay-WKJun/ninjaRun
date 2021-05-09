@@ -5,12 +5,13 @@ import PlayScene from "./scenes/PlayScene";
 
 const WIDTH = 1152;
 const HEIGHT = 647;
-const BIRD_POSITION = { x: WIDTH / 10, y: HEIGHT / 2 };
+const START_POSITION = { x: WIDTH / 10, y: HEIGHT / 2 };
+const GRAVITY = 0.2;
 
 const SHARED_CONFIG = {
   width: WIDTH,
   height: HEIGHT,
-  startPosition: BIRD_POSITION,
+  startPosition: START_POSITION,
 };
 
 const Scenes = [PreloadScene, PlayScene];
@@ -26,9 +27,8 @@ const config = {
     default: "matter",
     matter: {
       gravity: {
-        y: 0.5,
+        y: GRAVITY,
       },
-      debug: true,
     },
   },
   scene: initScenes,

@@ -22,7 +22,7 @@ class PreloadScene extends Phaser.Scene {
     this.load.image(CELLING, "assets/images/celling.png");
     this.load.image(SHURIKEN, "assets/images/shuriken.png");
     this.load.image(SHURIKEN_SPIN, "assets/images/shuriken_spin.png");
-    this.load.image(PAD, "assets/images/pad.png");
+    this.load.image(PAD, "assets/images/pad_small.png");
   }
 
   create() {
