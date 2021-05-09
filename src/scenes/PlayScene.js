@@ -6,7 +6,6 @@ import Shuriken from "../objects/Shuriken";
 import {
   PAD,
   CHARACTER,
-  CELLING,
   SHURIKEN
 } from "../constants/textureNames";
 import { PLAY_SCENE } from "../constants/scenes";
@@ -15,25 +14,32 @@ import Character from "../objects/Character";
 class PlayScene extends BaseScene {
   constructor(config) {
     super(PLAY_SCENE, config);
-    this.pad = null;
-  }
+  };
 
   create() {
     super.create();
 
+    this.pads = [];
     this.shuriken = null;
     this.rope = null;
     this.attatchedTarget = null;
 
-    this.pad = new MovingPlatform(this, 1600, 200, PAD, { isStatic: true })
-      .setScale(0.3);
-    this.pad.moveHorizontally();
+    this.minHeigh = this.config.height * 0.65;
+    this.padInterval = 400;
 
-    this.character = new Character(this, 200, 300, CHARACTER)
+    for (let i = 0; i < 4; i++) {
+      const height = Number(Math.random() * this.minHeigh);
+      this.pad = new MovingPlatform(this, this.config.startPosition.x + (this.padInterval * i), height, PAD, { isStatic: true })
+        .setScale(0.3);
+      this.pad.moveHorizontally();
+      this.pads.push(this.pad);
+    }
+
+    this.character = new Character(this, -50, 100, CHARACTER)
       .setOrigin(0.5);
-
-    this.celling = this.matter.add.sprite(400, 10, CELLING, null, { isStatic: true });
-    this.celling.body.label = "wall";
+    setTimeout(() => {
+      this.character.setVelocity(10, 0);
+    }, 500);
 
     this.add.text(50, 50, "000", {
       fontSize: "50px",
@@ -76,7 +82,6 @@ class PlayScene extends BaseScene {
     });
 
     this.matter.world.on("collisionstart", (e, b1, b2) => {
-      console.log(e, b1, b2);
       if ((b1.label === SHURIKEN || b2.label === SHURIKEN) && !this.rope) {
         this.attatchedTarget = b1.label === SHURIKEN ? b2 : b1;
         const distance = Phaser.Math.Distance.Between(this.character.x, this.character.y, this.attatchedTarget.x, this.attatchedTarget.y);
@@ -96,11 +101,24 @@ class PlayScene extends BaseScene {
     // world를 벗어나면 수리검을 없앤다
     if ((this.shuriken && !this.rope)) {
       if ((this.shuriken.x > this.config.width) ||
-      (this.shuriken.x < 0) ||
-      (this.shuriken.y > this.config.height) ||
-      (this.shuriken.y < 0)) {
+        (this.shuriken.x < 0) ||
+        (this.shuriken.y > this.config.height) ||
+        (this.shuriken.y < 0)
+      ) {
         this.shuriken.destroy();
         this.shuriken = null;
+      }
+    }
+
+    if (this.pads.length) {
+      const padRightPosition = this.pads[0].getBounds().x + this.pads[0].getBounds().width;
+      if (padRightPosition < 0) {
+        this.pads.shift();
+        const height = Number(Math.random() * this.minHeigh);
+        this.pad = new MovingPlatform(this, 1600, height, PAD, { isStatic: true })
+          .setScale(0.3);
+        this.pad.moveHorizontally();
+        this.pads.push(this.pad);
       }
     }
   };

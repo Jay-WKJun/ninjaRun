@@ -5,7 +5,7 @@ import PlayScene from "./scenes/PlayScene";
 
 const WIDTH = 1152;
 const HEIGHT = 647;
-const START_POSITION = { x: WIDTH / 10, y: HEIGHT / 2 };
+const START_POSITION = { x: WIDTH / 3, y: HEIGHT / 2 };
 const GRAVITY = 0.2;
 
 const SHARED_CONFIG = {
