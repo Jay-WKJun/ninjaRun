@@ -3,6 +3,18 @@ import initPlayScene from "./initPlayScene";
 
 class PlayScene extends initPlayScene {
   update() {
+    if (this.backgroundScenes.length) {
+      const firstBackgroundScene = this.backgroundScenes[0].getBounds();
+      const firstBackgroundRightBound = firstBackgroundScene.x + firstBackgroundScene.width;
+
+      if (firstBackgroundRightBound < 0) {
+        const lastBackgroundPosition = this.backgroundScenes[this.backgroundScenes.length - 1].x;
+
+        this.backgroundScenes.shift();
+        this.createBackground(lastBackgroundPosition + (this.worldWidth - 2));
+      }
+    }
+
     if (this.rope) {
       this.rotateCharacterToRopeDirection();
       this.drawRope();

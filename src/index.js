@@ -22,7 +22,7 @@ const ENEMY_SIZE = { width: 80, height: 30 };
 const ENEMY_INTERVAL = 400;
 
 const SHURIKEN_POSITION_OFFSET = 70;
-const SHURIKEN_VELOCITY_CONSTANT = 20;
+const SHURIKEN_VELOCITY_CONSTANT = 15;
 
 const SCORE_POSITION = { x: 50, y: 50 };
 
@@ -56,7 +56,6 @@ const config = {
       gravity: {
         y: GRAVITY,
       },
-      debug: true,
     },
   },
   scene: initScenes,

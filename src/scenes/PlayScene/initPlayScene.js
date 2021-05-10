@@ -151,9 +151,12 @@ export default class initPlayScene extends BaseScene {
   handleMouseClickEvent() {
     const removeConstraintAndRope = () => {
       this.matter.world.removeConstraint(this.rope);
+
       this.rope = null;
+
       this.line.clear();
       this.line = null;
+
       this.attatchedTarget = null;
     };
 
