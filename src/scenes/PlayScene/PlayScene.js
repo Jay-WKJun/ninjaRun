@@ -3,18 +3,6 @@ import initPlayScene from "./initPlayScene";
 
 class PlayScene extends initPlayScene {
   update() {
-    if (this.backgroundScenes.length) {
-      const firstBackgroundScene = this.backgroundScenes[0].getBounds();
-      const firstBackgroundRightBound = firstBackgroundScene.x + firstBackgroundScene.width;
-
-      if (firstBackgroundRightBound < 0) {
-        const lastBackgroundPosition = this.backgroundScenes[this.backgroundScenes.length - 1].x;
-
-        this.backgroundScenes.shift();
-        this.createBackground(lastBackgroundPosition + (this.worldWidth - 2));
-      }
-    }
-
     if (this.rope) {
       this.rotateCharacterToRopeDirection();
       this.drawRope();
@@ -22,33 +10,30 @@ class PlayScene extends initPlayScene {
 
     this.destroyShurikenWhenWorldOut();
 
-    if (this.platforms.length) {
-      const firstPlatformBound = this.platforms[0].getBounds();
-      const firstPlatformRightBound = firstPlatformBound.x + firstPlatformBound.width;
-
-      if (firstPlatformRightBound < 0) {
-        const lastPlatFormPosition = this.platforms[this.platforms.length - 1].x;
-
-        this.platforms.shift();
-        this.createPlatform(lastPlatFormPosition + this.plaformInterval);
-      }
-    }
-
-    if (this.enemies.length) {
-      const firstEnemyBound = this.enemies[0].getBounds();
-      const enemyRightPosition = firstEnemyBound.x + firstEnemyBound.width;
-
-      if (enemyRightPosition < 0) {
-        const lastEnemyPosition = this.enemies[this.enemies.length - 1].x;
-        const enemyType = this.getEnemyTypeInRandom();
-
-        this.enemies.shift();
-        this.createEnemy(enemyType, lastEnemyPosition + this.enemyInterval);
-      }
-    }
+    this.repeatObject(this.backgroundScenes, this.createBackground.bind(this), (this.worldWidth - 2), false);
+    this.repeatObject(this.platforms, this.createPlatform.bind(this), this.plaformInterval, false);
+    this.repeatObject(this.enemies, this.createEnemy.bind(this), this.enemyInterval, true);
 
     this.checkGameOver();
   };
+
+  repeatObject(objectArray, createFunction, offsetParam, isEnemy) {
+    const firstObject = objectArray[0].getBounds();
+    const firstObjectRightBound = firstObject.x + firstObject.width;
+
+    if (firstObjectRightBound < 0) {
+      const lastObjectPosition = objectArray[objectArray.length - 1].x;
+      objectArray.shift();
+
+      if (isEnemy) {
+        const enemyType = this.getEnemyTypeInRandom();
+
+        createFunction(enemyType, lastObjectPosition + offsetParam);
+      } else {
+        createFunction(lastObjectPosition + offsetParam);
+      }
+    }
+  }
 
   rotateCharacterToRopeDirection() {
     const angle = Phaser.Math.Angle.Between(
