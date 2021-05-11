@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import BaseScene from "../BaseScene";
 
-import MovingPlatform from "../../objects/MovingPlatfrom";
+import MovingPlatform from "../../objects/MovingPlatform";
 import Shuriken from "../../objects/Shuriken";
 import Character from "../../objects/Character";
 import Enemy from "../../objects/Enemy";
@@ -44,6 +44,9 @@ export default class initPlayScene extends BaseScene {
   };
 
   create() {
+    this.collision1 = this.matter.world.nextCategory();
+    this.collision2 = this.matter.world.nextCategory();
+
     super.create();
     this.createAnimation();
     this.createScore();
@@ -107,6 +110,9 @@ export default class initPlayScene extends BaseScene {
     this.character = new Character(this, startX, startY, CHARACTER)
       .setOrigin(0.5);
 
+    this.character.setCollisionCategory(this.collision1);
+    this.character.setCollidesWith(this.collision1);
+
     setTimeout(() => {
       this.character.setVelocity(10, 0);
     }, 500);
@@ -115,27 +121,29 @@ export default class initPlayScene extends BaseScene {
   createEnemy(enemyType, xPosition) {
     const yPosition = Number(Math.random() * this.worldHeight);
 
-    this.enemyBird = new Enemy(
+    const newEnemy = new Enemy(
       this,
       xPosition,
       yPosition,
-      enemyType.enemyType,
-      { isStatic: true }
+      enemyType.enemyType
     ).setScale(0.2);
 
-    this.enemyBird
+    newEnemy
       .play(enemyType.animation)
       .setBody(this.enemySize)
       .setIgnoreGravity(true)
       .moveHorizontally(0);
 
-    this.enemies.push(this.enemyBird);
+    newEnemy.setCollisionCategory(this.collision1);
+    newEnemy.setCollidesWith(this.collision1);
+
+    this.enemies.push(newEnemy);
   }
 
   createPlatform(xPosition) {
     const height = Number(Math.random() * this.platformHeightLimit);
 
-    this.pad = new MovingPlatform(
+    const newPlatform = new MovingPlatform(
       this,
       xPosition,
       height,
@@ -143,9 +151,11 @@ export default class initPlayScene extends BaseScene {
       { isStatic: true }
     ).setScale(0.3);
 
-    this.pad.moveHorizontally();
+    newPlatform.moveHorizontally();
+    newPlatform.setCollisionCategory(this.collision2);
+    newPlatform.setCollidesWith(this.collision1);
 
-    this.platforms.push(this.pad);
+    this.platforms.push(newPlatform);
   }
 
   handleMouseClickEvent() {
@@ -182,6 +192,8 @@ export default class initPlayScene extends BaseScene {
         .setVelocity(cos * velocityConstant, sin * velocityConstant);
 
       this.shuriken.body.label = SHURIKEN;
+      this.shuriken.setCollisionCategory(this.collision1);
+      this.shuriken.setCollidesWith([this.collision1, this.collision2]);
     };
 
     this.input.on("pointerdown", (e) => {
