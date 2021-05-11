@@ -10,9 +10,24 @@ class PlayScene extends initPlayScene {
 
     this.destroyShurikenWhenWorldOut();
 
-    this.repeatObject(this.backgroundScenes, this.createBackground.bind(this), (this.worldWidth - 2), false);
-    this.repeatObject(this.platforms, this.createPlatform.bind(this), this.plaformInterval, false);
-    this.repeatObject(this.enemies, this.createEnemy.bind(this), this.enemyInterval, true);
+    this.repeatObject(
+      this.backgroundScenes,
+      this.createBackground,
+      (this.worldWidth - 2),
+      false
+    );
+    this.repeatObject(
+      this.platforms,
+      this.createPlatform,
+      this.plaformInterval,
+      false
+    );
+    this.repeatObject(
+      this.enemies,
+      this.createEnemy,
+      this.enemyInterval,
+      true
+    );
 
     this.checkGameOver();
   };
@@ -28,9 +43,9 @@ class PlayScene extends initPlayScene {
       if (isEnemy) {
         const enemyType = this.getEnemyTypeInRandom();
 
-        createFunction(enemyType, lastObjectPosition + offsetParam);
+        createFunction.call(this, enemyType, lastObjectPosition + offsetParam);
       } else {
-        createFunction(lastObjectPosition + offsetParam);
+        createFunction.call(this, lastObjectPosition + offsetParam);
       }
     }
   }
