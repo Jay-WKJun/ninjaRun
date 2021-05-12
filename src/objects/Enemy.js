@@ -14,7 +14,7 @@ export default class Enemy extends Phaser.Physics.Matter.Sprite {
   moveHorizontally(velocity) {
     const velocityControl = velocity * 1000;
 
-    this.numTween = this.scene.tweens.addCounter({
+    this.tweenCounter = this.scene.tweens.addCounter({
       from: 0,
       to: -10000,
       duration: 100000 - velocityControl,
@@ -31,6 +31,6 @@ export default class Enemy extends Phaser.Physics.Matter.Sprite {
   }
 
   removeCounter() {
-    this.scene.tweens.remove(this.numTween);
+    this.scene.tweens.remove(this.tweenCounter);
   }
 }

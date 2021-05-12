@@ -30,7 +30,7 @@ class PlayScene extends initPlayScene {
 
   isPassedDisplay(object) {
     const rightBound = object.getBounds();
-    return (rightBound.x + rightBound.width) < 0;
+    return (rightBound.x + rightBound.width) < 100;
   }
 
   repeatObject(objectArray, createFunction, offsetParam) {
@@ -39,7 +39,9 @@ class PlayScene extends initPlayScene {
     if (this.isPassedDisplay(firstObject)) {
       const lastObjectPosition = objectArray[objectArray.length - 1].x;
 
-      objectArray.shift();
+      const shiftedObject = objectArray.shift();
+      shiftedObject.removeCounter();
+      shiftedObject.destroy();
       createFunction.call(this, lastObjectPosition + offsetParam);
     }
   }
@@ -48,16 +50,17 @@ class PlayScene extends initPlayScene {
     const enemies = Object.values(this.enemies);
     const firstEnemy = enemies[0];
     const lastEnemy = enemies[enemies.length - 1];
-    const enemyType = this.getEnemyTypeInRandom();
+
+    console.log(firstEnemy);
 
     if (this.isPassedDisplay(firstEnemy)) {
       this.deleteEnemy(firstEnemy, firstEnemy.body.id);
-      this.createEnemy(enemyType, lastEnemy.x + this.enemyInterval);
+      this.createEnemy(lastEnemy.x + this.enemyInterval);
 
       return;
     }
 
-    this.createEnemy(enemyType, lastEnemy.x + this.enemyInterval);
+    this.createEnemy(lastEnemy.x + this.enemyInterval);
   }
 
   rotateCharacterToRopeDirection() {

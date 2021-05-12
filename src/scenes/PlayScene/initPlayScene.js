@@ -56,10 +56,9 @@ export default class initPlayScene extends BaseScene {
     this.createCharacter();
 
     for (let i = 0; i < 5; i++) {
-      const enemyType = this.getEnemyTypeInRandom();
       const XPosition = this.worldWidth + (this.enemyInterval * i);
 
-      this.createEnemy(enemyType, XPosition);
+      this.createEnemy(XPosition);
     }
 
     for (let i = 0; i < 4; i++) {
@@ -138,7 +137,8 @@ export default class initPlayScene extends BaseScene {
     }, 500);
   }
 
-  createEnemy(enemyType, xPosition) {
+  createEnemy(xPosition) {
+    const enemyType = this.getEnemyTypeInRandom();
     const yPosition = Number(Math.random() * this.worldHeight);
 
     const newEnemy = new Enemy(
