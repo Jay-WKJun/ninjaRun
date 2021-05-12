@@ -267,24 +267,41 @@ export default class initPlayScene extends BaseScene {
     };
 
     this.matter.world.on("collisionstart", (e, b1, b2) => {
+      if (b1.label === CHARACTER || b2.label === CHARACTER) {
+        const characterOpponent = b1.label === CHARACTER ? b2 : b1;
+        if (characterOpponent.label === ENEMY) {
+          const enemy = this.enemies[characterOpponent.id];
+
+          console.log("Dead!!");
+          this.killEnemy(enemy, characterOpponent.id);
+        }
+
+        return;
+      }
+
       if ((b1.label === SHURIKEN || b2.label === SHURIKEN) && !this.rope) {
         const shurikenOpponent = b1.label === SHURIKEN ? b2 : b1;
+
         this.deleteShuriken();
 
         if (b1.label === ENEMY || b2.label === ENEMY) {
           const enemy = this.enemies[shurikenOpponent.id];
 
-          enemy.play(enemy.body.dieAnimation);
-          enemy.body.destroy();
-          enemy.setStatic(true);
-
-          setTimeout(() => this.deleteEnemy(enemy, shurikenOpponent.id), 1000);
+          this.killEnemy(enemy, shurikenOpponent.id);
         } else {
           this.attatchedTarget = shurikenOpponent;
           addConstraint(this.character, this.attatchedTarget);
         }
       }
     });
+  }
+
+  killEnemy(enemy, enemyId) {
+    enemy.play(enemy.body.dieAnimation);
+    enemy.body.destroy();
+    enemy.setStatic(true);
+
+    setTimeout(() => this.deleteEnemy(enemy, enemyId), 1000);
   }
 
   deleteEnemy(enemy, enemyId) {
