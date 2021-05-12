@@ -13,43 +13,51 @@ class PlayScene extends initPlayScene {
     this.repeatObject(
       this.backgroundScenes,
       this.createBackground,
-      (this.worldWidth - 2),
-      false
+      (this.worldWidth - 2)
     );
     this.repeatObject(
       this.platforms,
       this.createPlatform,
-      this.plaformInterval,
-      false
+      this.plaformInterval
     );
 
-    this.repeatObject(
-      Object.values(this.enemies),
-      this.createEnemy,
-      this.enemyInterval,
-      true
-    );
+    while (Object.keys(this.enemies).length <= 5) {
+      this.respawnEnemy();
+    }
 
     this.checkGameOver();
   };
 
-  repeatObject(objectArray, createFunction, offsetParam, isEnemy) {
-    const firstObject = objectArray[0].getBounds();
-    const firstObjectRightBound = firstObject.x + firstObject.width;
+  isPassedDisplay(object) {
+    const rightBound = object.getBounds();
+    return (rightBound.x + rightBound.width) < 0;
+  }
 
-    if (firstObjectRightBound < 0) {
+  repeatObject(objectArray, createFunction, offsetParam) {
+    const firstObject = objectArray[0];
+
+    if (this.isPassedDisplay(firstObject)) {
       const lastObjectPosition = objectArray[objectArray.length - 1].x;
 
-      if (isEnemy) {
-        const enemyType = this.getEnemyTypeInRandom();
-
-        delete this.enemies[objectArray[0].body.id];
-        createFunction.call(this, enemyType, lastObjectPosition + offsetParam);
-      } else {
-        objectArray.shift();
-        createFunction.call(this, lastObjectPosition + offsetParam);
-      }
+      objectArray.shift();
+      createFunction.call(this, lastObjectPosition + offsetParam);
     }
+  }
+
+  respawnEnemy() {
+    const enemies = Object.values(this.enemies);
+    const firstEnemy = enemies[0];
+    const lastEnemy = enemies[enemies.length - 1];
+    const enemyType = this.getEnemyTypeInRandom();
+
+    if (this.isPassedDisplay(firstEnemy)) {
+      this.deleteEnemy(firstEnemy, firstEnemy.body.id);
+      this.createEnemy(enemyType, lastEnemy.x + this.enemyInterval);
+
+      return;
+    }
+
+    this.createEnemy(enemyType, lastEnemy.x + this.enemyInterval);
   }
 
   rotateCharacterToRopeDirection() {

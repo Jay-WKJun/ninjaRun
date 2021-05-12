@@ -272,24 +272,25 @@ export default class initPlayScene extends BaseScene {
         this.deleteShuriken();
 
         if (b1.label === ENEMY || b2.label === ENEMY) {
-          console.log(Object.keys(this.enemies).length);
           const enemy = this.enemies[shurikenOpponent.id];
 
           enemy.play(enemy.body.dieAnimation);
           enemy.body.destroy();
           enemy.setStatic(true);
 
-          setTimeout(() => {
-            enemy.removeCounter();
-            enemy.destroy();
-            delete this.enemies[shurikenOpponent.id];
-          }, 1000);
+          setTimeout(() => this.deleteEnemy(enemy, shurikenOpponent.id), 1000);
         } else {
           this.attatchedTarget = shurikenOpponent;
           addConstraint(this.character, this.attatchedTarget);
         }
       }
     });
+  }
+
+  deleteEnemy(enemy, enemyId) {
+    enemy.removeCounter();
+    enemy.destroy();
+    delete this.enemies[enemyId];
   }
 
   deleteShuriken() {
