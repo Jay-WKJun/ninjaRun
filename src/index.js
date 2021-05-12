@@ -4,8 +4,9 @@ import PreloadScene from "./scenes/PreloadScene";
 import PlayScene from "./scenes/PlayScene/PlayScene";
 // import GameOverScene from "./scenes/GameOverScene";
 
-const WIDTH = 1152;
-const HEIGHT = 647;
+const WORLD_SCALE = 0.6;
+const WIDTH = 1920 * WORLD_SCALE;
+const HEIGHT = 1080 * WORLD_SCALE;
 const START_POSITION = { x: -50, y: 100 };
 const ACCELERATION_VALUE = 0.5;
 const GRAVITY = 0.5;
@@ -30,6 +31,7 @@ const SHURIKEN_VELOCITY_CONSTANT = 15;
 const SCORE_POSITION = { x: 50, y: 50 };
 
 const SHARED_CONFIG = {
+  worldScale: WORLD_SCALE,
   width: WIDTH,
   height: HEIGHT,
   deadZone: DEAD_ZONE,
