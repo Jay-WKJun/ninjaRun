@@ -28,7 +28,7 @@ class PlayScene extends initPlayScene {
 
   isPassedDisplay(object) {
     const rightBound = object.getBounds();
-    return (rightBound.x + rightBound.width) < 100;
+    return (rightBound.x + rightBound.width) < this.deadZone.minX;
   }
 
   repeatObject(objectArray, createFunction, offsetParam) {
@@ -86,9 +86,9 @@ class PlayScene extends initPlayScene {
   destroyShurikenWhenWorldOut() {
     const isShurikenOutOfWorld = () => {
       return (
-        (this.shuriken.x > this.config.width) ||
+        (this.shuriken.x > this.worldWidth) ||
         (this.shuriken.x < 0) ||
-        (this.shuriken.y > this.config.height) ||
+        (this.shuriken.y > this.worldHeight) ||
         (this.shuriken.y < 0)
       );
     };
@@ -103,10 +103,10 @@ class PlayScene extends initPlayScene {
   checkGameOver() {
     const isCharacterOutOfDeadZone = () => {
       return (
-        (this.character.x > this.config.deadZone.maxX) ||
-        (this.character.x < this.config.deadZone.minX) ||
-        (this.character.y > this.config.deadZone.maxY) ||
-        (this.character.y < this.config.deadZone.minY)
+        (this.character.x > this.deadZone.maxX) ||
+        (this.character.x < this.deadZone.minX) ||
+        (this.character.y > this.deadZone.maxY) ||
+        (this.character.y < this.deadZone.minY)
       );
     };
 

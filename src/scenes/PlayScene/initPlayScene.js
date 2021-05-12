@@ -20,24 +20,23 @@ import { PLAY_SCENE } from "../../constants/scenes";
 export default class initPlayScene extends BaseScene {
   constructor(config) {
     super(PLAY_SCENE, config);
-    this.worldWidth = this.config.width;
-    this.worldHeight = this.config.height;
+    this.deadZone = config.deadZone;
 
-    this.scorePosition = this.config.scorePosition;
+    this.scorePosition = config.scorePosition;
 
-    this.startPosition = this.config.startPosition;
-    this.accelerationValue = this.config.accelerationValue;
+    this.startPosition = config.startPosition;
+    this.accelerationValue = config.accelerationValue;
 
-    this.plaformStartPosition = this.config.platformStartPosition;
-    this.plaformInterval = this.config.platformInterval;
-    this.platformHeightLimit = this.config.height * 0.65;
+    this.plaformStartPosition = config.platformStartPosition;
+    this.plaformInterval = config.platformInterval;
+    this.platformHeightLimit = config.height * 0.65;
 
-    this.enemySize = this.config.enemySize;
-    this.enemyNumberLimit = this.config.enemyNumberLimit;
-    this.enemyInterval = this.config.enemyInterval;
+    this.enemySize = config.enemySize;
+    this.enemyNumberLimit = config.enemyNumberLimit;
+    this.enemyInterval = config.enemyInterval;
 
-    this.shurikenPositionOffset = this.config.shurikenPositionOffset;
-    this.shurikenVelocityConstant = this.config.shurikenVelocityConstant;
+    this.shurikenPositionOffset = config.shurikenPositionOffset;
+    this.shurikenVelocityConstant = config.shurikenVelocityConstant;
 
     this.platforms = [];
     this.enemyType = [];

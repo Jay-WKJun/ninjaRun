@@ -6,8 +6,9 @@ import { BACKGOURND } from "../constants/textureNames";
 class BaseScene extends Phaser.Scene {
   constructor(key, config) {
     super(key);
-    this.config = config;
-    this.screenCenter = [config.width / 2, config.height / 2];
+    this.worldWidth = config.width;
+    this.worldHeight = config.height;
+
     this.fontSize = 34;
     this.fontOptions = { fontSize: `${this.fontSize}px`, fill: "#FFFFFF" };
 
@@ -16,7 +17,7 @@ class BaseScene extends Phaser.Scene {
 
   create() {
     for (let i = 0; i < 3; i++) {
-      const backgroundXPosition = 0 + (this.config.width * i);
+      const backgroundXPosition = 0 + (this.worldWidth * i);
 
       this.createBackground(backgroundXPosition);
     }
