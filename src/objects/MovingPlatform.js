@@ -12,7 +12,7 @@ export default class MovingPlatform extends Phaser.Physics.Matter.Sprite {
   };
 
   moveHorizontally() {
-    this.scene.tweens.addCounter({
+    this.tweenCounter = this.scene.tweens.addCounter({
       from: 0,
       to: -10000,
       duration: 100000,
@@ -26,5 +26,9 @@ export default class MovingPlatform extends Phaser.Physics.Matter.Sprite {
         this.setVelocityX(dx);
       },
     });
+  }
+
+  removeCounter() {
+    this.scene.tweens.remove(this.tweenCounter);
   }
 };

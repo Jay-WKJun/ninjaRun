@@ -6,38 +6,41 @@ import Shuriken from "../../objects/Shuriken";
 import Character from "../../objects/Character";
 import Enemy from "../../objects/Enemy";
 import {
-  PAD,
+  PLATFORM,
   CHARACTER,
   SHURIKEN,
   ENEMY_BIRD1,
-  ENEMY_BIRD2
+  ENEMY_BIRD2,
+  ENEMY,
+  ENEMY_BIRD1_DIE,
+  ENEMY_BIRD2_DIE
 } from "../../constants/textureNames";
 import { PLAY_SCENE } from "../../constants/scenes";
 
 export default class initPlayScene extends BaseScene {
   constructor(config) {
     super(PLAY_SCENE, config);
-    this.worldWidth = this.config.width;
-    this.worldHeight = this.config.height;
+    this.deadZone = config.deadZone;
 
-    this.scorePosition = this.config.scorePosition;
+    this.scorePosition = config.scorePosition;
 
-    this.startPosition = this.config.startPosition;
-    this.accelerationValue = this.config.accelerationValue;
+    this.startPosition = config.startPosition;
+    this.accelerationValue = config.accelerationValue;
 
-    this.plaformStartPosition = this.config.platformStartPosition;
-    this.plaformInterval = this.config.platformInterval;
-    this.platformHeightLimit = this.config.height * 0.65;
+    this.plaformStartPosition = config.platformStartPosition;
+    this.plaformInterval = config.platformInterval;
+    this.platformHeightLimit = config.height * 0.65;
 
-    this.enemySize = this.config.enemySize;
-    this.enemyInterval = this.config.enemyInterval;
+    this.enemySize = config.enemySize;
+    this.enemyNumberLimit = config.enemyNumberLimit;
+    this.enemyInterval = config.enemyInterval;
 
-    this.shurikenPositionOffset = this.config.shurikenPositionOffset;
-    this.shurikenVelocityConstant = this.config.shurikenVelocityConstant;
+    this.shurikenPositionOffset = config.shurikenPositionOffset;
+    this.shurikenVelocityConstant = config.shurikenVelocityConstant;
 
     this.platforms = [];
     this.enemyType = [];
-    this.enemies = [];
+    this.enemies = {};
     this.shuriken = null;
     this.rope = null;
     this.attatchedTarget = null;
@@ -52,11 +55,10 @@ export default class initPlayScene extends BaseScene {
     this.createScore();
     this.createCharacter();
 
-    for (let i = 0; i < 5; i++) {
-      const enemyType = this.getEnemyTypeInRandom();
+    for (let i = 0; i < this.enemyNumberLimit; i++) {
       const XPosition = this.worldWidth + (this.enemyInterval * i);
 
-      this.createEnemy(enemyType, XPosition);
+      this.createEnemy(XPosition);
     }
 
     for (let i = 0; i < 4; i++) {
@@ -79,7 +81,15 @@ export default class initPlayScene extends BaseScene {
       repeat: -1,
     });
 
-    this.enemyType.push({ animation: animationKey1, enemyType: ENEMY_BIRD1 });
+    const dieAnimationKey1 = "die1";
+    this.anims.create({
+      key: dieAnimationKey1,
+      frames: this.anims.generateFrameNumbers(ENEMY_BIRD1_DIE, { start: 0, end: 8 }),
+      frameRate: 8,
+      repeat: 0,
+    });
+
+    this.enemyType.push({ animation: animationKey1, enemyType: ENEMY_BIRD1, dieAnimation: dieAnimationKey1 });
 
     const animationKey2 = "fly2";
     this.anims.create({
@@ -89,7 +99,15 @@ export default class initPlayScene extends BaseScene {
       repeat: -1,
     });
 
-    this.enemyType.push({ animation: animationKey2, enemyType: ENEMY_BIRD2 });
+    const dieAnimationKey2 = "die2";
+    this.anims.create({
+      key: dieAnimationKey2,
+      frames: this.anims.generateFrameNumbers(ENEMY_BIRD2_DIE, { start: 0, end: 8 }),
+      frameRate: 8,
+      repeat: 0,
+    });
+
+    this.enemyType.push({ animation: animationKey2, enemyType: ENEMY_BIRD2, dieAnimation: dieAnimationKey2 });
   }
 
   createScore() {
@@ -112,13 +130,15 @@ export default class initPlayScene extends BaseScene {
 
     this.character.setCollisionCategory(this.collision1);
     this.character.setCollidesWith(this.collision1);
+    this.character.body.label = CHARACTER;
 
     setTimeout(() => {
       this.character.setVelocity(10, 0);
     }, 500);
   }
 
-  createEnemy(enemyType, xPosition) {
+  createEnemy(xPosition) {
+    const enemyType = this.getEnemyTypeInRandom();
     const yPosition = Number(Math.random() * this.worldHeight);
 
     const newEnemy = new Enemy(
@@ -136,8 +156,10 @@ export default class initPlayScene extends BaseScene {
 
     newEnemy.setCollisionCategory(this.collision1);
     newEnemy.setCollidesWith(this.collision1);
+    newEnemy.body.label = ENEMY;
+    newEnemy.body.dieAnimation = enemyType.dieAnimation;
 
-    this.enemies.push(newEnemy);
+    this.enemies[newEnemy.body.id] = newEnemy;
   }
 
   createPlatform(xPosition) {
@@ -147,13 +169,14 @@ export default class initPlayScene extends BaseScene {
       this,
       xPosition,
       height,
-      PAD,
+      PLATFORM,
       { isStatic: true }
     ).setScale(0.3);
 
     newPlatform.moveHorizontally();
     newPlatform.setCollisionCategory(this.collision2);
     newPlatform.setCollidesWith(this.collision1);
+    newPlatform.body.label = PLATFORM;
 
     this.platforms.push(newPlatform);
   }
@@ -198,7 +221,6 @@ export default class initPlayScene extends BaseScene {
 
     this.input.on("pointerdown", (e) => {
       if (this.rope) {
-        this.deleteShuriken();
         removeConstraintAndRope();
         this.character.setRotation(0);
         return;
@@ -246,12 +268,29 @@ export default class initPlayScene extends BaseScene {
 
     this.matter.world.on("collisionstart", (e, b1, b2) => {
       if ((b1.label === SHURIKEN || b2.label === SHURIKEN) && !this.rope) {
-        this.shuriken.destroy();
+        const shurikenOpponent = b1.label === SHURIKEN ? b2 : b1;
+        this.deleteShuriken();
 
-        this.attatchedTarget = b1.label === SHURIKEN ? b2 : b1;
-        addConstraint(this.character, this.attatchedTarget);
+        if (b1.label === ENEMY || b2.label === ENEMY) {
+          const enemy = this.enemies[shurikenOpponent.id];
+
+          enemy.play(enemy.body.dieAnimation);
+          enemy.body.destroy();
+          enemy.setStatic(true);
+
+          setTimeout(() => this.deleteEnemy(enemy, shurikenOpponent.id), 1000);
+        } else {
+          this.attatchedTarget = shurikenOpponent;
+          addConstraint(this.character, this.attatchedTarget);
+        }
       }
     });
+  }
+
+  deleteEnemy(enemy, enemyId) {
+    enemy.removeCounter();
+    enemy.destroy();
+    delete this.enemies[enemyId];
   }
 
   deleteShuriken() {

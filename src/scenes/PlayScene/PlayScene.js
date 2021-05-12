@@ -13,40 +13,52 @@ class PlayScene extends initPlayScene {
     this.repeatObject(
       this.backgroundScenes,
       this.createBackground,
-      (this.worldWidth - 2),
-      false
+      (this.worldWidth - 2)
     );
     this.repeatObject(
       this.platforms,
       this.createPlatform,
-      this.plaformInterval,
-      false
+      this.plaformInterval
     );
-    this.repeatObject(
-      this.enemies,
-      this.createEnemy,
-      this.enemyInterval,
-      true
-    );
+
+    this.respawnEnemy();
 
     this.checkGameOver();
   };
 
-  repeatObject(objectArray, createFunction, offsetParam, isEnemy) {
-    const firstObject = objectArray[0].getBounds();
-    const firstObjectRightBound = firstObject.x + firstObject.width;
+  isPassedDisplay(object) {
+    const rightBound = object.getBounds();
+    return (rightBound.x + rightBound.width) < this.deadZone.minX;
+  }
 
-    if (firstObjectRightBound < 0) {
+  repeatObject(objectArray, createFunction, offsetParam) {
+    const firstObject = objectArray[0];
+
+    if (this.isPassedDisplay(firstObject)) {
       const lastObjectPosition = objectArray[objectArray.length - 1].x;
-      objectArray.shift();
 
-      if (isEnemy) {
-        const enemyType = this.getEnemyTypeInRandom();
+      const shiftedObject = objectArray.shift();
+      shiftedObject.removeCounter();
+      shiftedObject.destroy();
+      createFunction.call(this, lastObjectPosition + offsetParam);
+    }
+  }
 
-        createFunction.call(this, enemyType, lastObjectPosition + offsetParam);
-      } else {
-        createFunction.call(this, lastObjectPosition + offsetParam);
-      }
+  respawnEnemy() {
+    const enemies = Object.values(this.enemies);
+    const firstEnemy = enemies[0];
+    const lastEnemy = enemies[enemies.length - 1];
+    let multipleFactor = 1;
+
+    if (this.isPassedDisplay(firstEnemy)) {
+      this.deleteEnemy(firstEnemy, firstEnemy.body.id);
+    }
+
+    while (Object.keys(this.enemies).length <= this.enemyNumberLimit) {
+      const xOffset = this.enemyInterval * multipleFactor;
+
+      this.createEnemy(lastEnemy.x + xOffset);
+      multipleFactor++;
     }
   }
 
@@ -74,9 +86,9 @@ class PlayScene extends initPlayScene {
   destroyShurikenWhenWorldOut() {
     const isShurikenOutOfWorld = () => {
       return (
-        (this.shuriken.x > this.config.width) ||
+        (this.shuriken.x > this.worldWidth) ||
         (this.shuriken.x < 0) ||
-        (this.shuriken.y > this.config.height) ||
+        (this.shuriken.y > this.worldHeight) ||
         (this.shuriken.y < 0)
       );
     };
@@ -91,10 +103,10 @@ class PlayScene extends initPlayScene {
   checkGameOver() {
     const isCharacterOutOfDeadZone = () => {
       return (
-        (this.character.x > this.config.deadZone.maxX) ||
-        (this.character.x < this.config.deadZone.minX) ||
-        (this.character.y > this.config.deadZone.maxY) ||
-        (this.character.y < this.config.deadZone.minY)
+        (this.character.x > this.deadZone.maxX) ||
+        (this.character.x < this.deadZone.minX) ||
+        (this.character.y > this.deadZone.maxY) ||
+        (this.character.y < this.deadZone.minY)
       );
     };
 

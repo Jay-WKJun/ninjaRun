@@ -12,7 +12,7 @@ export default class Background extends Phaser.Physics.Matter.Image {
   };
 
   moveHorizontally() {
-    this.scene.tweens.addCounter({
+    this.tweenCounter = this.scene.tweens.addCounter({
       from: 0,
       to: -10000,
       duration: 150000,
@@ -26,5 +26,9 @@ export default class Background extends Phaser.Physics.Matter.Image {
         this.setVelocityX(dx);
       },
     });
+  }
+
+  removeCounter() {
+    this.scene.tweens.remove(this.tweenCounter);
   }
 };
