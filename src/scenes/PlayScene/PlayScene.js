@@ -21,9 +21,7 @@ class PlayScene extends initPlayScene {
       this.plaformInterval
     );
 
-    while (Object.keys(this.enemies).length <= 5) {
-      this.respawnEnemy();
-    }
+    this.respawnEnemy();
 
     this.checkGameOver();
   };
@@ -50,17 +48,18 @@ class PlayScene extends initPlayScene {
     const enemies = Object.values(this.enemies);
     const firstEnemy = enemies[0];
     const lastEnemy = enemies[enemies.length - 1];
-
-    console.log(firstEnemy);
+    let multipleFactor = 1;
 
     if (this.isPassedDisplay(firstEnemy)) {
       this.deleteEnemy(firstEnemy, firstEnemy.body.id);
-      this.createEnemy(lastEnemy.x + this.enemyInterval);
-
-      return;
     }
 
-    this.createEnemy(lastEnemy.x + this.enemyInterval);
+    while (Object.keys(this.enemies).length <= 5) {
+      const xOffset = this.enemyInterval * multipleFactor;
+
+      this.createEnemy(lastEnemy.x + xOffset);
+      multipleFactor++;
+    }
   }
 
   rotateCharacterToRopeDirection() {
