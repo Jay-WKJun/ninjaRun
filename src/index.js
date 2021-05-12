@@ -57,6 +57,7 @@ const config = {
       gravity: {
         y: GRAVITY,
       },
+      debug: true,
     },
   },
   scene: initScenes,

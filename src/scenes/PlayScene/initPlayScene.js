@@ -6,11 +6,14 @@ import Shuriken from "../../objects/Shuriken";
 import Character from "../../objects/Character";
 import Enemy from "../../objects/Enemy";
 import {
-  PAD,
+  PLATFORM,
   CHARACTER,
   SHURIKEN,
   ENEMY_BIRD1,
-  ENEMY_BIRD2
+  ENEMY_BIRD2,
+  ENEMY,
+  ENEMY_BIRD1_DIE,
+  ENEMY_BIRD2_DIE
 } from "../../constants/textureNames";
 import { PLAY_SCENE } from "../../constants/scenes";
 
@@ -37,7 +40,7 @@ export default class initPlayScene extends BaseScene {
 
     this.platforms = [];
     this.enemyType = [];
-    this.enemies = [];
+    this.enemies = {};
     this.shuriken = null;
     this.rope = null;
     this.attatchedTarget = null;
@@ -79,7 +82,15 @@ export default class initPlayScene extends BaseScene {
       repeat: -1,
     });
 
-    this.enemyType.push({ animation: animationKey1, enemyType: ENEMY_BIRD1 });
+    const dieAnimationKey1 = "die1";
+    this.anims.create({
+      key: dieAnimationKey1,
+      frames: this.anims.generateFrameNumbers(ENEMY_BIRD1_DIE, { start: 0, end: 8 }),
+      frameRate: 8,
+      repeat: 0,
+    });
+
+    this.enemyType.push({ animation: animationKey1, enemyType: ENEMY_BIRD1, dieAnimation: dieAnimationKey1 });
 
     const animationKey2 = "fly2";
     this.anims.create({
@@ -89,7 +100,15 @@ export default class initPlayScene extends BaseScene {
       repeat: -1,
     });
 
-    this.enemyType.push({ animation: animationKey2, enemyType: ENEMY_BIRD2 });
+    const dieAnimationKey2 = "die2";
+    this.anims.create({
+      key: dieAnimationKey2,
+      frames: this.anims.generateFrameNumbers(ENEMY_BIRD2_DIE, { start: 0, end: 8 }),
+      frameRate: 8,
+      repeat: 0,
+    });
+
+    this.enemyType.push({ animation: animationKey2, enemyType: ENEMY_BIRD2, dieAnimation: dieAnimationKey2 });
   }
 
   createScore() {
@@ -112,6 +131,7 @@ export default class initPlayScene extends BaseScene {
 
     this.character.setCollisionCategory(this.collision1);
     this.character.setCollidesWith(this.collision1);
+    this.character.body.label = CHARACTER;
 
     setTimeout(() => {
       this.character.setVelocity(10, 0);
@@ -136,8 +156,10 @@ export default class initPlayScene extends BaseScene {
 
     newEnemy.setCollisionCategory(this.collision1);
     newEnemy.setCollidesWith(this.collision1);
+    newEnemy.body.label = ENEMY;
+    newEnemy.body.dieAnimation = enemyType.dieAnimation;
 
-    this.enemies.push(newEnemy);
+    this.enemies[newEnemy.body.id] = newEnemy;
   }
 
   createPlatform(xPosition) {
@@ -147,13 +169,14 @@ export default class initPlayScene extends BaseScene {
       this,
       xPosition,
       height,
-      PAD,
+      PLATFORM,
       { isStatic: true }
     ).setScale(0.3);
 
     newPlatform.moveHorizontally();
     newPlatform.setCollisionCategory(this.collision2);
     newPlatform.setCollidesWith(this.collision1);
+    newPlatform.body.label = PLATFORM;
 
     this.platforms.push(newPlatform);
   }
@@ -198,7 +221,6 @@ export default class initPlayScene extends BaseScene {
 
     this.input.on("pointerdown", (e) => {
       if (this.rope) {
-        this.deleteShuriken();
         removeConstraintAndRope();
         this.character.setRotation(0);
         return;
@@ -246,10 +268,26 @@ export default class initPlayScene extends BaseScene {
 
     this.matter.world.on("collisionstart", (e, b1, b2) => {
       if ((b1.label === SHURIKEN || b2.label === SHURIKEN) && !this.rope) {
-        this.shuriken.destroy();
+        const shurikenOpponent = b1.label === SHURIKEN ? b2 : b1;
+        this.deleteShuriken();
 
-        this.attatchedTarget = b1.label === SHURIKEN ? b2 : b1;
-        addConstraint(this.character, this.attatchedTarget);
+        if (b1.label === ENEMY || b2.label === ENEMY) {
+          console.log(Object.keys(this.enemies).length);
+          const enemy = this.enemies[shurikenOpponent.id];
+
+          enemy.play(enemy.body.dieAnimation);
+          enemy.body.destroy();
+          enemy.setStatic(true);
+
+          setTimeout(() => {
+            enemy.removeCounter();
+            enemy.destroy();
+            delete this.enemies[shurikenOpponent.id];
+          }, 1000);
+        } else {
+          this.attatchedTarget = shurikenOpponent;
+          addConstraint(this.character, this.attatchedTarget);
+        }
       }
     });
   }

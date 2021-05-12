@@ -22,8 +22,9 @@ class PlayScene extends initPlayScene {
       this.plaformInterval,
       false
     );
+
     this.repeatObject(
-      this.enemies,
+      Object.values(this.enemies),
       this.createEnemy,
       this.enemyInterval,
       true
@@ -38,13 +39,14 @@ class PlayScene extends initPlayScene {
 
     if (firstObjectRightBound < 0) {
       const lastObjectPosition = objectArray[objectArray.length - 1].x;
-      objectArray.shift();
 
       if (isEnemy) {
         const enemyType = this.getEnemyTypeInRandom();
 
+        delete this.enemies[objectArray[0].body.id];
         createFunction.call(this, enemyType, lastObjectPosition + offsetParam);
       } else {
+        objectArray.shift();
         createFunction.call(this, lastObjectPosition + offsetParam);
       }
     }
