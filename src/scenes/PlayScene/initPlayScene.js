@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import BaseScene from "../BaseScene";
 
+import GameOverScene from "../GameOverScene";
 import MovingPlatform from "../../objects/MovingPlatform";
 import Shuriken from "../../objects/Shuriken";
 import Character from "../../objects/Character";
@@ -274,6 +275,7 @@ export default class initPlayScene extends BaseScene {
 
           console.log("Dead!!");
           this.killEnemy(enemy, characterOpponent.id);
+          this.addGameOverModal();
         }
 
         return;
@@ -317,5 +319,13 @@ export default class initPlayScene extends BaseScene {
 
   getEnemyTypeInRandom() {
     return this.enemyType[Math.floor(Math.random() * (this.enemyType.length))];
+  }
+
+  addGameOverModal() {
+    const modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
+
+    const gameOverScene = new GameOverScene(modalZone, this.worldWidth, this.worldHeight);
+
+    this.scene.add("gameOverModal", gameOverScene, true);
   }
 }

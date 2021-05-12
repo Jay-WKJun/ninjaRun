@@ -11,11 +11,11 @@ import {
   ENEMY_BIRD1_DIE,
   ENEMY_BIRD2_DIE
 } from "../constants/textureNames";
-import { PLAY_SCENE } from "../constants/scenes";
+import { PRE_LOAD_SCENE, PLAY_SCENE } from "../constants/scenes";
 
 class PreloadScene extends Phaser.Scene {
   constructor() {
-    super("PreloadScene");
+    super(PRE_LOAD_SCENE);
   };
 
   preload() {
