@@ -8,6 +8,7 @@ class BaseScene extends Phaser.Scene {
     super(key);
     this.worldWidth = config.width;
     this.worldHeight = config.height;
+    this.worldCenter = { x: config.width / 2, y: config.height };
 
     this.fontSize = 34;
     this.fontOptions = { fontSize: `${this.fontSize}px`, fill: "#FFFFFF" };
