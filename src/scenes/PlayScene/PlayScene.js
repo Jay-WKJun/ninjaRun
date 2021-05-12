@@ -54,7 +54,7 @@ class PlayScene extends initPlayScene {
       this.deleteEnemy(firstEnemy, firstEnemy.body.id);
     }
 
-    while (Object.keys(this.enemies).length <= 5) {
+    while (Object.keys(this.enemies).length <= this.enemyNumberLimit) {
       const xOffset = this.enemyInterval * multipleFactor;
 
       this.createEnemy(lastEnemy.x + xOffset);

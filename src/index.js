@@ -20,6 +20,7 @@ const PLATFORM_START_POSITION = WIDTH / 2;
 const PLATFORM_INTERVAL = 400;
 
 const ENEMY_SIZE = { width: 80, height: 30 };
+const ENEMY_NUMBER_LIMIT = 6;
 const ENEMY_INTERVAL = 400;
 
 const SHURIKEN_POSITION_OFFSET = 70;
@@ -37,6 +38,7 @@ const SHARED_CONFIG = {
   platformStartPosition: PLATFORM_START_POSITION,
   platformInterval: PLATFORM_INTERVAL,
   enemySize: ENEMY_SIZE,
+  enemyNumberLimit: ENEMY_NUMBER_LIMIT,
   enemyInterval: ENEMY_INTERVAL,
   shurikenPositionOffset: SHURIKEN_POSITION_OFFSET,
   shurikenVelocityConstant: SHURIKEN_VELOCITY_CONSTANT,

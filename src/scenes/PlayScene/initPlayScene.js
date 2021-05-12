@@ -33,6 +33,7 @@ export default class initPlayScene extends BaseScene {
     this.platformHeightLimit = this.config.height * 0.65;
 
     this.enemySize = this.config.enemySize;
+    this.enemyNumberLimit = this.config.enemyNumberLimit;
     this.enemyInterval = this.config.enemyInterval;
 
     this.shurikenPositionOffset = this.config.shurikenPositionOffset;
@@ -55,7 +56,7 @@ export default class initPlayScene extends BaseScene {
     this.createScore();
     this.createCharacter();
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < this.enemyNumberLimit; i++) {
       const XPosition = this.worldWidth + (this.enemyInterval * i);
 
       this.createEnemy(XPosition);
