@@ -27,7 +27,6 @@ class PreloadScene extends Phaser.Scene {
 
     this.load.image(CHARACTER, "assets/images/ninja_hanging_fit.png");
     this.load.image(CHARACTER_DEAD, "assets/images/ninja6_dead.png");
-    // this.load.spritesheet(STUN, "assets/images/stun_sprite.png", { frameWidth: 341.3, frameHeight: 251 });
 
     this.load.image(SHURIKEN, "assets/images/shuriken.png");
     this.load.image(SHURIKEN_SPIN, "assets/images/shuriken_spin.png");

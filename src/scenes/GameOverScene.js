@@ -22,14 +22,14 @@ export default class GameOverScene extends Phaser.Scene {
     const animationKey1 = "stunAnimation";
     this.anims.create({
       key: animationKey1,
-      frames: this.anims.generateFrameNames("stun", {
+      frames: this.anims.generateFrameNames(STUN, {
         start: 1,
         end: 4,
         prefix: "stun",
         zeroPad: 2,
         suffix: ".png",
       }),
-      frameRate: 4,
+      frameRate: 8,
       repeat: -1,
     });
 
