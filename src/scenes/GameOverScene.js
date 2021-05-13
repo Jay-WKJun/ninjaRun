@@ -5,10 +5,11 @@ import { GAMEOVER_SCENE } from "../constants/scenes";
 import { CHARACTER_DEAD, STUN } from "../constants/textureNames";
 
 export default class GameOverScene extends Phaser.Scene {
-  constructor(parent, width, height) {
+  constructor(parent, zone, width, height) {
     super(GAMEOVER_SCENE);
 
     this.parent = parent;
+    this.zone = zone;
     this.worldWidth = width;
     this.worldHeigth = height;
     this.worldCenter = { x: width / 2, y: height / 2 };
@@ -35,10 +36,37 @@ export default class GameOverScene extends Phaser.Scene {
 
     this.stun = this.add.sprite(this.worldCenter.x, this.worldCenter.y - deadCharacter.displayHeight, STUN).setScale(0.2);
     this.stun.play(animationKey1);
+
+    const button = document.createElement("div");
+    button.className = "restart";
+    button.textContent = "Restart!";
+
+    this.restartButton = this.add.text(deadCharacter.x - deadCharacter.displayWidth, deadCharacter.y + deadCharacter.displayHeight, "Restart!").setOrigin(0.5).setInteractive();
+    this.quitButton = this.add.text(deadCharacter.x + deadCharacter.displayWidth, deadCharacter.y + deadCharacter.displayHeight, "Quit!").setOrigin(0.5).setInteractive();
+
+    this.restartButton.on("pointerover", () => {
+      this.restartButton.setStyle({ fill: "red" });
+    });
+
+    this.restartButton.on("pointerout", () => {
+      this.restartButton.setStyle({ fill: "white" });
+    });
+
+    this.restartButton.once("pointerup", () => {
+      window.location.reload();
+    });
+
+    this.quitButton.on("pointerover", () => {
+      this.quitButton.setStyle({ fill: "red" });
+    });
+
+    this.quitButton.on("pointerout", () => {
+      this.quitButton.setStyle({ fill: "white" });
+    });
   }
 
   refresh() {
-    this.cameras.main.setPosition(this.parent.x, this.parent.y);
+    this.cameras.main.setPosition(this.zone.x, this.zone.y);
 
     this.scene.bringToTop();
   }

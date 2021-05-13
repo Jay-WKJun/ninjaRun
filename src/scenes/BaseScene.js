@@ -5,6 +5,7 @@ import Background from "../objects/Background";
 class BaseScene extends Phaser.Scene {
   constructor(key, config) {
     super(key);
+    this.parent = this;
     this.worldScale = config.worldScale;
     this.worldWidth = config.width;
     this.worldHeight = config.height;
