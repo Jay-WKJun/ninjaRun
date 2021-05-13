@@ -126,7 +126,7 @@ export default class initPlayScene extends BaseScene {
     const startX = this.startPosition.x;
     const startY = this.startPosition.y;
 
-    this.character = new Character(this, startX, startY);
+    this.character = new Character(this, startX, startY, CHARACTER);
     this.character.setCollisionCategory(this.collision1);
     this.character.setCollidesWith(this.collision1);
     this.character.body.label = CHARACTER;

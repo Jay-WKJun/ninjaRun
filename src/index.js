@@ -2,7 +2,6 @@ import Phaser from "phaser";
 
 import PreloadScene from "./scenes/PreloadScene";
 import PlayScene from "./scenes/PlayScene/PlayScene";
-// import GameOverScene from "./scenes/GameOverScene";
 
 const WORLD_SCALE = 0.6;
 const WIDTH = 1920 * WORLD_SCALE;
