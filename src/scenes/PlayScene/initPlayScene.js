@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import BaseScene from "../BaseScene";
 
-import GameOverScene from "../GameOverScene";
+import GameOverScene from "../modal/GameOverScene";
 import MovingPlatform from "../../objects/MovingPlatform";
 import Shuriken from "../../objects/Shuriken";
 import Character from "../../objects/Character";
@@ -17,7 +17,7 @@ import {
   ENEMY_BIRD1_DIE,
   ENEMY_BIRD2_DIE
 } from "../../constants/textureNames";
-import { PLAY_SCENE } from "../../constants/scenes";
+import { PLAY_SCENE, GAMEOVER_SCENE } from "../../constants/scenes";
 
 export default class initPlayScene extends BaseScene {
   constructor(config) {
@@ -41,6 +41,8 @@ export default class initPlayScene extends BaseScene {
     this.shurikenVelocityConstant = config.shurikenVelocityConstant;
 
     this.isGameOver = false;
+    this.scoreBoard = null;
+    this.score = 0;
 
     this.characterDieAnimation = "";
     this.platforms = [];
@@ -135,7 +137,7 @@ export default class initPlayScene extends BaseScene {
     const scoreX = this.scorePosition.x;
     const scoreY = this.scorePosition.y;
 
-    this.add.text(scoreX, scoreY, "000", {
+    this.scoreBoard = this.add.text(scoreX, scoreY, this.score, {
       fontSize: "50px",
       color: "red",
       fontStyle: "bold",
@@ -222,14 +224,17 @@ export default class initPlayScene extends BaseScene {
         .setVelocity(cos * velocityConstant, sin * velocityConstant);
 
       this.shuriken.body.label = SHURIKEN;
+      this.shuriken.spinShuriken();
       this.shuriken.setCollisionCategory(this.collision1);
       this.shuriken.setCollidesWith([this.collision1, this.collision2]);
     };
 
     this.input.on("pointerdown", (e) => {
+      if (this.isGameOver) return;
+
       if (this.rope) {
         this.removeConstraintAndRope();
-        this.character.setRotation(0);
+        this.character.spinCharacterOneTime();
         return;
       }
 
@@ -294,6 +299,9 @@ export default class initPlayScene extends BaseScene {
         if (b1.label === ENEMY || b2.label === ENEMY) {
           const enemy = this.enemies[shurikenOpponent.id];
 
+          this.score += 1;
+          this.scoreBoard.destroy();
+          this.createScore();
           this.killEnemy(enemy, shurikenOpponent.id);
         } else {
           this.attatchedTarget = shurikenOpponent;
@@ -318,6 +326,7 @@ export default class initPlayScene extends BaseScene {
   }
 
   deleteShuriken() {
+    this.shuriken.removeCounter();
     this.shuriken.destroy();
     this.shuriken = null;
   }
@@ -342,14 +351,17 @@ export default class initPlayScene extends BaseScene {
 
     const gameOverScene = new GameOverScene(this.parent, modalZone, this.worldWidth, this.worldHeight);
 
-    this.scene.add("gameOverModal", gameOverScene, true);
+    this.scene.add(GAMEOVER_SCENE, gameOverScene, true);
   }
 
   gameOver() {
     this.isGameOver = true;
     this.rope && this.removeConstraintAndRope();
+    this.character.removeCounter();
     this.character.play(this.character.dieAnimation);
-    this.addGameOverModal();
+    setTimeout(() => {
+      this.addGameOverModal();
+    }, 1000);
     setTimeout(() => {
       this.character.destroy();
     }, 2000);
