@@ -9,6 +9,7 @@ import Enemy from "../../objects/Enemy";
 import {
   PLATFORM,
   CHARACTER,
+  CHARACTER_DIE_ANIMATION,
   SHURIKEN,
   ENEMY_BIRD1,
   ENEMY_BIRD2,
@@ -39,6 +40,9 @@ export default class initPlayScene extends BaseScene {
     this.shurikenPositionOffset = config.shurikenPositionOffset;
     this.shurikenVelocityConstant = config.shurikenVelocityConstant;
 
+    this.isGameOver = false;
+
+    this.characterDieAnimation = "";
     this.platforms = [];
     this.enemyType = [];
     this.enemies = {};
@@ -109,6 +113,22 @@ export default class initPlayScene extends BaseScene {
     });
 
     this.enemyType.push({ animation: animationKey2, enemyType: ENEMY_BIRD2, dieAnimation: dieAnimationKey2 });
+
+    const characterDieAnimationKey = "ninja6_Die1";
+    this.anims.create({
+      key: characterDieAnimationKey,
+      frames: this.anims.generateFrameNames(CHARACTER_DIE_ANIMATION, {
+        start: 1,
+        end: 5,
+        prefix: "ninja6_dead",
+        zeroPad: 2,
+        suffix: ".png",
+      }),
+      frameRate: 8,
+      repeat: false,
+    });
+
+    this.characterDieAnimation = characterDieAnimationKey;
   }
 
   createScore() {
@@ -130,6 +150,7 @@ export default class initPlayScene extends BaseScene {
     this.character.setCollisionCategory(this.collision1);
     this.character.setCollidesWith(this.collision1);
     this.character.body.label = CHARACTER;
+    this.character.dieAnimation = this.characterDieAnimation;
 
     setTimeout(() => {
       this.character.setVelocity(10, 0);
@@ -180,17 +201,6 @@ export default class initPlayScene extends BaseScene {
   }
 
   handleMouseClickEvent() {
-    const removeConstraintAndRope = () => {
-      this.matter.world.removeConstraint(this.rope);
-
-      this.rope = null;
-
-      this.line.clear();
-      this.line = null;
-
-      this.attatchedTarget = null;
-    };
-
     const shootShuriken = (e) => {
       const angle = Phaser.Math.Angle.Between(
         this.character.x,
@@ -218,7 +228,7 @@ export default class initPlayScene extends BaseScene {
 
     this.input.on("pointerdown", (e) => {
       if (this.rope) {
-        removeConstraintAndRope();
+        this.removeConstraintAndRope();
         this.character.setRotation(0);
         return;
       }
@@ -269,9 +279,8 @@ export default class initPlayScene extends BaseScene {
         if (characterOpponent.label === ENEMY) {
           const enemy = this.enemies[characterOpponent.id];
 
-          console.log("Dead!!");
           this.killEnemy(enemy, characterOpponent.id);
-          this.addGameOverModal();
+          this.gameOver();
         }
 
         return;
@@ -317,11 +326,32 @@ export default class initPlayScene extends BaseScene {
     return this.enemyType[Math.floor(Math.random() * (this.enemyType.length))];
   }
 
+  removeConstraintAndRope() {
+    this.matter.world.removeConstraint(this.rope);
+
+    this.rope = null;
+
+    this.line.clear();
+    this.line = null;
+
+    this.attatchedTarget = null;
+  };
+
   addGameOverModal() {
     const modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
 
-    const gameOverScene = new GameOverScene(modalZone, this.worldWidth, this.worldHeight);
+    const gameOverScene = new GameOverScene(this.parent, modalZone, this.worldWidth, this.worldHeight);
 
     this.scene.add("gameOverModal", gameOverScene, true);
+  }
+
+  gameOver() {
+    this.isGameOver = true;
+    this.rope && this.removeConstraintAndRope();
+    this.character.play(this.character.dieAnimation);
+    this.addGameOverModal();
+    setTimeout(() => {
+      this.character.destroy();
+    }, 2000);
   }
 }

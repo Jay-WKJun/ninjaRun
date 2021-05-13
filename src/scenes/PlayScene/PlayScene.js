@@ -101,6 +101,8 @@ class PlayScene extends initPlayScene {
   }
 
   checkGameOver() {
+    if (this.isGameOver) return;
+
     const isCharacterOutOfDeadZone = () => {
       return (
         (this.character.x > this.deadZone.maxX) ||
@@ -112,7 +114,7 @@ class PlayScene extends initPlayScene {
 
     if (this.character) {
       if (isCharacterOutOfDeadZone()) {
-        console.log("Dead!!");
+        this.gameOver();
       }
     }
   }
