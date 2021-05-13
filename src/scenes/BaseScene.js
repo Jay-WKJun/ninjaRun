@@ -1,11 +1,11 @@
 import Phaser from "phaser";
 
 import Background from "../objects/Background";
-import { BACKGOURND } from "../constants/textureNames";
 
 class BaseScene extends Phaser.Scene {
   constructor(key, config) {
     super(key);
+    this.worldScale = config.worldScale;
     this.worldWidth = config.width;
     this.worldHeight = config.height;
     this.worldCenter = { x: config.width / 2, y: config.height };
@@ -25,17 +25,12 @@ class BaseScene extends Phaser.Scene {
   }
 
   createBackground(xPosition) {
-    this.background = new Background(this, xPosition, 0, BACKGOURND, { isStatic: true })
-      .setScale(0.6)
-      .setOrigin(0);
+    this.background = new Background(this, xPosition, 0, { isStatic: true }).setScale(this.worldScale);
 
     this.background.moveHorizontally();
     this.background.setIgnoreGravity(true);
-    this.background.depth = -1;
-
-    this.background.body.collisionFilter = {
-      group: -1,
-    };
+    this.background.setCollisionGroup(-1);
+    this.background.setDepth(-1);
 
     this.backgroundScenes.push(this.background);
   }

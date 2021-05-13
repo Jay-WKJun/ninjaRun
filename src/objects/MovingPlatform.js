@@ -1,10 +1,13 @@
 import Phaser from "phaser";
 
+import { PLATFORM } from "../constants/textureNames";
+
 export default class MovingPlatform extends Phaser.Physics.Matter.Sprite {
-  constructor(scene, x, y, texture, options) {
-    super(scene.matter.world, x, y, texture, 0, options);
+  constructor(scene, x, y, options) {
+    super(scene.matter.world, x, y, PLATFORM, 0, options);
     scene.add.existing(this);
 
+    this.setScale(0.3);
     this.setFriction(1, 0, Infinity);
 
     this.startX = x;

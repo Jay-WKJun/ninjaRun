@@ -126,9 +126,7 @@ export default class initPlayScene extends BaseScene {
     const startX = this.startPosition.x;
     const startY = this.startPosition.y;
 
-    this.character = new Character(this, startX, startY, CHARACTER)
-      .setOrigin(0.5);
-
+    this.character = new Character(this, startX, startY);
     this.character.setCollisionCategory(this.collision1);
     this.character.setCollidesWith(this.collision1);
     this.character.body.label = CHARACTER;
@@ -170,9 +168,8 @@ export default class initPlayScene extends BaseScene {
       this,
       xPosition,
       height,
-      PLATFORM,
       { isStatic: true }
-    ).setScale(0.3);
+    );
 
     newPlatform.moveHorizontally();
     newPlatform.setCollisionCategory(this.collision2);
@@ -209,8 +206,7 @@ export default class initPlayScene extends BaseScene {
       this.shuriken = new Shuriken(
         this,
         this.character.x + positionOffset * cos,
-        this.character.y + positionOffset * sin,
-        SHURIKEN
+        this.character.y + positionOffset * sin
       )
         .setScale(0.5)
         .setVelocity(cos * velocityConstant, sin * velocityConstant);

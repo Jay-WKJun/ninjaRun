@@ -1,10 +1,13 @@
 import Phaser from "phaser";
 
+import { BACKGOURND } from "../constants/textureNames";
+
 export default class Background extends Phaser.Physics.Matter.Image {
-  constructor(scene, x, y, texture, options) {
-    super(scene.matter.world, x, y, texture, 0, options);
+  constructor(scene, x, y, options) {
+    super(scene.matter.world, x, y, BACKGOURND, 0, options);
     scene.add.existing(this);
 
+    this.setOrigin(0);
     this.setFriction(1, 0, Infinity);
 
     this.startX = x;
