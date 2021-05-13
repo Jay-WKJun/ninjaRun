@@ -12,4 +12,32 @@ export default class Character extends Phaser.Physics.Matter.Sprite {
     this.startX = x;
     this.startY = y;
   };
+
+  spinCharacterOneTime() {
+    const duration = 400;
+
+    this.tweenCounter = this.scene.tweens.addCounter({
+      from: 3,
+      to: -3,
+      duration: duration,
+      ease: 0,
+      repeat: 1,
+      yoyo: true,
+      onUpdate: (tween, target) => {
+        this.setRotation(target.value - 3);
+      },
+    });
+
+    setTimeout(() => {
+      this && this.removeCounter();
+    }, duration + 10);
+  }
+
+  removeCounter() {
+    if (this.tweenCounter) {
+      this.scene.tweens.remove(this.tweenCounter);
+      delete this.tweenCounter;
+      this.setRotation(0);
+    }
+  }
 }

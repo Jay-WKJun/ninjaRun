@@ -1,8 +1,8 @@
 import Phaser from "phaser";
 
-import Character from "../objects/Character";
-import { GAMEOVER_SCENE } from "../constants/scenes";
-import { CHARACTER_DEAD, STUN } from "../constants/textureNames";
+import Character from "../../objects/Character";
+import { GAMEOVER_SCENE } from "../../constants/scenes";
+import { CHARACTER_DEAD, STUN } from "../../constants/textureNames";
 
 export default class GameOverScene extends Phaser.Scene {
   constructor(parent, zone, width, height) {

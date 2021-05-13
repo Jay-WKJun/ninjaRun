@@ -12,4 +12,22 @@ export default class Shuriken extends Phaser.Physics.Matter.Sprite {
     this.startX = x;
     this.startY = y;
   };
+
+  spinShuriken() {
+    this.tweenCounter = this.scene.tweens.addCounter({
+      from: 0,
+      to: 360,
+      duration: 500,
+      ease: 0,
+      repeat: -1,
+      yoyo: false,
+      onUpdate: (tween, target) => {
+        this.setRotation(target.value);
+      },
+    });
+  }
+
+  removeCounter() {
+    this.scene.tweens.remove(this.tweenCounter);
+  }
 }
