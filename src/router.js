@@ -4,11 +4,11 @@ import play from "./Components/play/play";
 export const routes = {
   "/": {
     html: home.html,
-    js: home.render,
+    js: home.execute,
   },
   "/play": {
     html: play.html,
-    js: play.render,
+    js: play.execute,
   },
 };
 

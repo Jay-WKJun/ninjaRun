@@ -1,11 +1,11 @@
 import html from "./home.html";
 import "./home.css";
 
-function render() {
+function execute() {
   console.log("home!!");
 }
 
 export default {
   html,
-  render,
+  execute,
 };
