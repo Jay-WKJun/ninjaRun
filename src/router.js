@@ -1,5 +1,5 @@
-import home from "./Home/home";
-import play from "./Play/play";
+import home from "./home/home";
+import play from "./play/play";
 
 export const routes = {
   "/": {
