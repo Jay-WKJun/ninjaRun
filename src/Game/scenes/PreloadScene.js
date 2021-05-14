@@ -24,6 +24,7 @@ class PreloadScene extends Phaser.Scene {
   preload() {
     this.load.atlas(STUN, "assets/images/stun_sprite.png", "assets/atlasJson/stun_sprite.json");
     this.load.atlas(CHARACTER_DIE_ANIMATION, "assets/images/ninja_dying.png", "assets/atlasJson/ninja_dying.json");
+    this.load.atlas("chracterThrowJump", "assets/images/ninja6_throwJump.png", "assets/atlasJson/ninja6_throwJump.json");
 
     this.load.image(BACKGOURND, "assets/images/ForestBG.png");
 
