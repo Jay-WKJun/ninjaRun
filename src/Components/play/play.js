@@ -1,5 +1,5 @@
 import html from "./play.html";
-import game from "../Game/index";
+import game from "../../Game/index";
 
 function render() {
   console.log("play");
