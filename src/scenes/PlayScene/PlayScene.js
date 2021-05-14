@@ -3,7 +3,11 @@ import initPlayScene from "./initPlayScene";
 
 class PlayScene extends initPlayScene {
   update() {
+    if (this.isGameOver && this.timedEvent) this.timedEvent.destroy();
+
     if (this.rope) {
+      if (this.isGameOver) this.removeConstraintAndRope();
+
       this.rotateCharacterToRopeDirection();
       this.drawRope();
     }
@@ -22,7 +26,6 @@ class PlayScene extends initPlayScene {
     );
 
     this.respawnEnemy();
-
     this.checkGameOver();
   };
 
@@ -94,7 +97,7 @@ class PlayScene extends initPlayScene {
     };
 
     if ((this.shuriken && !this.rope)) {
-      if (isShurikenOutOfWorld()) {
+      if (this.isGameOver || isShurikenOutOfWorld()) {
         this.deleteShuriken();
       }
     }

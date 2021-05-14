@@ -43,6 +43,8 @@ export default class initPlayScene extends BaseScene {
     this.isGameOver = false;
     this.scoreBoard = null;
     this.score = 0;
+    this.startTime = 0;
+    this.currentTime = { minute: 0, seconds: 1 };
 
     this.characterDieAnimation = "";
     this.platforms = [];
@@ -54,12 +56,15 @@ export default class initPlayScene extends BaseScene {
   };
 
   create() {
+    this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.createTimeBoard, callbackScope: this, loop: true });
+
     this.collision1 = this.matter.world.nextCategory();
     this.collision2 = this.matter.world.nextCategory();
 
     super.create();
     this.createAnimation();
     this.createScore();
+    this.createTimeBoard();
     this.createCharacter();
 
     for (let i = 0; i < this.enemyNumberLimit; i++) {
@@ -137,7 +142,30 @@ export default class initPlayScene extends BaseScene {
     const scoreX = this.scorePosition.x;
     const scoreY = this.scorePosition.y;
 
+    this.registry.set("score", this.score);
+
+    if (this.scoreBoard) this.scoreBoard.destroy();
+
     this.scoreBoard = this.add.text(scoreX, scoreY, this.score, {
+      fontSize: "50px",
+      color: "red",
+      fontStyle: "bold",
+    }).setOrigin(0);
+  }
+
+  createTimeBoard() {
+    const timeX = this.scorePosition.x;
+    const timeY = this.scorePosition.y + 100;
+    const currentTimeMillsecond = this.time.now - this.startTime;
+    const currentSecond = Math.floor(currentTimeMillsecond / 1000);
+    const currentTime = { minute: Math.floor(currentSecond / 60), seconds: currentSecond % 60 };
+    this.currentTime = currentTime;
+
+    this.registry.set("playTime", this.currentTime);
+
+    if (this.timeBoard) this.timeBoard.destroy();
+
+    this.timeBoard = this.add.text(timeX, timeY, `${this.currentTime.minute}:${this.currentTime.seconds}`, {
       fontSize: "50px",
       color: "red",
       fontStyle: "bold",
@@ -300,7 +328,7 @@ export default class initPlayScene extends BaseScene {
           const enemy = this.enemies[shurikenOpponent.id];
 
           this.score += 1;
-          this.scoreBoard.destroy();
+          this.registry.set("score", this.score);
           this.createScore();
           this.killEnemy(enemy, shurikenOpponent.id);
         } else {
