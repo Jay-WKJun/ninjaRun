@@ -1,4 +1,5 @@
 import { routes, addRouteEvent } from "./router";
+import "./store/store";
 
 const rootDiv = document.getElementById("root");
 

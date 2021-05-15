@@ -14,7 +14,7 @@ export default class Character extends Phaser.Physics.Matter.Sprite {
   };
 
   spinCharacterOneTime() {
-    const duration = 400;
+    const duration = 300;
 
     this.tweenCounter = this.scene.tweens.addCounter({
       from: 3,

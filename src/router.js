@@ -24,9 +24,11 @@ export function addRouteEvent() {
   Array.from(routeButtons).forEach(routeButton => {
     routeButton.addEventListener("click", () => {
       const route = routeButton.getAttribute("route");
+
       window.history.pushState({ data: "test" }, route, route);
       rootDiv.innerHTML = routes[route].html;
       routes[route].js();
+      addRouteEvent();
     });
   });
 }

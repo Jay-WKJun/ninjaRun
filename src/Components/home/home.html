@@ -1,6 +1,21 @@
-<div>
-  메인페이지가 여기 들어간다
+<div class="home" id="home">
+  <div class="title__wrapper">
+    Ninja Run!
+  </div>
+  <div class="input__wrapper">
+    <input id="name__input" type="text" placeholder="Type your name to start!"/>
+  </div>
+  <div class="button__container" id="button__container">
+    <button id="ranking__button">
+      Ranking!
+    </button>
+    <button class="route" id="game__start" route="/play">
+      Game start!
+    </button>
+  </div>
+  <div class="score__board" id="score__board">
+    <div class="scores" id="scores">
+      Loading...
+    </div>
+  </div>
 </div>
-<button class="route" route="/play">
-  이걸 누르면 게임이 시작된다.
-</button>

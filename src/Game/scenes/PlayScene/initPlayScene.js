@@ -136,6 +136,22 @@ export default class initPlayScene extends BaseScene {
     });
 
     this.characterDieAnimation = characterDieAnimationKey;
+
+    const characterThrowAnimationKey = "ninja6_Throw1";
+    this.anims.create({
+      key: characterThrowAnimationKey,
+      frames: this.anims.generateFrameNames("chracterThrowJump", {
+        start: 0,
+        end: 7,
+        prefix: "ninja6_throwJump",
+        zeroPad: 2,
+        suffix: ".png",
+      }),
+      frameRate: 20,
+      repeat: false,
+    });
+
+    this.charaterThrowAnimation = characterThrowAnimationKey;
   }
 
   createScore() {
@@ -181,6 +197,9 @@ export default class initPlayScene extends BaseScene {
     this.character.setCollidesWith(this.collision1);
     this.character.body.label = CHARACTER;
     this.character.dieAnimation = this.characterDieAnimation;
+    this.character.throwAnimation = this.charaterThrowAnimation;
+    delete this.characterDieAnimation;
+    delete this.charaterThrowAnimation;
 
     setTimeout(() => {
       this.character.setVelocity(10, 0);
@@ -251,6 +270,8 @@ export default class initPlayScene extends BaseScene {
         .setScale(0.5)
         .setVelocity(cos * velocityConstant, sin * velocityConstant);
 
+      this.character.play(this.character.throwAnimation);
+      console.log(this.character.throwAnimation);
       this.shuriken.body.label = SHURIKEN;
       this.shuriken.spinShuriken();
       this.shuriken.setCollisionCategory(this.collision1);
