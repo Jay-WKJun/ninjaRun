@@ -1,6 +1,7 @@
 import html from "./home.html";
 import "./home.css";
 import backgroundImage from "../../../assets/images/ForestBG.png";
+import store from "../../store/store";
 
 function execute() {
   const $home = document.getElementById("home");
@@ -20,6 +21,7 @@ function execute() {
   $rankingButton.addEventListener("click", () => {
     const scoreBoardDisplay = $scoreBoard.style.display;
     console.log(scoreBoardDisplay);
+    console.log(store.player);
 
     if (scoreBoardDisplay === "none") {
       $scoreBoard.style.display = "flex";
@@ -28,7 +30,7 @@ function execute() {
 
   $scoreBoard.addEventListener("click", () => {
     const scoreBoardDisplay = $scoreBoard.style.display;
-    console.log(scoreBoardDisplay);
+    console.log(store.player);
 
     if (scoreBoardDisplay === "flex") {
       $scoreBoard.style.display = "none";
@@ -39,6 +41,7 @@ function execute() {
   function handleKeyupEvent(e) {
     const inputName = e.target.value;
     console.log(inputName);
+    store.player = inputName;
 
     if (inputName === "") {
       $gameStartButton.style.display = "none";
