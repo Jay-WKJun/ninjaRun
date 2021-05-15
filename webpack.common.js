@@ -1,6 +1,7 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
 
 module.exports = {
@@ -81,6 +82,7 @@ module.exports = {
         },
       ],
     }),
+    new Dotenv(),
   ],
   devServer: {
     contentBase: path.resolve(__dirname, "build"),

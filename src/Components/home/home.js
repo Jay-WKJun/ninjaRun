@@ -10,7 +10,6 @@ function execute() {
   const $rankingButton = document.getElementById("ranking__button");
   const $scoreBoard = document.getElementById("score__board");
 
-  console.log("home!!");
   $home.style.backgroundImage = `url(${backgroundImage})`;
 
   $gameStartButton.style.display = "none";
@@ -18,35 +17,34 @@ function execute() {
 
   $nameInput.addEventListener("keyup", handleKeyupEvent);
 
-  $rankingButton.addEventListener("click", () => {
-    const scoreBoardDisplay = $scoreBoard.style.display;
-    console.log(scoreBoardDisplay);
-    console.log(store.player);
+  $rankingButton.addEventListener("click", handleRankingButtonClick);
 
-    if (scoreBoardDisplay === "none") {
-      $scoreBoard.style.display = "flex";
-    }
-  });
+  $scoreBoard.addEventListener("click", handleScoreBoardClick);
 
-  $scoreBoard.addEventListener("click", () => {
-    const scoreBoardDisplay = $scoreBoard.style.display;
-    console.log(store.player);
-
-    if (scoreBoardDisplay === "flex") {
-      $scoreBoard.style.display = "none";
-    }
-  });
-
-  // api에서 받아오면 그걸 리스트해서 scoreBoard에 쭉 그려주면 된다.
   function handleKeyupEvent(e) {
     const inputName = e.target.value;
-    console.log(inputName);
     store.player = inputName;
 
     if (inputName === "") {
       $gameStartButton.style.display = "none";
     } else {
       $gameStartButton.style.display = "flex";
+    }
+  }
+
+  function handleRankingButtonClick() {
+    const scoreBoardDisplay = $scoreBoard.style.display;
+
+    if (scoreBoardDisplay === "none") {
+      $scoreBoard.style.display = "flex";
+    }
+  }
+
+  function handleScoreBoardClick() {
+    const scoreBoardDisplay = $scoreBoard.style.display;
+
+    if (scoreBoardDisplay === "flex") {
+      $scoreBoard.style.display = "none";
     }
   }
 }
