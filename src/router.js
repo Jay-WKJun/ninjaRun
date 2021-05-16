@@ -25,12 +25,16 @@ export function addRouteEvent() {
     routeButton.addEventListener("click", () => {
       const route = routeButton.getAttribute("route");
 
-      window.history.pushState({ data: "test" }, route, route);
-      rootDiv.innerHTML = routes[route].html;
-      routes[route].js();
-      addRouteEvent();
+      moveToRoute("test", route);
     });
   });
+}
+
+export function moveToRoute(data, route) {
+  window.history.pushState({ data }, route, route);
+  rootDiv.innerHTML = routes[route].html;
+  routes[route].js();
+  addRouteEvent();
 }
 
 addRouteEvent();

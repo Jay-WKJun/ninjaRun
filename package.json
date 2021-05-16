@@ -11,6 +11,8 @@
   "author": "KyungJun Woo",
   "license": "ISC",
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "babel-polyfill": "^6.26.0",
     "phaser": "^3.54.0",
     "phaser-matter-collision-plugin": "^0.10.2",
     "webpack-merge": "^5.7.3"

@@ -1,11 +1,27 @@
 import html from "./play.html";
-// import game from "../../Game/index";
+import "./play.css";
+
 import store from "../../store/store";
+import Game from "../../Game/index";
+import { moveToRoute } from "../../router";
+import { postRecord } from "../../api/recordApi";
+
+let currentGame;
 
 function execute() {
-  console.log("play!!");
-  // game();
-  console.log(store.player);
+  currentGame = Game();
+  currentGame.player = store.player;
+  currentGame.saveRecord = postRecord;
+  currentGame.router = moveToRoute;
+
+  document.getElementById("game__off").addEventListener("click", () => {
+    if (currentGame) {
+      currentGame.destroy(true);
+      currentGame = null;
+    } else {
+      currentGame = Game();
+    }
+  });
 }
 
 export default {

@@ -7,7 +7,7 @@ const webpack = require("webpack");
 module.exports = {
   mode: "development",
   entry: {
-    app: "./src/index.js",
+    app: ["babel-polyfill", "./src/index.js"],
   },
   devtool: "eval-source-map",
   output: {
