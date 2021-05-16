@@ -271,7 +271,7 @@ export default class initPlayScene extends BaseScene {
         .setVelocity(cos * velocityConstant, sin * velocityConstant);
 
       this.character.play(this.character.throwAnimation);
-      console.log(this.character.throwAnimation);
+      (this.character.throwAnimation);
       this.shuriken.body.label = SHURIKEN;
       this.shuriken.spinShuriken();
       this.shuriken.setCollisionCategory(this.collision1);
