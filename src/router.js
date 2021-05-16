@@ -35,16 +35,16 @@ export function moveToRoute(data, route) {
 
   if (route === "/") {
     window.location.reload();
-    window.onload(loadPage);
+    window.onload(() => loadPage(route));
   } else {
-    loadPage();
+    loadPage(route);
   }
+}
 
-  function loadPage() {
-    rootDiv.innerHTML = routes[route].html;
-    routes[route].js();
-    addRouteEvent();
-  }
+export function loadPage(route) {
+  rootDiv.innerHTML = routes[route].html;
+  routes[route].js();
+  addRouteEvent();
 }
 
 addRouteEvent();

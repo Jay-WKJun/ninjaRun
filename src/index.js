@@ -1,16 +1,13 @@
-import { routes, addRouteEvent } from "./router";
+import { loadPage } from "./router";
 import "./store/store";
-
-const rootDiv = document.getElementById("root");
 
 window.onpopstate = () => {
   const currentPath = window.location.pathname;
 
   if (currentPath === "/") {
     window.location.reload();
+    window.onload(() => loadPage(currentPath));
+  } else {
+    loadPage(currentPath);
   }
-
-  rootDiv.innerHTML = routes[currentPath].html;
-  routes[currentPath].js();
-  addRouteEvent();
 };
