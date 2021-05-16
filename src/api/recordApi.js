@@ -1,10 +1,12 @@
-export async function getRecords() {
-  return await fetch(`${process.env.SERVER_URL}/record`, {
+export async function getTop10Records() {
+  const top10Records = await fetch(`${process.env.SERVER_URL}/record`, {
     method: "GET",
     headers: {
       "Content-type": "application/json;charset=utf-8",
     },
   });
+
+  return await top10Records.json();
 }
 
 export async function postRecord(name, score) {

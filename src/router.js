@@ -32,9 +32,19 @@ export function addRouteEvent() {
 
 export function moveToRoute(data, route) {
   window.history.pushState({ data }, route, route);
-  rootDiv.innerHTML = routes[route].html;
-  routes[route].js();
-  addRouteEvent();
+
+  if (route === "/") {
+    window.location.reload();
+    window.onload(loadPage);
+  } else {
+    loadPage();
+  }
+
+  function loadPage() {
+    rootDiv.innerHTML = routes[route].html;
+    routes[route].js();
+    addRouteEvent();
+  }
 }
 
 addRouteEvent();

@@ -16,7 +16,7 @@
   font-size: 50px;
 }
 
-.score__board {
+.score__modal {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,4 +26,10 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5);
   color:white;
+}
+
+.score__board {
+  border: solid 3px red;
+  width: 40%;
+  height: 60%;
 }

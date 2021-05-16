@@ -1,13 +1,16 @@
 import html from "./home.html";
 import "./home.css";
+
 import backgroundImage from "../../../assets/images/ForestBG.png";
 import store from "../../store/store";
+import recordDiv from "./record/record";
 
 function execute() {
   const $home = document.getElementById("home");
   const $nameInput = document.getElementById("name__input");
   const $gameStartButton = document.getElementById("game__start");
   const $rankingButton = document.getElementById("ranking__button");
+  const $scoreModal = document.getElementById("score__modal");
   const $scoreBoard = document.getElementById("score__board");
 
   $home.style.backgroundImage = `url(${backgroundImage})`;
@@ -18,8 +21,8 @@ function execute() {
 
   $rankingButton.addEventListener("click", handleRankingButtonClick);
 
-  $scoreBoard.style.display = "none";
-  $scoreBoard.addEventListener("click", handleScoreBoardClick);
+  $scoreModal.style.display = "none";
+  $scoreModal.addEventListener("click", handleScoreBoardClick);
 
   function handleKeyupEvent(e) {
     const inputName = e.target.value;
@@ -32,19 +35,22 @@ function execute() {
     }
   }
 
-  function handleRankingButtonClick() {
-    const scoreBoardDisplay = $scoreBoard.style.display;
+  async function handleRankingButtonClick() {
+    const scoreBoardDisplay = $scoreModal.style.display;
 
     if (scoreBoardDisplay === "none") {
-      $scoreBoard.style.display = "flex";
+      $scoreModal.style.display = "flex";
+
+      const allRecords = await recordDiv();
+      $scoreBoard.innerHTML = allRecords;
     }
   }
 
   function handleScoreBoardClick() {
-    const scoreBoardDisplay = $scoreBoard.style.display;
+    const scoreBoardDisplay = $scoreModal.style.display;
 
     if (scoreBoardDisplay === "flex") {
-      $scoreBoard.style.display = "none";
+      $scoreModal.style.display = "none";
     }
   }
 }
