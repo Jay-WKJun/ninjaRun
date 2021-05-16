@@ -13,6 +13,7 @@ function execute() {
   $home.style.backgroundImage = `url(${backgroundImage})`;
 
   $gameStartButton.style.display = "none";
+
   $scoreBoard.style.display = "none";
 
   $nameInput.addEventListener("keyup", handleKeyupEvent);

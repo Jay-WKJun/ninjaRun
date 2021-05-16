@@ -1,11 +1,25 @@
 import html from "./play.html";
-// import game from "../../Game/index";
+import "./play.css";
+
 import store from "../../store/store";
+import Game from "../../Game/index";
+import { moveToRoute } from "../../router";
+
+let currentGame;
 
 function execute() {
-  console.log("play!!");
-  // game();
-  console.log(store.player);
+  currentGame = Game();
+  currentGame.store = store;
+  currentGame.router = moveToRoute;
+
+  document.getElementById("game__off").addEventListener("click", () => {
+    if (currentGame) {
+      currentGame.destroy(true);
+      currentGame = null;
+    } else {
+      currentGame = Game();
+    }
+  });
 }
 
 export default {
