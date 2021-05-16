@@ -61,9 +61,10 @@ export default class GameOverScene extends Phaser.Scene {
     });
 
     quitButton.on("pointerup", () => {
-      this.game.store.score = this.registry.get("score");
+      const score = this.registry.get("score");
+      const player = this.game.player;
+      this.game.saveRecord(player, score);
       this.game.router("", "/");
-      this.game.destroy();
     });
   }
 

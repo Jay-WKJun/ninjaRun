@@ -4,12 +4,14 @@ import "./play.css";
 import store from "../../store/store";
 import Game from "../../Game/index";
 import { moveToRoute } from "../../router";
+import { postRecord } from "../../api/recordApi";
 
 let currentGame;
 
 function execute() {
   currentGame = Game();
-  currentGame.store = store;
+  currentGame.player = store.player;
+  currentGame.saveRecord = postRecord;
   currentGame.router = moveToRoute;
 
   document.getElementById("game__off").addEventListener("click", () => {

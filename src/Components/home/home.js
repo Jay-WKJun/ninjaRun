@@ -14,12 +14,11 @@ function execute() {
 
   $gameStartButton.style.display = "none";
 
-  $scoreBoard.style.display = "none";
-
   $nameInput.addEventListener("keyup", handleKeyupEvent);
 
   $rankingButton.addEventListener("click", handleRankingButtonClick);
 
+  $scoreBoard.style.display = "none";
   $scoreBoard.addEventListener("click", handleScoreBoardClick);
 
   function handleKeyupEvent(e) {
