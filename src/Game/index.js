@@ -17,9 +17,10 @@ const DEAD_ZONE = {
   maxY: HEIGHT + DEAD_ZONE_RANGE,
 };
 
-const PLATFORM_START_POSITION = WIDTH / 2;
+const PLATFORM_START_POSITION = WIDTH;
 const PLATFORM_INTERVAL = 400;
 
+const ENEMY_START_POSITION = WIDTH * 1.5;
 const ENEMY_SIZE = { width: 80, height: 30 };
 const ENEMY_NUMBER_LIMIT = 6;
 const ENEMY_INTERVAL = 400;
@@ -39,6 +40,7 @@ const SHARED_CONFIG = {
   accelerationValue: ACCELERATION_VALUE,
   platformStartPosition: PLATFORM_START_POSITION,
   platformInterval: PLATFORM_INTERVAL,
+  enemyStartPosition: ENEMY_START_POSITION,
   enemySize: ENEMY_SIZE,
   enemyNumberLimit: ENEMY_NUMBER_LIMIT,
   enemyInterval: ENEMY_INTERVAL,
@@ -62,7 +64,6 @@ const config = {
       gravity: {
         y: GRAVITY,
       },
-      debug: true,
     },
   },
   scene: initScenes,

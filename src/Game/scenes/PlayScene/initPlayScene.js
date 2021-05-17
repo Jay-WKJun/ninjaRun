@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import BaseScene from "../BaseScene";
 
 import GameOverScene from "../modal/GameOverScene";
+import GameStartCountScene from "../modal/GameStartCountScene";
 import MovingPlatform from "../../objects/MovingPlatform";
 import Shuriken from "../../objects/Shuriken";
 import Character from "../../objects/Character";
@@ -33,6 +34,7 @@ export default class initPlayScene extends BaseScene {
     this.plaformInterval = config.platformInterval;
     this.platformHeightLimit = config.height * 0.65;
 
+    this.enemyStartPosition = config.enemyStartPosition;
     this.enemySize = config.enemySize;
     this.enemyNumberLimit = config.enemyNumberLimit;
     this.enemyInterval = config.enemyInterval;
@@ -40,6 +42,7 @@ export default class initPlayScene extends BaseScene {
     this.shurikenPositionOffset = config.shurikenPositionOffset;
     this.shurikenVelocityConstant = config.shurikenVelocityConstant;
 
+    this.isStart = false;
     this.isGameOver = false;
     this.scoreBoard = null;
     this.score = 0;
@@ -56,6 +59,12 @@ export default class initPlayScene extends BaseScene {
   };
 
   create() {
+    this.modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
+
+    const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
+
+    this.scene.add("gameStartCountScene", gameStartCountScene, true);
+
     this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.createTimeBoard, callbackScope: this, loop: true });
 
     this.collision1 = this.matter.world.nextCategory();
@@ -65,10 +74,10 @@ export default class initPlayScene extends BaseScene {
     this.createAnimation();
     this.createScore();
     this.createTimeBoard();
-    this.createCharacter();
+    // this.createCharacter();
 
     for (let i = 0; i < this.enemyNumberLimit; i++) {
-      const XPosition = this.worldWidth + (this.enemyInterval * i);
+      const XPosition = this.enemyStartPosition + (this.enemyInterval * i);
 
       this.createEnemy(XPosition);
     }
@@ -201,9 +210,7 @@ export default class initPlayScene extends BaseScene {
     delete this.characterDieAnimation;
     delete this.charaterThrowAnimation;
 
-    setTimeout(() => {
-      this.character.setVelocity(10, 0);
-    }, 500);
+    this.character.setVelocity(10, 0);
   }
 
   createEnemy(xPosition) {
@@ -271,7 +278,6 @@ export default class initPlayScene extends BaseScene {
         .setVelocity(cos * velocityConstant, sin * velocityConstant);
 
       this.character.play(this.character.throwAnimation);
-      (this.character.throwAnimation);
       this.shuriken.body.label = SHURIKEN;
       this.shuriken.spinShuriken();
       this.shuriken.setCollisionCategory(this.collision1);
@@ -396,9 +402,7 @@ export default class initPlayScene extends BaseScene {
   };
 
   addGameOverModal() {
-    const modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
-
-    const gameOverScene = new GameOverScene(this.parent, modalZone, this.worldWidth, this.worldHeight);
+    const gameOverScene = new GameOverScene(this, this.modalZone, this.worldWidth, this.worldHeight);
 
     this.scene.add(GAMEOVER_SCENE, gameOverScene, true);
   }
