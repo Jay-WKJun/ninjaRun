@@ -3,6 +3,7 @@ import BaseScene from "../BaseScene";
 
 import GameOverScene from "../modal/GameOverScene";
 import GameStartCountScene from "../modal/GameStartCountScene";
+
 import MovingPlatform from "../../objects/MovingPlatform";
 import Shuriken from "../../objects/Shuriken";
 import Character from "../../objects/Character";
@@ -11,6 +12,7 @@ import {
   PLATFORM,
   CHARACTER,
   CHARACTER_DIE_ANIMATION,
+  CHARACTER_THROW_JUMP,
   SHURIKEN,
   ENEMY_BIRD1,
   ENEMY_BIRD2,
@@ -45,7 +47,6 @@ export default class initPlayScene extends BaseScene {
     this.isStart = false;
     this.isGameOver = false;
     this.scoreBoard = null;
-    this.score = 0;
     this.startTime = 0;
 
     this.character = null;
@@ -147,7 +148,7 @@ export default class initPlayScene extends BaseScene {
     const characterThrowAnimationKey = "ninja6_Throw1";
     this.anims.create({
       key: characterThrowAnimationKey,
-      frames: this.anims.generateFrameNames("chracterThrowJump", {
+      frames: this.anims.generateFrameNames(CHARACTER_THROW_JUMP, {
         start: 0,
         end: 7,
         prefix: "ninja6_throwJump",
@@ -165,11 +166,11 @@ export default class initPlayScene extends BaseScene {
     const scoreX = this.scorePosition.x;
     const scoreY = this.scorePosition.y;
 
-    this.registry.set("score", this.score);
+    this.registry.set("score", 0);
 
     if (this.scoreBoard) this.scoreBoard.destroy();
 
-    this.scoreBoard = this.add.text(scoreX, scoreY, this.score, {
+    this.scoreBoard = this.add.text(scoreX, scoreY, 0, {
       fontSize: "50px",
       color: "red",
       fontStyle: "bold",
@@ -202,8 +203,10 @@ export default class initPlayScene extends BaseScene {
     this.character.setCollisionCategory(this.collision1);
     this.character.setCollidesWith(this.collision1);
     this.character.body.label = CHARACTER;
+
     this.character.dieAnimation = this.characterDieAnimation;
     this.character.throwAnimation = this.charaterThrowAnimation;
+
     delete this.characterDieAnimation;
     delete this.charaterThrowAnimation;
 
@@ -333,6 +336,7 @@ export default class initPlayScene extends BaseScene {
     this.matter.world.on("collisionstart", (e, b1, b2) => {
       if (b1.label === CHARACTER || b2.label === CHARACTER) {
         const characterOpponent = b1.label === CHARACTER ? b2 : b1;
+
         if (characterOpponent.label === ENEMY) {
           const enemy = this.enemies[characterOpponent.id];
 
@@ -351,11 +355,13 @@ export default class initPlayScene extends BaseScene {
         if (b1.label === ENEMY || b2.label === ENEMY) {
           const enemy = this.enemies[shurikenOpponent.id];
 
-          this.score += 1;
-          this.registry.set("score", this.score);
+          this.registry.set("score", this.registry.get("score") + 1);
           this.createScore();
           this.killEnemy(enemy, shurikenOpponent.id);
         } else {
+          this.character.stop();
+          this.character.setTexture(CHARACTER);
+
           this.attatchedTarget = shurikenOpponent;
           addConstraint(this.character, this.attatchedTarget);
         }

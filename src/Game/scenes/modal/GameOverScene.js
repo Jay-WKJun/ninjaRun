@@ -75,7 +75,6 @@ export default class GameOverScene extends Phaser.Scene {
       this.parent.character = null;
 
       this.parent.startTime = this.time.now;
-      this.parent.score = 0;
 
       this.parent.isGameOver = false;
 
@@ -94,6 +93,7 @@ export default class GameOverScene extends Phaser.Scene {
     quitButton.on("pointerup", () => {
       const score = this.registry.get("score");
       const player = this.game.player;
+
       this.game.saveRecord(player, score);
       this.game.router("", "/");
     });
