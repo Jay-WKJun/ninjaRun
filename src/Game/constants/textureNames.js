@@ -3,6 +3,7 @@ export const BACKGOURND = "background";
 export const CHARACTER = "character";
 export const CHARACTER_DEAD = "characterDead";
 export const CHARACTER_DIE_ANIMATION = "characterDieAnimation";
+export const CHARACTER_THROW_JUMP = "characterThrowJump";
 export const STUN = "stun";
 
 export const SHURIKEN = "shuriken";
