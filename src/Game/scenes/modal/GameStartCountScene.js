@@ -1,8 +1,10 @@
 import Phaser from "phaser";
 
+import { GAME_START_COUNT_SCENE } from "../../constants/scenes";
+
 export default class GameStartCountScene extends Phaser.Scene {
   constructor(parent, zone, width, height) {
-    super("GameStartCountScene");
+    super(GAME_START_COUNT_SCENE);
 
     this.parent = parent;
     this.zone = zone;

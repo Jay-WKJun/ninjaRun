@@ -18,7 +18,7 @@ import {
   ENEMY_BIRD1_DIE,
   ENEMY_BIRD2_DIE
 } from "../../constants/textureNames";
-import { PLAY_SCENE, GAMEOVER_SCENE } from "../../constants/scenes";
+import { PLAY_SCENE, GAMEOVER_SCENE, GAME_START_COUNT_SCENE } from "../../constants/scenes";
 
 export default class initPlayScene extends BaseScene {
   constructor(config) {
@@ -62,7 +62,7 @@ export default class initPlayScene extends BaseScene {
 
     const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
 
-    this.scene.add("gameStartCountScene", gameStartCountScene, true);
+    this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
 
     this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.createTimeBoard, callbackScope: this, loop: true });
 
