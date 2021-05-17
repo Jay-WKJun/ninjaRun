@@ -37,6 +37,8 @@ class PlayScene extends initPlayScene {
   repeatObject(objectArray, createFunction, offsetParam) {
     const firstObject = objectArray[0];
 
+    if (!firstObject) return;
+
     if (this.isPassedDisplay(firstObject)) {
       const lastObjectPosition = objectArray[objectArray.length - 1].x;
 
@@ -104,7 +106,7 @@ class PlayScene extends initPlayScene {
   }
 
   checkGameOver() {
-    if (this.isGameOver) return;
+    if (this.isGameOver || !this.character) return;
 
     const isCharacterOutOfDeadZone = () => {
       return (

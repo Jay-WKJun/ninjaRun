@@ -49,7 +49,38 @@ export default class GameOverScene extends Phaser.Scene {
     });
 
     restartButton.once("pointerup", () => {
-      window.location.reload();
+      this.parent.backgroundScenes.forEach(background => {
+        background.removeCounter();
+        background.destroy();
+      });
+      this.parent.backgroundScenes = [];
+
+      this.parent.platforms.forEach(platform => {
+        platform.removeCounter();
+        platform.destroy();
+      });
+      this.parent.platforms = [];
+
+      Object.values(this.parent.enemies).forEach(enemy => {
+        enemy.removeCounter();
+        enemy.destroy();
+      });
+      this.parent.enemies = {};
+
+      this.parent.input.removeAllListeners("pointerdown");
+      this.parent.input.removeAllListeners("keydown");
+      this.parent.matter.world.off("collisionstart");
+
+      this.parent.character && this.parent.character.destroy();
+      this.parent.character = null;
+
+      this.parent.startTime = this.time.now;
+      this.parent.score = 0;
+
+      this.parent.isGameOver = false;
+
+      this.scene.remove();
+      this.parent.scene.restart();
     });
 
     quitButton.on("pointerover", () => {
