@@ -37,6 +37,7 @@ export default class GameStartCountScene extends Phaser.Scene {
   update() {
     if (this.count === 0) {
       clearInterval(this.countingInterval);
+      delete this.countingInterval;
       this.scene.remove();
       this.parent.createCharacter();
     }

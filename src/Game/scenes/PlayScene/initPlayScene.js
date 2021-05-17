@@ -47,9 +47,8 @@ export default class initPlayScene extends BaseScene {
     this.scoreBoard = null;
     this.score = 0;
     this.startTime = 0;
-    this.currentTime = { minute: 0, seconds: 1 };
 
-    this.characterDieAnimation = "";
+    this.character = null;
     this.platforms = [];
     this.enemyType = [];
     this.enemies = {};
@@ -74,7 +73,6 @@ export default class initPlayScene extends BaseScene {
     this.createAnimation();
     this.createScore();
     this.createTimeBoard();
-    // this.createCharacter();
 
     for (let i = 0; i < this.enemyNumberLimit; i++) {
       const XPosition = this.enemyStartPosition + (this.enemyInterval * i);
@@ -97,7 +95,7 @@ export default class initPlayScene extends BaseScene {
     const animationKey1 = "fly1";
     this.anims.create({
       key: animationKey1,
-      frames: this.anims.generateFrameNumbers(ENEMY_BIRD1, { start: 0, end: 8 }),
+      frames: this.anims.generateFrameNumbers(ENEMY_BIRD1, { start: 0, end: 7 }),
       frameRate: 8,
       repeat: -1,
     });
@@ -105,7 +103,7 @@ export default class initPlayScene extends BaseScene {
     const dieAnimationKey1 = "die1";
     this.anims.create({
       key: dieAnimationKey1,
-      frames: this.anims.generateFrameNumbers(ENEMY_BIRD1_DIE, { start: 0, end: 8 }),
+      frames: this.anims.generateFrameNumbers(ENEMY_BIRD1_DIE, { start: 0, end: 7 }),
       frameRate: 8,
       repeat: 0,
     });
@@ -115,7 +113,7 @@ export default class initPlayScene extends BaseScene {
     const animationKey2 = "fly2";
     this.anims.create({
       key: animationKey2,
-      frames: this.anims.generateFrameNumbers(ENEMY_BIRD2, { start: 0, end: 12 }),
+      frames: this.anims.generateFrameNumbers(ENEMY_BIRD2, { start: 0, end: 11 }),
       frameRate: 8,
       repeat: -1,
     });
@@ -123,7 +121,7 @@ export default class initPlayScene extends BaseScene {
     const dieAnimationKey2 = "die2";
     this.anims.create({
       key: dieAnimationKey2,
-      frames: this.anims.generateFrameNumbers(ENEMY_BIRD2_DIE, { start: 0, end: 8 }),
+      frames: this.anims.generateFrameNumbers(ENEMY_BIRD2_DIE, { start: 0, end: 7 }),
       frameRate: 8,
       repeat: 0,
     });
@@ -184,13 +182,12 @@ export default class initPlayScene extends BaseScene {
     const currentTimeMillsecond = this.time.now - this.startTime;
     const currentSecond = Math.floor(currentTimeMillsecond / 1000);
     const currentTime = { minute: Math.floor(currentSecond / 60), seconds: currentSecond % 60 };
-    this.currentTime = currentTime;
 
-    this.registry.set("playTime", this.currentTime);
+    this.registry.set("playTime", currentTime);
 
     if (this.timeBoard) this.timeBoard.destroy();
 
-    this.timeBoard = this.add.text(timeX, timeY, `${this.currentTime.minute}:${this.currentTime.seconds}`, {
+    this.timeBoard = this.add.text(timeX, timeY, `${currentTime.minute}:${currentTime.seconds}`, {
       fontSize: "50px",
       color: "red",
       fontStyle: "bold",
@@ -416,7 +413,7 @@ export default class initPlayScene extends BaseScene {
       this.addGameOverModal();
     }, 1000);
     setTimeout(() => {
-      this.character.destroy();
+      this.character && this.character.destroy();
     }, 2000);
   }
 }
