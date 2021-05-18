@@ -25,8 +25,11 @@ export default class GameStartCountScene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     this.countingInterval = setInterval(() => {
-      this.text.destroy();
       this.count--;
+
+      if (this.count <= 0) return;
+
+      this.text.destroy();
 
       this.text = this.add.text(this.worldCenter.x, this.worldCenter.y, this.count, {
         fontSize: "50px",
@@ -40,7 +43,11 @@ export default class GameStartCountScene extends Phaser.Scene {
     if (this.count === 0) {
       clearInterval(this.countingInterval);
       delete this.countingInterval;
+
       this.scene.remove();
+
+      this.parent.startTime = this.time.now;
+      this.parent.timedEvent = this.parent.createTimerEvent();
       this.parent.createCharacter();
     }
   }

@@ -42,6 +42,7 @@ export default class initPlayScene extends AnimationLoadScene {
     this.isGameOver = false;
     this.scoreBoard = null;
     this.startTime = 0;
+    this.timedEvent = null;
 
     this.character = null;
     this.platforms = [];
@@ -56,8 +57,6 @@ export default class initPlayScene extends AnimationLoadScene {
 
     const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
     this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
-
-    this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.#createTimeBoard, callbackScope: this, loop: true });
 
     this.collision1 = this.matter.world.nextCategory();
     this.collision2 = this.matter.world.nextCategory();
@@ -85,6 +84,15 @@ export default class initPlayScene extends AnimationLoadScene {
     this.#handleCollisionEvent();
   };
 
+  createTimerEvent() {
+    return (this.time.addEvent({
+      delay: 1000,
+      callback: this.#createTimeBoard,
+      callbackScope: this,
+      loop: true
+    }));
+  }
+
   #createScore() {
     const scoreX = this.scorePosition.x;
     const scoreY = this.scorePosition.y;
@@ -103,7 +111,7 @@ export default class initPlayScene extends AnimationLoadScene {
     const timeX = this.scorePosition.x;
     const timeY = this.scorePosition.y + 100;
     const currentTimeMillsecond = this.time.now - this.startTime;
-    const currentSecond = Math.floor(currentTimeMillsecond / 1000);
+    const currentSecond = Math.ceil(currentTimeMillsecond / 1000);
     const currentTime = { minute: Math.floor(currentSecond / 60), seconds: currentSecond % 60 };
 
     this.registry.set("playTime", currentTime);
