@@ -116,6 +116,8 @@ export default class initPlayScene extends AnimationLoadScene {
 
     this.registry.set("playTime", currentTime);
 
+    if (currentTime.seconds % 10 === 0) this.#countUpScore();
+
     if (this.timeBoard) this.timeBoard.destroy();
 
     this.timeBoard = this.add.text(timeX, timeY, `${currentTime.minute}:${currentTime.seconds}`, {
@@ -302,8 +304,7 @@ export default class initPlayScene extends AnimationLoadScene {
         if (isEnemyCollides) {
           const enemy = this.enemies[shurikenOpponent.id];
 
-          this.registry.set("score", this.registry.get("score") + 1);
-          this.#createScore();
+          this.#countUpScore();
           this.#killEnemy(enemy, shurikenOpponent.id);
         } else {
           this.#changeCharaterSprite(CHARACTER);
@@ -313,6 +314,11 @@ export default class initPlayScene extends AnimationLoadScene {
         }
       }
     });
+  }
+
+  #countUpScore() {
+    this.registry.set("score", this.registry.get("score") + 1);
+    this.#createScore();
   }
 
   #changeCharaterSprite(spriteId) {
