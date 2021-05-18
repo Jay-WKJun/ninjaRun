@@ -116,7 +116,7 @@ export default class initPlayScene extends AnimationLoadScene {
 
     this.registry.set("playTime", currentTime);
 
-    if (currentTime.seconds % 10 === 0) this.#countUpScore();
+    if (currentSecond > 0 && currentTime.seconds % 10 === 0) this.#countUpScore();
 
     if (this.timeBoard) this.timeBoard.destroy();
 
