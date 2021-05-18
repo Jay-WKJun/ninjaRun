@@ -15,9 +15,9 @@ function execute() {
 
   $home.style.backgroundImage = `url(${backgroundImage})`;
 
-  $gameStartButton.style.display = "none";
-
   $nameInput.addEventListener("keyup", handleKeyupEvent);
+
+  $gameStartButton.style.display = "none";
 
   $rankingButton.addEventListener("click", handleRankingButtonClick);
 

@@ -15,6 +15,7 @@
       "functions": "never"
     }],
     "quote-props": "off",
-    "no-prototype-builtins": "off"
+    "no-prototype-builtins": "off",
+    "no-undef": "off"
   }
 }

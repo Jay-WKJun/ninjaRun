@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-import BaseScene from "../BaseScene";
+import AnimationLoadScene from "../AnimationLoadScene";
 
 import GameOverScene from "../modal/GameOverScene";
 import GameStartCountScene from "../modal/GameStartCountScene";
@@ -11,20 +11,14 @@ import Enemy from "../../objects/Enemy";
 import {
   PLATFORM,
   CHARACTER,
-  CHARACTER_DIE_ANIMATION,
-  CHARACTER_THROW_JUMP,
   SHURIKEN,
-  ENEMY_BIRD1,
-  ENEMY_BIRD2,
-  ENEMY,
-  ENEMY_BIRD1_DIE,
-  ENEMY_BIRD2_DIE
+  ENEMY
 } from "../../constants/textureNames";
-import { PLAY_SCENE, GAMEOVER_SCENE, GAME_START_COUNT_SCENE } from "../../constants/scenes";
+import { GAMEOVER_SCENE, GAME_START_COUNT_SCENE } from "../../constants/scenes";
 
-export default class initPlayScene extends BaseScene {
+export default class initPlayScene extends AnimationLoadScene {
   constructor(config) {
-    super(PLAY_SCENE, config);
+    super(config);
     this.deadZone = config.deadZone;
 
     this.scorePosition = config.scorePosition;
@@ -51,7 +45,6 @@ export default class initPlayScene extends BaseScene {
 
     this.character = null;
     this.platforms = [];
-    this.enemyType = [];
     this.enemies = {};
     this.shuriken = null;
     this.rope = null;
@@ -62,7 +55,6 @@ export default class initPlayScene extends BaseScene {
     this.modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
 
     const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
-
     this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
 
     this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.createTimeBoard, callbackScope: this, loop: true });
@@ -71,7 +63,6 @@ export default class initPlayScene extends BaseScene {
     this.collision2 = this.matter.world.nextCategory();
 
     super.create();
-    this.createAnimation();
     this.createScore();
     this.createTimeBoard();
 
@@ -91,76 +82,6 @@ export default class initPlayScene extends BaseScene {
     this.handleKeyDownEvent();
     this.handleCollisionEvent();
   };
-
-  createAnimation() {
-    const animationKey1 = "fly1";
-    this.anims.create({
-      key: animationKey1,
-      frames: this.anims.generateFrameNumbers(ENEMY_BIRD1, { start: 0, end: 7 }),
-      frameRate: 8,
-      repeat: -1,
-    });
-
-    const dieAnimationKey1 = "die1";
-    this.anims.create({
-      key: dieAnimationKey1,
-      frames: this.anims.generateFrameNumbers(ENEMY_BIRD1_DIE, { start: 0, end: 7 }),
-      frameRate: 8,
-      repeat: 0,
-    });
-
-    this.enemyType.push({ animation: animationKey1, enemyType: ENEMY_BIRD1, dieAnimation: dieAnimationKey1 });
-
-    const animationKey2 = "fly2";
-    this.anims.create({
-      key: animationKey2,
-      frames: this.anims.generateFrameNumbers(ENEMY_BIRD2, { start: 0, end: 11 }),
-      frameRate: 8,
-      repeat: -1,
-    });
-
-    const dieAnimationKey2 = "die2";
-    this.anims.create({
-      key: dieAnimationKey2,
-      frames: this.anims.generateFrameNumbers(ENEMY_BIRD2_DIE, { start: 0, end: 7 }),
-      frameRate: 8,
-      repeat: 0,
-    });
-
-    this.enemyType.push({ animation: animationKey2, enemyType: ENEMY_BIRD2, dieAnimation: dieAnimationKey2 });
-
-    const characterDieAnimationKey = "ninja6_Die1";
-    this.anims.create({
-      key: characterDieAnimationKey,
-      frames: this.anims.generateFrameNames(CHARACTER_DIE_ANIMATION, {
-        start: 1,
-        end: 5,
-        prefix: "ninja6_dead",
-        zeroPad: 2,
-        suffix: ".png",
-      }),
-      frameRate: 8,
-      repeat: false,
-    });
-
-    this.characterDieAnimation = characterDieAnimationKey;
-
-    const characterThrowAnimationKey = "ninja6_Throw1";
-    this.anims.create({
-      key: characterThrowAnimationKey,
-      frames: this.anims.generateFrameNames(CHARACTER_THROW_JUMP, {
-        start: 0,
-        end: 7,
-        prefix: "ninja6_throwJump",
-        zeroPad: 2,
-        suffix: ".png",
-      }),
-      frameRate: 20,
-      repeat: false,
-    });
-
-    this.charaterThrowAnimation = characterThrowAnimationKey;
-  }
 
   createScore() {
     const scoreX = this.scorePosition.x;
