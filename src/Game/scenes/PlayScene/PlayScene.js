@@ -3,43 +3,38 @@ import initPlayScene from "./initPlayScene";
 
 class PlayScene extends initPlayScene {
   update() {
-    if (this.isGameOver && this.timedEvent) this.timedEvent.destroy();
+    if (this.timedEvent && this.isGameOver) this.timedEvent.destroy();
 
     if (this.rope) {
       if (this.isGameOver) this.removeConstraintAndRope();
 
-      this.rotateCharacterToRopeDirection();
-      this.drawRope();
+      this.#rotateCharacterToRopeDirection();
+      this.#drawRope();
     }
 
-    this.destroyShurikenWhenWorldOut();
+    this.#destroyShurikenWhenWorldOut();
 
-    this.repeatObject(
+    this.#repeatObject(
       this.backgroundScenes,
       this.createBackground,
       (this.worldWidth - 2)
     );
-    this.repeatObject(
+    this.#repeatObject(
       this.platforms,
       this.createPlatform,
       this.plaformInterval
     );
 
-    this.respawnEnemy();
-    this.checkGameOver();
+    this.#respawnEnemy();
+    this.#checkGameOver();
   };
 
-  isPassedDisplay(object) {
-    const rightBound = object.getBounds();
-    return (rightBound.x + rightBound.width) < this.deadZone.minX;
-  }
-
-  repeatObject(objectArray, createFunction, offsetParam) {
+  #repeatObject(objectArray, createFunction, offsetParam) {
     const firstObject = objectArray[0];
 
     if (!firstObject) return;
 
-    if (this.isPassedDisplay(firstObject)) {
+    if (this.#isPassedDisplay(firstObject)) {
       const lastObjectPosition = objectArray[objectArray.length - 1].x;
 
       const shiftedObject = objectArray.shift();
@@ -49,13 +44,13 @@ class PlayScene extends initPlayScene {
     }
   }
 
-  respawnEnemy() {
+  #respawnEnemy() {
     const enemies = Object.values(this.enemies);
     const firstEnemy = enemies[0];
     const lastEnemy = enemies[enemies.length - 1];
     let multipleFactor = 1;
 
-    if (this.isPassedDisplay(firstEnemy)) {
+    if (this.#isPassedDisplay(firstEnemy)) {
       this.deleteEnemy(firstEnemy, firstEnemy.body.id);
     }
 
@@ -67,7 +62,13 @@ class PlayScene extends initPlayScene {
     }
   }
 
-  rotateCharacterToRopeDirection() {
+  #isPassedDisplay(object) {
+    const rightBound = object.getBounds();
+
+    return (rightBound.x + rightBound.width) < this.deadZone.minX;
+  }
+
+  #rotateCharacterToRopeDirection() {
     const angle = Phaser.Math.Angle.Between(
       this.character.x,
       this.character.y,
@@ -78,7 +79,7 @@ class PlayScene extends initPlayScene {
     this.character.setRotation(Math.cos(angle));
   }
 
-  drawRope() {
+  #drawRope() {
     if (!this.line) {
       this.line = this.add.graphics();
     }
@@ -88,7 +89,7 @@ class PlayScene extends initPlayScene {
     this.matter.world.renderConstraint(this.rope, this.line, 0xffffff, 1, 2, 1, 0x000000, 1);
   }
 
-  destroyShurikenWhenWorldOut() {
+  #destroyShurikenWhenWorldOut() {
     const isShurikenOutOfWorld = () => {
       return (
         (this.shuriken.x > this.worldWidth) ||
@@ -105,7 +106,7 @@ class PlayScene extends initPlayScene {
     }
   }
 
-  checkGameOver() {
+  #checkGameOver() {
     if (this.isGameOver || !this.character) return;
 
     const isCharacterOutOfDeadZone = () => {
