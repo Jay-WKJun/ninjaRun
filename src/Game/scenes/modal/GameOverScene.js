@@ -78,6 +78,9 @@ export default class GameOverScene extends Phaser.Scene {
 
       this.parent.isGameOver = false;
 
+      this.parent.time.removeEvent(this.parent.timedEvent);
+      this.parent.timedEvent = null;
+
       this.scene.remove();
       this.parent.scene.restart();
     });
