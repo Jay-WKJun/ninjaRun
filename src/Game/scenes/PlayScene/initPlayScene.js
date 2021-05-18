@@ -57,14 +57,16 @@ export default class initPlayScene extends AnimationLoadScene {
     const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
     this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
 
-    this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.createTimeBoard, callbackScope: this, loop: true });
+    this.timedEvent = this.time.addEvent({ delay: 1000, callback: this.#createTimeBoard, callbackScope: this, loop: true });
 
     this.collision1 = this.matter.world.nextCategory();
     this.collision2 = this.matter.world.nextCategory();
 
+    this.registry.set("score", 0);
+
     super.create();
-    this.createScore();
-    this.createTimeBoard();
+    this.#createScore();
+    this.#createTimeBoard();
 
     for (let i = 0; i < this.enemyNumberLimit; i++) {
       const XPosition = this.enemyStartPosition + (this.enemyInterval * i);
@@ -78,27 +80,26 @@ export default class initPlayScene extends AnimationLoadScene {
       this.createPlatform(xPosition);
     }
 
-    this.handleMouseClickEvent();
-    this.handleKeyDownEvent();
-    this.handleCollisionEvent();
+    this.#handleMouseClickEvent();
+    this.#handleKeyDownEvent();
+    this.#handleCollisionEvent();
   };
 
-  createScore() {
+  #createScore() {
     const scoreX = this.scorePosition.x;
     const scoreY = this.scorePosition.y;
-
-    this.registry.set("score", 0);
+    const currentScore = this.registry.get("score")
 
     if (this.scoreBoard) this.scoreBoard.destroy();
 
-    this.scoreBoard = this.add.text(scoreX, scoreY, 0, {
+    this.scoreBoard = this.add.text(scoreX, scoreY, currentScore, {
       fontSize: "50px",
       color: "red",
       fontStyle: "bold",
     }).setOrigin(0);
   }
 
-  createTimeBoard() {
+  #createTimeBoard() {
     const timeX = this.scorePosition.x;
     const timeY = this.scorePosition.y + 100;
     const currentTimeMillsecond = this.time.now - this.startTime;
@@ -135,7 +136,7 @@ export default class initPlayScene extends AnimationLoadScene {
   }
 
   createEnemy(xPosition) {
-    const enemyType = this.getEnemyTypeInRandom();
+    const enemyType = this.#getEnemyTypeInRandom();
     const yPosition = Number(Math.random() * this.worldHeight);
 
     const newEnemy = new Enemy(
@@ -153,8 +154,8 @@ export default class initPlayScene extends AnimationLoadScene {
 
     newEnemy.setCollisionCategory(this.collision1);
     newEnemy.setCollidesWith(this.collision1);
-    newEnemy.body.label = ENEMY;
     newEnemy.body.dieAnimation = enemyType.dieAnimation;
+    newEnemy.body.label = ENEMY;
 
     this.enemies[newEnemy.body.id] = newEnemy;
   }
@@ -177,7 +178,7 @@ export default class initPlayScene extends AnimationLoadScene {
     this.platforms.push(newPlatform);
   }
 
-  handleMouseClickEvent() {
+  #handleMouseClickEvent() {
     const shootShuriken = (e) => {
       const angle = Phaser.Math.Angle.Between(
         this.character.x,
@@ -190,6 +191,8 @@ export default class initPlayScene extends AnimationLoadScene {
       const positionOffset = this.shurikenPositionOffset;
       const velocityConstant = this.shurikenVelocityConstant;
 
+      this.character.play(this.character.throwAnimation);
+
       this.shuriken = new Shuriken(
         this,
         this.character.x + positionOffset * cos,
@@ -198,11 +201,10 @@ export default class initPlayScene extends AnimationLoadScene {
         .setScale(0.5)
         .setVelocity(cos * velocityConstant, sin * velocityConstant);
 
-      this.character.play(this.character.throwAnimation);
-      this.shuriken.body.label = SHURIKEN;
       this.shuriken.spinShuriken();
       this.shuriken.setCollisionCategory(this.collision1);
       this.shuriken.setCollidesWith([this.collision1, this.collision2]);
+      this.shuriken.body.label = SHURIKEN;
     };
 
     this.input.on("pointerdown", (e) => {
@@ -220,7 +222,7 @@ export default class initPlayScene extends AnimationLoadScene {
     });
   }
 
-  handleKeyDownEvent() {
+  #handleKeyDownEvent() {
     this.input.keyboard.on("keydown", (e) => {
       if (!this.rope) return;
 
@@ -237,7 +239,7 @@ export default class initPlayScene extends AnimationLoadScene {
     });
   }
 
-  handleCollisionEvent() {
+  #handleCollisionEvent() {
     const addConstraint = (character, otherObject) => {
       const distance = Phaser.Math.Distance.Between(
         character.x,
@@ -254,34 +256,49 @@ export default class initPlayScene extends AnimationLoadScene {
       );
     };
 
-    this.matter.world.on("collisionstart", (e, b1, b2) => {
-      if (b1.label === CHARACTER || b2.label === CHARACTER) {
+    this.matter.world.on("collisionstart", (_, b1, b2) => {
+      const isCharacterColledes = (
+        b1.label === CHARACTER ||
+        b2.label === CHARACTER
+      );
+      const isShurikenCollidesWithoutRope = (
+        (
+          b1.label === SHURIKEN ||
+          b2.label === SHURIKEN
+        ) &&
+        !this.rope
+      );
+
+      if (isCharacterColledes) {
         const characterOpponent = b1.label === CHARACTER ? b2 : b1;
 
         if (characterOpponent.label === ENEMY) {
           const enemy = this.enemies[characterOpponent.id];
 
-          this.killEnemy(enemy, characterOpponent.id);
+          this.#killEnemy(enemy, characterOpponent.id);
           this.gameOver();
         }
 
         return;
       }
 
-      if ((b1.label === SHURIKEN || b2.label === SHURIKEN) && !this.rope) {
+      if (isShurikenCollidesWithoutRope) {
         const shurikenOpponent = b1.label === SHURIKEN ? b2 : b1;
+        const isEnemyCollides = (
+          b1.label === ENEMY ||
+          b2.label === ENEMY
+        );
 
         this.deleteShuriken();
 
-        if (b1.label === ENEMY || b2.label === ENEMY) {
+        if (isEnemyCollides) {
           const enemy = this.enemies[shurikenOpponent.id];
 
           this.registry.set("score", this.registry.get("score") + 1);
-          this.createScore();
-          this.killEnemy(enemy, shurikenOpponent.id);
+          this.#createScore();
+          this.#killEnemy(enemy, shurikenOpponent.id);
         } else {
-          this.character.stop();
-          this.character.setTexture(CHARACTER);
+          this.#changeCharaterSprite(CHARACTER);
 
           this.attatchedTarget = shurikenOpponent;
           addConstraint(this.character, this.attatchedTarget);
@@ -290,7 +307,12 @@ export default class initPlayScene extends AnimationLoadScene {
     });
   }
 
-  killEnemy(enemy, enemyId) {
+  #changeCharaterSprite(spriteId) {
+    this.character.stop();
+    this.character.setTexture(spriteId);
+  }
+
+  #killEnemy(enemy, enemyId) {
     enemy.play(enemy.body.dieAnimation);
     enemy.body.destroy();
     enemy.setStatic(true);
@@ -310,7 +332,7 @@ export default class initPlayScene extends AnimationLoadScene {
     this.shuriken = null;
   }
 
-  getEnemyTypeInRandom() {
+  #getEnemyTypeInRandom() {
     return this.enemyType[Math.floor(Math.random() * (this.enemyType.length))];
   }
 
@@ -325,22 +347,22 @@ export default class initPlayScene extends AnimationLoadScene {
     this.attatchedTarget = null;
   };
 
-  addGameOverModal() {
-    const gameOverScene = new GameOverScene(this, this.modalZone, this.worldWidth, this.worldHeight);
-
-    this.scene.add(GAMEOVER_SCENE, gameOverScene, true);
-  }
-
   gameOver() {
     this.isGameOver = true;
     this.rope && this.removeConstraintAndRope();
     this.character.removeCounter();
     this.character.play(this.character.dieAnimation);
     setTimeout(() => {
-      this.addGameOverModal();
+      this.#addGameOverModal();
     }, 1000);
     setTimeout(() => {
       this.character && this.character.destroy();
     }, 2000);
+  }
+
+  #addGameOverModal() {
+    const gameOverScene = new GameOverScene(this, this.modalZone, this.worldWidth, this.worldHeight);
+
+    this.scene.add(GAMEOVER_SCENE, gameOverScene, true);
   }
 }
