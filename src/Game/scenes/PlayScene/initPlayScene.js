@@ -247,12 +247,14 @@ export default class initPlayScene extends AnimationLoadScene {
 
       const accelerationValue = this.accelerationValue;
 
-      if (e.key === "ArrowRight") {
+      console.log(e.key);
+
+      if (e.key === "d") {
         this.character.setVelocityX(this.character.body.velocity.x + accelerationValue);
         return;
       }
 
-      if (e.key === "ArrowLeft") {
+      if (e.key === "a") {
         this.character.setVelocityX(this.character.body.velocity.x - accelerationValue);
       }
     });
