@@ -7,9 +7,12 @@ import recordDiv from "./record/record";
 
 function execute() {
   const $home = document.getElementById("home");
+
   const $nameInput = document.getElementById("name__input");
   const $gameStartButton = document.getElementById("game__start");
+
   const $rankingButton = document.getElementById("ranking__button");
+
   const $scoreModal = document.getElementById("score__modal");
   const $scoreBoard = document.getElementById("score__board");
 

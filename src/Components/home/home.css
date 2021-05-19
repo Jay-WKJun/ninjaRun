@@ -12,9 +12,71 @@
 }
 
 .title__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 20%;
   color: greenyellow;
   text-shadow: gray 1px 0px 10px;
   font-size: 100px;
+}
+
+.input__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 50px;
+}
+
+.name__input {
+  box-sizing: border-box;
+  background-color: rgba(gray,.2);
+  border-radius: 20px;
+  border-width: 0;
+  padding: 4px 44px;
+  width: 60%;
+  height: 100%;
+  line-height: 40px;
+  transition: all 300ms;
+}
+
+.start__wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+  height: 100%;
+  color: red;
+  font-size: 40px;
+}
+
+.game__start {
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
+  cursor: pointer;
+}
+
+.name__input:focus {
+  outline: none;
+  background-color: rgba(gray,.3);
+}
+
+.button__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  height: 20%;
+}
+
+.ranking__button {
+  font-size: 50px;
+  color: gray;
+  cursor: pointer;
+  text-shadow: 0px 0px 10px black;
 }
 
 .score__modal {
@@ -33,4 +95,14 @@
   border: solid 3px red;
   width: 40%;
   height: 60%;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px greenyellow, 0 0 20px greenyellow, 0 0 30px xyan, 0 0 35px greenyellow, 0 0 40px greenyellow;
+  }
+
+  to {
+    text-shadow: 0 0 10px #fff, 0 0 15px greenyellow, 0 0 20px greenyellow, 0 0 25px greenyellow, 0 0 30px greenyellow, 0 0 35px greenyellow, 0 0 40px greenyellow;
+  }
 }
