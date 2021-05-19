@@ -2,11 +2,11 @@ import home from "./Components/home/home";
 import play from "./Components/play/play";
 
 export const routes = {
-  "/": {
+  "/play": {
     html: home.html,
     js: home.execute,
   },
-  "/play": {
+  "/": {
     html: play.html,
     js: play.execute,
   },
