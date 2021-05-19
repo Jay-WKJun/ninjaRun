@@ -3,6 +3,7 @@ import AnimationLoadScene from "../AnimationLoadScene";
 
 import GameOverScene from "../modal/GameOverScene";
 import GameStartCountScene from "../modal/GameStartCountScene";
+import GuideScene from "../modal/GuideScene";
 
 import MovingPlatform from "../../objects/MovingPlatform";
 import Shuriken from "../../objects/Shuriken";
@@ -56,7 +57,15 @@ export default class initPlayScene extends AnimationLoadScene {
     this.modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
 
     const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
-    this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
+    const isVisit = window.localStorage.getItem("isVisit");
+
+    if (isVisit) {
+      this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
+    } else {
+      const guideScene = new GuideScene(this, { key: GAME_START_COUNT_SCENE, object: gameStartCountScene }, this.modalZone, this.worldWidth, this.worldHeight);
+
+      this.scene.add("GuideScene", guideScene, true);
+    }
 
     this.collision1 = this.matter.world.nextCategory();
     this.collision2 = this.matter.world.nextCategory();
