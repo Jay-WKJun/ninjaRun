@@ -15,7 +15,7 @@ import {
   SHURIKEN,
   ENEMY
 } from "../../constants/textureNames";
-import { GAMEOVER_SCENE, GAME_START_COUNT_SCENE } from "../../constants/scenes";
+import { GAMEOVER_SCENE, GAME_START_COUNT_SCENE, GUIDE_SCENE } from "../../constants/scenes";
 
 export default class initPlayScene extends AnimationLoadScene {
   constructor(config) {
@@ -67,7 +67,7 @@ export default class initPlayScene extends AnimationLoadScene {
     } else {
       const guideScene = new GuideScene(this, { key: GAME_START_COUNT_SCENE, object: gameStartCountScene }, this.modalZone, this.worldWidth, this.worldHeight);
 
-      this.scene.add("GuideScene", guideScene, true);
+      this.scene.add(GUIDE_SCENE, guideScene, true);
     }
 
     this.collision1 = this.matter.world.nextCategory();
