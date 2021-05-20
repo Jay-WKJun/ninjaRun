@@ -101,6 +101,7 @@
     const $loadingText = document.getElementById("loading__text");
 
     $loadingText.style.fontFamily = "Malgun Gothic";
+    window.isWindowReady = false;
 
     const loadingInterval = setInterval(() => {
     if ($loadingText.innerText === "Loading...") {
