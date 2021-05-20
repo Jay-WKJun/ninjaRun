@@ -22,6 +22,7 @@ export default class GameStartCountScene extends Phaser.Scene {
       fontSize: "50px",
       fontStyle: "bold",
       color: "red",
+      fontFamily: "fontNaruto",
     }).setOrigin(0.5);
 
     this.countingInterval = setInterval(() => {
@@ -35,6 +36,7 @@ export default class GameStartCountScene extends Phaser.Scene {
         fontSize: "50px",
         fontStyle: "bold",
         color: "red",
+        fontFamily: "fontNaruto",
       }).setOrigin(0.5);
     }, 1000);
   }
