@@ -1,5 +1,6 @@
 import html from "./home.html";
 import "./home.css";
+import "./leaf.css";
 
 import backgroundImage from "../../../assets/images/ForestBG.png";
 import backgroundMusic from "../../../assets/sounds/MTFuji.mp3";
