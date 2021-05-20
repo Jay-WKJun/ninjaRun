@@ -30,6 +30,7 @@ export default class GuideScene extends Phaser.Scene {
 
     this.load.image("redBird", "assets/images/guide/redBirdForguide.png");
     this.load.image("plusOne", "assets/images/guide/plusOne.png");
+    this.load.image("whiteCircle", "assets/images/guide/whiteCircle.png");
   }
 
   create() {
@@ -64,7 +65,9 @@ export default class GuideScene extends Phaser.Scene {
 
     this.redCross.on("pointerup", () => {
       window.localStorage.setItem("isVisit", true);
+
       this.scene.remove();
+
       this.parent.scene.add(this.nextScene.key, this.nextScene.object, true);
       this.parent.scene.resume();
     });
@@ -152,6 +155,8 @@ export default class GuideScene extends Phaser.Scene {
     });
 
     const xPositionOfPlusOne = xPositionOfTextBeforeRedBird + this.textBeforeRedBird.displayWidth + whiteSpaceInterval;
+
+    this.whiteCircle = this.add.image(xPositionOfPlusOne - 3, forthLineYCordinate + 5, "whiteCircle").setOrigin(0.2, 0.4).setScale(0.3);
 
     this.plusOne = this.add.image(xPositionOfPlusOne, forthLineYCordinate, "plusOne").setOrigin(0, 0.4).setScale(0.2);
   }
