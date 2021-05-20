@@ -118,6 +118,7 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.9);
   color:white;
+  z-index: 2;
 }
 
 .score__board {
