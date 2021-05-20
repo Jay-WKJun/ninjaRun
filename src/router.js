@@ -2,12 +2,7 @@ import home from "./Components/home/home";
 import play from "./Components/play/play";
 
 import fontNaruto from "../assets/font/njnaruto.ttf";
-
-const fontFace = new FontFace("fontNaruto", `url(${fontNaruto})`);
-
-const $root = document.getElementById("root");
-
-$root.style.fontFamily = "fontNaruto";
+import faviconHead from "../assets/images/ninja6_head.png";
 
 export const routes = {
   "/": {
@@ -22,9 +17,20 @@ export const routes = {
 
 const rootDiv = document.getElementById("root");
 const currentRoute = window.location.pathname;
+const fontFace = new FontFace("fontNaruto", `url(${fontNaruto})`);
+
+(function attatchFavicon() {
+  const link = document.createElement("link");
+
+  link.type = "image/x-icon";
+  link.rel = "shortcut icon";
+  link.href = faviconHead;
+  document.getElementsByTagName("head")[0].appendChild(link);
+}());
 
 fontFace.load().then((loadedFace) => {
   document.fonts.add(loadedFace);
+  rootDiv.style.fontFamily = "fontNaruto";
   rootDiv.innerHTML = routes[currentRoute].html;
   routes[currentRoute].js();
   window.isWindowReady = true;
