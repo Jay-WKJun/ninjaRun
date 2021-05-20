@@ -20,6 +20,18 @@
   color: greenyellow;
   text-shadow: gray 1px 0px 10px;
   font-size: 100px;
+  animation: floatAndGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes floatAndGlow {
+  0% {
+    transform: translateY(0px);
+    text-shadow: gray 1px 0px 10px;
+  }
+  100% {
+    transform: translateY(-15px);
+    text-shadow: rgb(223, 223, 223) 1px 0px 20px;
+  }
 }
 
 .input__container {
