@@ -2,6 +2,7 @@ import html from "./home.html";
 import "./home.css";
 
 import backgroundImage from "../../../assets/images/ForestBG.png";
+import backgroundMusic from "../../../assets/sounds/MTFuji.mp3";
 import store from "../../store/store";
 import recordDiv from "./record/record";
 import { moveToRoute } from "../../router";
@@ -14,6 +15,11 @@ function execute() {
 
   const $rankingButton = document.getElementById("ranking__button");
 
+  const $bgm = document.getElementById("bgm");
+  const $bgmButton = document.getElementById("bgm__button");
+  const $bgmOn = document.getElementById("bgm__on");
+  const $bgmOff = document.getElementById("bgm__off");
+
   const $scoreModal = document.getElementById("score__modal");
   const $scoreBoard = document.getElementById("score__board");
 
@@ -25,6 +31,22 @@ function execute() {
   $gameStartButton.addEventListener("click", () => moveToRoute("data", "/play"));
 
   $rankingButton.addEventListener("click", handleRankingButtonClick);
+
+  $bgm.setAttribute("src", backgroundMusic);
+  // $bgm.setAttribute("autoplay", true);
+  $bgmOn.style.display = "none";
+
+  $bgmOn.addEventListener("click", () => {
+    $bgmOff.style.display = "flex";
+    $bgmOn.style.display = "none";
+    $bgm.play();
+  });
+
+  $bgmOff.addEventListener("click", () => {
+    $bgmOn.style.display = "flex";
+    $bgmOff.style.display = "none";
+    $bgm.pause();
+  });
 
   $scoreModal.style.display = "none";
   $scoreModal.addEventListener("click", handleScoreBoardClick);
