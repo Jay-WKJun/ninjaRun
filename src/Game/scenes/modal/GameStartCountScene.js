@@ -18,6 +18,13 @@ export default class GameStartCountScene extends Phaser.Scene {
   create() {
     this.cameras.main.setBackgroundColor("rgba(0, 0, 0, 0.5)");
 
+    this.text = this.add.text(50, 50, "<- CHARACTER", {
+      fontSize: "50px",
+      fontStyle: "bold",
+      color: "silver",
+      fontFamily: "fontNaruto",
+    }).setOrigin(0);
+
     this.text = this.add.text(this.worldCenter.x, this.worldCenter.y, this.alert, {
       fontSize: "50px",
       fontStyle: "bold",

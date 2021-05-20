@@ -34,6 +34,8 @@ function execute() {
 
   $bgm.setAttribute("src", backgroundMusic);
   $bgm.setAttribute("autoplay", true);
+  $bgm.setAttribute("loop", true);
+
   $bgmOn.style.display = "none";
 
   $bgmOn.addEventListener("click", () => {
