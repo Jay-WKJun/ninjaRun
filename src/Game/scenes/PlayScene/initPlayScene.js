@@ -174,7 +174,7 @@ export default class initPlayScene extends AnimationLoadScene {
       .play(enemyType.animation)
       .setBody(this.enemySize)
       .setIgnoreGravity(true)
-      .moveHorizontally(0);
+      .moveHorizontally(30);
 
     newEnemy.setCollisionCategory(this.collision1);
     newEnemy.setCollidesWith(this.collision1);
@@ -194,7 +194,7 @@ export default class initPlayScene extends AnimationLoadScene {
       { isStatic: true }
     );
 
-    newPlatform.moveHorizontally();
+    newPlatform.moveHorizontally(30);
     newPlatform.setCollisionCategory(this.collision2);
     newPlatform.setCollidesWith(this.collision1);
     newPlatform.body.label = PLATFORM;

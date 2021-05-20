@@ -14,11 +14,13 @@ export default class MovingPlatform extends Phaser.Physics.Matter.Sprite {
     this.startY = y;
   };
 
-  moveHorizontally() {
+  moveHorizontally(velocity) {
+    const velocityControl = velocity * 1000;
+
     this.tweenCounter = this.scene.tweens.addCounter({
       from: 0,
       to: -10000,
-      duration: 100000,
+      duration: 100000 - velocityControl,
       ease: 0,
       repeat: 0,
       yoyo: false,

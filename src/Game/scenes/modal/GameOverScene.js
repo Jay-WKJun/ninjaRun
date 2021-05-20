@@ -49,6 +49,7 @@ export default class GameOverScene extends Phaser.Scene {
         fontFamily: "fontNaruto",
       }
     ).setOrigin(0.7, 0.5).setInteractive();
+
     const quitButton = this.add.text(
       restartButton.x + restartButton.displayWidth,
       deadCharacter.y + deadCharacter.displayHeight,
@@ -104,6 +105,9 @@ export default class GameOverScene extends Phaser.Scene {
     });
 
     restartButton.once("pointerup", () => {
+      this.parent.bgm.stop();
+      this.parent.bgm.destroy();
+
       this.parent.backgroundScenes.forEach(background => {
         background.removeCounter();
         background.destroy();
