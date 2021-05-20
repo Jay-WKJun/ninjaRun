@@ -72,6 +72,8 @@ class PreloadScene extends Phaser.Scene {
     this.load.spritesheet(ENEMY_BIRD1_DIE, "assets/images/red_bird_die.png", { frameWidth: 663, frameHeight: 637 });
     this.load.spritesheet(ENEMY_BIRD2, "assets/images/yellow_bird.png", { frameWidth: 625, frameHeight: 621 });
     this.load.spritesheet(ENEMY_BIRD2_DIE, "assets/images/yellow_bird_die.png", { frameWidth: 625, frameHeight: 621 });
+
+    this.load.audio("bgm", "assets/sounds/kitunneWood.mp3");
   };
 
   create() {
