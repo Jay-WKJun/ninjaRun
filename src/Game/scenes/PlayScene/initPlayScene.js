@@ -54,6 +54,9 @@ export default class initPlayScene extends AnimationLoadScene {
   };
 
   create() {
+    this.bgm = this.sound.add("bgm", { loop: true, volume: 1 });
+    this.bgm.play();
+
     this.modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
 
     const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
