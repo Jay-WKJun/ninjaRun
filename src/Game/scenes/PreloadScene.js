@@ -18,11 +18,42 @@ import {
 import { PRE_LOAD_SCENE, PLAY_SCENE } from "../constants/scenes";
 
 class PreloadScene extends Phaser.Scene {
-  constructor() {
+  constructor(config) {
     super(PRE_LOAD_SCENE);
+
+    this.worldCenter = { x: config.width / 2, y: config.height / 2 };
   };
 
   preload() {
+    const progressBar = this.add.graphics();
+    const progressBox = this.add.graphics();
+    const progressText = this.make.text({
+      x: this.worldCenter.x,
+      y: this.worldCenter.y,
+      text: "0%",
+      style: {
+        font: "30px monospace",
+        fill: "#ffffff",
+        fontSize: "bold",
+      },
+    }).setOrigin(0.5);
+
+    progressBox.fillStyle(0x222222, 0.8);
+    progressBox.fillRoundedRect(this.worldCenter.x - 160, this.worldCenter.y - 25, 320, 50, 5);
+
+    this.load.on("progress", (value) => {
+      progressText.setText(Math.round(value * 100) + "%");
+      progressBar.clear();
+      progressBar.fillStyle(0xffffff, 1);
+      progressBar.fillRoundedRect(this.worldCenter.x + 10 - 160, this.worldCenter.y + 10 - 25, 300 * value, 30, 5);
+    });
+
+    this.load.on("complete", () => {
+      progressBar.destroy();
+      progressBox.destroy();
+      progressText.destroy();
+    });
+
     this.load.atlas(STUN, "assets/images/stun_sprite.png", "assets/atlasJson/stun_sprite.json");
     this.load.atlas(CHARACTER_DIE_ANIMATION, "assets/images/ninja_dying.png", "assets/atlasJson/ninja_dying.json");
     this.load.atlas(CHARACTER_THROW_JUMP, "assets/images/ninja6_throwJump.png", "assets/atlasJson/ninja6_throwJump.json");

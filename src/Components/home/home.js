@@ -4,6 +4,7 @@ import "./home.css";
 import backgroundImage from "../../../assets/images/ForestBG.png";
 import store from "../../store/store";
 import recordDiv from "./record/record";
+import { moveToRoute } from "../../router";
 
 function execute() {
   const $home = document.getElementById("home");
@@ -21,6 +22,7 @@ function execute() {
   $nameInput.addEventListener("keyup", handleKeyupEvent);
 
   $gameStartButton.style.display = "none";
+  $gameStartButton.addEventListener("click", () => moveToRoute("data", "/play"));
 
   $rankingButton.addEventListener("click", handleRankingButtonClick);
 

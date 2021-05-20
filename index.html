@@ -20,11 +20,97 @@
         width: 100%;
         height: 100%;
       }
+
+      .first__loader {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .bouncer {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        width: 150px;
+        height: 150px;
+      }
+
+      .bouncer div {
+        width: 30px;
+        height: 30px;
+        background-color: #0077ff;
+        border-radius: 50%;
+        animation: bouncer 0.5s cubic-bezier(0.19, 0.57, 0.3, 0.98) infinite alternate;
+      }
+
+      .bouncer div:nth-child(2) {
+        animation-delay: 0.1s;
+        opacity: 0.8;
+      }
+
+      .bouncer div:nth-child(3) {
+        animation-delay: 0.2s;
+        opacity: 0.6;
+      }
+
+      .bouncer div:nth-child(4) {
+        animation-delay: 0.3s;
+        opacity: 0.4;
+      }
+
+      .loading__text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        font-size: 30px;
+        height: 10%;
+      }
+
+      @keyframes bouncer {
+        from {
+          transform: translateY(0);
+        }
+        to {
+          transform: translateY(-100px);
+        }
+      }
     </style>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/v4-shims.css">
   </head>
   <body>
-    <div id="root" />
+    <div id="root">
+      <div class="first__loader">
+        <div class="bouncer">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+        <div class="loading__text">
+          <span id="loading__text">
+            Loading
+          </span>
+        </div>
+      </div>
+    </div>
   </body>
+  <script>
+    const $loadingText = document.getElementById("loading__text");
+
+    $loadingText.style.fontFamily = "Malgun Gothic";
+    window.isWindowReady = false;
+
+    const loadingInterval = setInterval(() => {
+    if ($loadingText.innerText === "Loading...") {
+      $loadingText.innerText = "Loading";
+    } else {
+      $loadingText.innerText = $loadingText.innerText + ".";
+    }
+
+    if (window.isWindowReady) clearInterval(loadingInterval);
+  }, 500);
+  </script>
 </html>

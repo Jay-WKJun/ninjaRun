@@ -1,6 +1,14 @@
 import home from "./Components/home/home";
 import play from "./Components/play/play";
 
+import fontNaruto from "../assets/font/njnaruto.ttf";
+
+const fontFace = new FontFace("fontNaruto", `url(${fontNaruto})`);
+
+const $root = document.getElementById("root");
+
+$root.style.fontFamily = "fontNaruto";
+
 export const routes = {
   "/": {
     html: home.html,
@@ -15,8 +23,32 @@ export const routes = {
 const rootDiv = document.getElementById("root");
 const currentRoute = window.location.pathname;
 
-rootDiv.innerHTML = routes[currentRoute].html;
-routes[currentRoute].js();
+fontFace.load().then((loadedFace) => {
+  document.fonts.add(loadedFace);
+  rootDiv.innerHTML = routes[currentRoute].html;
+  routes[currentRoute].js();
+  window.isWindowReady = true;
+});
+
+export function moveToRoute(data, route) {
+  window.history.pushState({ data }, route, route);
+
+  if (route === "/") {
+    window.location.reload();
+    window.onload = () => {
+      window.isWindowReady = true;
+      loadPage(route);
+    };
+  } else {
+    loadPage(route);
+  }
+}
+
+export function loadPage(route) {
+  rootDiv.innerHTML = routes[route].html;
+  routes[route].js();
+  addRouteEvent();
+}
 
 export function addRouteEvent() {
   const routeButtons = document.getElementsByClassName("route");
@@ -28,23 +60,6 @@ export function addRouteEvent() {
       moveToRoute("test", route);
     });
   });
-}
-
-export function moveToRoute(data, route) {
-  window.history.pushState({ data }, route, route);
-
-  if (route === "/") {
-    window.location.reload();
-    window.onload(() => loadPage(route));
-  } else {
-    loadPage(route);
-  }
-}
-
-export function loadPage(route) {
-  rootDiv.innerHTML = routes[route].html;
-  routes[route].js();
-  addRouteEvent();
 }
 
 addRouteEvent();
