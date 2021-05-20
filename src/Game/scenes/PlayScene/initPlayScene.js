@@ -113,6 +113,7 @@ export default class initPlayScene extends AnimationLoadScene {
       fontSize: "50px",
       color: "red",
       fontStyle: "bold",
+      fontFamily: "fontNaruto"
     }).setOrigin(0);
   }
 
@@ -133,6 +134,7 @@ export default class initPlayScene extends AnimationLoadScene {
       fontSize: "50px",
       color: "red",
       fontStyle: "bold",
+      fontFamily: "fontNaruto"
     }).setOrigin(0);
   }
 

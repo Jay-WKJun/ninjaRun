@@ -46,6 +46,7 @@ export default class GameOverScene extends Phaser.Scene {
       "Restart?",
       {
         fontSize: "30px",
+        fontFamily: "fontNaruto",
       }
     ).setOrigin(0.7, 0.5).setInteractive();
     const quitButton = this.add.text(
@@ -54,6 +55,7 @@ export default class GameOverScene extends Phaser.Scene {
       "Save & Quit?",
       {
         fontSize: "30px",
+        fontFamily: "fontNaruto",
       }
     ).setOrigin(0.2, 0.5).setInteractive();
     this.playerNameLabel = this.add.text(
@@ -62,6 +64,7 @@ export default class GameOverScene extends Phaser.Scene {
       "Player:",
       {
         fontSize: "20px",
+        fontFamily: "fontNaruto",
       }
     ).setOrigin(1, 0.5);
     this.playerNameText = this.add.text(
@@ -70,6 +73,7 @@ export default class GameOverScene extends Phaser.Scene {
       player,
       {
         fontSize: "20px",
+        fontFamily: "fontNaruto",
       }
     ).setOrigin(0, 0.5);
     this.scoreLabel = this.add.text(
@@ -78,6 +82,7 @@ export default class GameOverScene extends Phaser.Scene {
       "Score:",
       {
         fontSize: "20px",
+        fontFamily: "fontNaruto",
       }
     ).setOrigin(1, 0.5);
     this.scoreText = this.add.text(
@@ -86,6 +91,7 @@ export default class GameOverScene extends Phaser.Scene {
       score,
       {
         fontSize: "20px",
+        fontFamily: "fontNaruto",
       }
     ).setOrigin(0, 0.5);
 
