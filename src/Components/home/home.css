@@ -98,7 +98,7 @@
 .bgm__button {
   font-size: 50px;
   cursor: pointer;
-  color: greenyellow;
+  color: rgb(0, 179, 0);
 }
 
 .ranking__button {
