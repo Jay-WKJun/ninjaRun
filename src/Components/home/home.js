@@ -16,7 +16,6 @@ function execute() {
   const $rankingButton = document.getElementById("ranking__button");
 
   const $bgm = document.getElementById("bgm");
-  const $bgmButton = document.getElementById("bgm__button");
   const $bgmOn = document.getElementById("bgm__on");
   const $bgmOff = document.getElementById("bgm__off");
 
@@ -33,7 +32,7 @@ function execute() {
   $rankingButton.addEventListener("click", handleRankingButtonClick);
 
   $bgm.setAttribute("src", backgroundMusic);
-  // $bgm.setAttribute("autoplay", true);
+  $bgm.setAttribute("autoplay", true);
   $bgmOn.style.display = "none";
 
   $bgmOn.addEventListener("click", () => {
