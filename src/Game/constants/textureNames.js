@@ -6,7 +6,6 @@ export const CHARACTER_DIE_ANIMATION = "characterDieAnimation";
 export const CHARACTER_THROW_JUMP = "characterThrowJump";
 export const STUN = "stun";
 
-export const SHURIKEN = "shuriken";
 export const SHURIKEN_SPIN = "shurikenSpin";
 
 export const PLATFORM = "platform";
