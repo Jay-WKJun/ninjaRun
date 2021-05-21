@@ -1,6 +1,6 @@
 {
   "name": "ninjarun",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Rope swing And Jump Over!!",
   "main": "./src/index.js",
   "scripts": {
