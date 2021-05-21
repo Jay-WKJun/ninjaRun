@@ -2,7 +2,7 @@ import html from "./home.html";
 import "./home.css";
 import "./leaf.css";
 
-import backgroundImage from "../../../assets/images/ForestBG.png";
+import backgroundImage from "../../../assets/images/Game/ForestBG.png";
 import backgroundMusic from "../../../assets/sounds/MTFuji.mp3";
 import store from "../../store/store";
 import recordDiv from "./record/record";
@@ -33,8 +33,9 @@ function execute() {
   $rankingButton.addEventListener("click", handleRankingButtonClick);
 
   $bgm.setAttribute("src", backgroundMusic);
-  $bgm.setAttribute("autoplay", true);
   $bgm.setAttribute("loop", true);
+  $bgm.setAttribute("autoplay", true);
+  $bgm.play();
 
   $bgmOn.style.display = "none";
 
