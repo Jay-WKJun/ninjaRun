@@ -15,12 +15,18 @@ import {
   SHURIKEN,
   ENEMY
 } from "../../constants/textureNames";
-import { GAMEOVER_SCENE, GAME_START_COUNT_SCENE, GUIDE_SCENE } from "../../constants/scenes";
+import {
+  GAMEOVER_SCENE,
+  GAME_START_COUNT_SCENE,
+  GUIDE_SCENE
+} from "../../constants/scenes";
 
 export default class initPlayScene extends AnimationLoadScene {
   constructor(config) {
     super(config);
     this.deadZone = config.deadZone;
+
+    this.objectVelocityControl = config.objectVelocityControl;
 
     this.scorePosition = config.scorePosition;
 
@@ -39,11 +45,21 @@ export default class initPlayScene extends AnimationLoadScene {
     this.shurikenPositionOffset = config.shurikenPositionOffset;
     this.shurikenVelocityConstant = config.shurikenVelocityConstant;
 
+    this.difficultyFactors = {
+      plaformInterval: config.platformInterval,
+      enemyNumberLimit: config.enemyNumberLimit,
+      enemyInterval: config.enemyInterval
+    };
+
     this.isStart = false;
     this.isGameOver = false;
     this.scoreBoard = null;
     this.startTime = 0;
     this.timedEvent = null;
+    this.bgm = null;
+    this.modalZone = null;
+    this.collision1 = null;
+    this.collision2 = null;
 
     this.character = null;
     this.platforms = [];
@@ -95,15 +111,6 @@ export default class initPlayScene extends AnimationLoadScene {
     this.#handleKeyDownEvent();
     this.#handleCollisionEvent();
   };
-
-  createTimerEvent() {
-    return (this.time.addEvent({
-      delay: 1000,
-      callback: this.#createTimeBoard,
-      callbackScope: this,
-      loop: true
-    }));
-  }
 
   #createScore() {
     const scoreX = this.scorePosition.x;
@@ -174,7 +181,7 @@ export default class initPlayScene extends AnimationLoadScene {
       .play(enemyType.animation)
       .setBody(this.enemySize)
       .setIgnoreGravity(true)
-      .moveHorizontally(30);
+      .moveHorizontally(this.objectVelocityControl);
 
     newEnemy.setCollisionCategory(this.collision1);
     newEnemy.setCollidesWith(this.collision1);
@@ -194,7 +201,7 @@ export default class initPlayScene extends AnimationLoadScene {
       { isStatic: true }
     );
 
-    newPlatform.moveHorizontally(30);
+    newPlatform.moveHorizontally(this.objectVelocityControl);
     newPlatform.setCollisionCategory(this.collision2);
     newPlatform.setCollidesWith(this.collision1);
     newPlatform.body.label = PLATFORM;
@@ -392,5 +399,20 @@ export default class initPlayScene extends AnimationLoadScene {
     const gameOverScene = new GameOverScene(this, this.modalZone, this.worldWidth, this.worldHeight);
 
     this.scene.add(GAMEOVER_SCENE, gameOverScene, true);
+  }
+
+  createTimerEvent() {
+    return (this.time.addEvent({
+      delay: 1000,
+      callback: this.#createTimeBoard,
+      callbackScope: this,
+      loop: true
+    }));
+  }
+
+  initDifficultyFactors() {
+    this.plaformInterval = this.difficultyFactors.plaformInterval;
+    this.enemyInterval = this.difficultyFactors.enemyInterval;
+    this.enemyNumberLimit = this.difficultyFactors.enemyNumberLimit;
   }
 }

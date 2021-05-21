@@ -27,6 +27,14 @@ class PlayScene extends initPlayScene {
 
     this.#respawnEnemy();
     this.#checkGameOver();
+
+    const playTime = this.registry.get("playTime");
+
+    if (!this.isGameOver && (playTime !== 0 && playTime % 60 === 0)) {
+      this.plaformInterval += 20;
+      this.enemyInterval -= 20;
+      this.enemyNumberLimit += 2;
+    }
   };
 
   #repeatObject(objectArray, createFunction, offsetParam) {
