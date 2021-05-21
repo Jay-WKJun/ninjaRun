@@ -1,37 +1,16 @@
-import Phaser from "phaser";
+import { loadPage } from "./router";
+import "./store/store";
 
-import PreloadScene from "./scenes/PreloadScene";
-import PlayScene from "./scenes/PlayScene";
+window.onpopstate = () => {
+  const currentPath = window.location.pathname;
 
-const WIDTH = 1152;
-const HEIGHT = 647;
-const BIRD_POSITION = { x: WIDTH / 10, y: HEIGHT / 2 };
-
-const SHARED_CONFIG = {
-  width: WIDTH,
-  height: HEIGHT,
-  startPosition: BIRD_POSITION,
+  if (currentPath === "/") {
+    window.location.reload();
+    window.onload = () => {
+      window.isWindowReady = true;
+      loadPage(currentPath);
+    };
+  } else {
+    loadPage(currentPath);
+  }
 };
-
-const Scenes = [PreloadScene, PlayScene];
-const createScene = (Scene) => new Scene(SHARED_CONFIG);
-const initScenes = Scenes.map(createScene);
-
-const config = {
-  type: Phaser.AUTO,
-  width: WIDTH,
-  height: HEIGHT,
-  pixelArt: true,
-  physics: {
-    default: "arcade",
-    arcade: {
-      debug: true,
-    },
-    matter: {
-      debug: true,
-    },
-  },
-  scene: initScenes,
-};
-
-new Phaser.Game(config);

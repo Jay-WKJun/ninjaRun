@@ -1,12 +1,13 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 const webpack = require("webpack");
 
 module.exports = {
   mode: "development",
   entry: {
-    app: "./src/index.js",
+    app: ["babel-polyfill", "./src/index.js"],
   },
   devtool: "eval-source-map",
   output: {
@@ -44,6 +45,25 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+          },
+        ],
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg|png|jpe?g|gif|mp3|wav)$/i,
+        use: [
+          {
+            loader: "file-loader",
+          },
+        ],
+      },
     ],
   },
   plugins: [
@@ -62,6 +82,7 @@ module.exports = {
         },
       ],
     }),
+    new Dotenv(),
   ],
   devServer: {
     contentBase: path.resolve(__dirname, "build"),
