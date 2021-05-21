@@ -16,3 +16,5 @@ export const ENEMY_BIRD2 = "enemybird2";
 export const ENEMY_BIRD2_DIE = "enemybird2Die";
 
 export const ENEMY = "enemy";
+
+export const BGM = "bgm";

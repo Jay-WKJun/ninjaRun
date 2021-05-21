@@ -13,13 +13,19 @@ import {
   PLATFORM,
   CHARACTER,
   SHURIKEN_SPIN,
-  ENEMY
+  ENEMY,
+  BGM
 } from "../../constants/textureNames";
 import {
   GAMEOVER_SCENE,
   GAME_START_COUNT_SCENE,
   GUIDE_SCENE
 } from "../../constants/scenes";
+import {
+  IS_VISIT,
+  PLAY_TIME,
+  SCORE
+} from "../../constants/localStorageKey";
 
 export default class initPlayScene extends AnimationLoadScene {
   constructor(config) {
@@ -70,17 +76,19 @@ export default class initPlayScene extends AnimationLoadScene {
   };
 
   create() {
-    this.bgm = this.sound.add("bgm", { loop: true, volume: 1 });
+    this.bgm = this.sound.add(BGM, { loop: true, volume: 1 });
     this.bgm.play();
 
     this.modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
 
     const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
-    const isVisit = window.localStorage.getItem("isVisit");
+    const isVisit = window.localStorage.getItem(IS_VISIT);
 
     if (isVisit) {
       this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
     } else {
+      this.scene.pause();
+
       const guideScene = new GuideScene(this, { key: GAME_START_COUNT_SCENE, object: gameStartCountScene }, this.modalZone, this.worldWidth, this.worldHeight);
 
       this.scene.add(GUIDE_SCENE, guideScene, true);
@@ -89,7 +97,7 @@ export default class initPlayScene extends AnimationLoadScene {
     this.collision1 = this.matter.world.nextCategory();
     this.collision2 = this.matter.world.nextCategory();
 
-    this.registry.set("score", 0);
+    this.registry.set(SCORE, 0);
 
     super.create();
     this.#createScore();
@@ -115,7 +123,7 @@ export default class initPlayScene extends AnimationLoadScene {
   #createScore() {
     const scoreX = this.scorePosition.x;
     const scoreY = this.scorePosition.y;
-    const currentScore = this.registry.get("score")
+    const currentScore = this.registry.get(SCORE)
 
     if (this.scoreBoard) this.scoreBoard.destroy();
 
@@ -134,7 +142,7 @@ export default class initPlayScene extends AnimationLoadScene {
     const currentSecond = Math.ceil(currentTimeMillsecond / 1000);
     const currentTime = { minute: Math.floor(currentSecond / 60), seconds: currentSecond % 60 };
 
-    this.registry.set("playTime", currentTime);
+    this.registry.set(PLAY_TIME, currentTime);
 
     if (currentSecond > 0 && currentTime.seconds % 10 === 0) this.#countUpScore();
 
@@ -338,7 +346,7 @@ export default class initPlayScene extends AnimationLoadScene {
   }
 
   #countUpScore() {
-    this.registry.set("score", this.registry.get("score") + 1);
+    this.registry.set(SCORE, this.registry.get(SCORE) + 1);
     this.#createScore();
   }
 

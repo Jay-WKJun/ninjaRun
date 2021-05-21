@@ -1,6 +1,10 @@
 import Phaser from "phaser";
 import initPlayScene from "./initPlayScene";
 
+import {
+  PLAY_TIME
+} from "../../constants/localStorageKey";
+
 class PlayScene extends initPlayScene {
   update() {
     if (this.timedEvent && this.isGameOver) this.timedEvent.destroy();
@@ -28,7 +32,7 @@ class PlayScene extends initPlayScene {
     this.#respawnEnemy();
     this.#checkGameOver();
 
-    const playTime = this.registry.get("playTime");
+    const playTime = this.registry.get(PLAY_TIME);
 
     if (!this.isGameOver && (playTime !== 0 && playTime % 60 === 0)) {
       this.plaformInterval += 20;
