@@ -7,7 +7,6 @@ import {
   CHARACTER_DIE_ANIMATION,
   CHARACTER_THROW_JUMP,
   STUN,
-  SHURIKEN,
   SHURIKEN_SPIN,
   PLATFORM,
   ENEMY_BIRD1,
@@ -54,24 +53,23 @@ class PreloadScene extends Phaser.Scene {
       progressText.destroy();
     });
 
-    this.load.atlas(STUN, "assets/images/stun_sprite.png", "assets/atlasJson/stun_sprite.json");
-    this.load.atlas(CHARACTER_DIE_ANIMATION, "assets/images/ninja_dying.png", "assets/atlasJson/ninja_dying.json");
-    this.load.atlas(CHARACTER_THROW_JUMP, "assets/images/ninja6_throwJump.png", "assets/atlasJson/ninja6_throwJump.json");
+    this.load.atlas(STUN, "assets/images/Game/stun_sprite.png", "assets/atlasJson/stun_sprite.json");
+    this.load.atlas(CHARACTER_DIE_ANIMATION, "assets/images/Game/ninja6_dying.png", "assets/atlasJson/ninja6_dying.json");
+    this.load.atlas(CHARACTER_THROW_JUMP, "assets/images/Game/ninja6_throwJump.png", "assets/atlasJson/ninja6_throwJump.json");
 
-    this.load.image(BACKGOURND, "assets/images/ForestBG.png");
+    this.load.image(BACKGOURND, "assets/images/Game/ForestBG.png");
 
-    this.load.image(CHARACTER, "assets/images/ninja_hanging_fit.png");
-    this.load.image(CHARACTER_DEAD, "assets/images/ninja6_dead.png");
+    this.load.image(CHARACTER, "assets/images/Game/ninja6_hanging_fit.png");
+    this.load.image(CHARACTER_DEAD, "assets/images/Game/ninja6_dead.png");
 
-    this.load.image(SHURIKEN, "assets/images/shuriken.png");
-    this.load.image(SHURIKEN_SPIN, "assets/images/shuriken_spin.png");
+    this.load.image(SHURIKEN_SPIN, "assets/images/Game/shuriken_spin.png");
 
-    this.load.image(PLATFORM, "assets/images/pad_small.png");
+    this.load.image(PLATFORM, "assets/images/Game/pad_small.png");
 
-    this.load.spritesheet(ENEMY_BIRD1, "assets/images/red_bird.png", { frameWidth: 663, frameHeight: 637 });
-    this.load.spritesheet(ENEMY_BIRD1_DIE, "assets/images/red_bird_die.png", { frameWidth: 663, frameHeight: 637 });
-    this.load.spritesheet(ENEMY_BIRD2, "assets/images/yellow_bird.png", { frameWidth: 625, frameHeight: 621 });
-    this.load.spritesheet(ENEMY_BIRD2_DIE, "assets/images/yellow_bird_die.png", { frameWidth: 625, frameHeight: 621 });
+    this.load.spritesheet(ENEMY_BIRD1, "assets/images/Game/red_bird.png", { frameWidth: 663, frameHeight: 637 });
+    this.load.spritesheet(ENEMY_BIRD1_DIE, "assets/images/Game/red_bird_die.png", { frameWidth: 663, frameHeight: 637 });
+    this.load.spritesheet(ENEMY_BIRD2, "assets/images/Game/yellow_bird.png", { frameWidth: 625, frameHeight: 621 });
+    this.load.spritesheet(ENEMY_BIRD2_DIE, "assets/images/Game/yellow_bird_die.png", { frameWidth: 625, frameHeight: 621 });
 
     this.load.audio("bgm", "assets/sounds/kitunneWood.mp3");
   };

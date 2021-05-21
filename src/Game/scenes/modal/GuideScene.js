@@ -28,23 +28,23 @@ export default class GuideScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image(WOOD_PANEL, "assets/images/guide/woodPanel.png");
-    this.load.image(WOOD_TITLE_PANEL, "assets/images/guide/woodTitlePanel.png");
-    this.load.image(WOOD_ROUND_PANEL, "assets/images/guide/woodRoundPanel.png");
-    this.load.image(RED_CROSS, "assets/images/guide/redCross.png");
+    this.load.image(WOOD_PANEL, "assets/images/Game/guide/woodPanel.png");
+    this.load.image(WOOD_TITLE_PANEL, "assets/images/Game/guide/woodTitlePanel.png");
+    this.load.image(WOOD_ROUND_PANEL, "assets/images/Game/guide/woodRoundPanel.png");
+    this.load.image(RED_CROSS, "assets/images/Game/guide/redCross.png");
 
-    this.load.image(CLICK, "assets/images/guide/click.png");
-    this.load.image(SHURIKEN, "assets/images/shuriken_spin.png");
-    this.load.image(MOUSE_CURSOR, "assets/images/guide/mouseCursor.png");
+    this.load.image(CLICK, "assets/images/Game/guide/click.png");
+    this.load.image(SHURIKEN, "assets/images/Game/shuriken_spin.png");
+    this.load.image(MOUSE_CURSOR, "assets/images/Game/guide/mouseCursor.png");
 
-    this.load.image(A_KEY, "assets/images/guide/Akey.png");
-    this.load.image(D_KEY, "assets/images/guide/Dkey.png");
+    this.load.image(A_KEY, "assets/images/Game/guide/Akey.png");
+    this.load.image(D_KEY, "assets/images/Game/guide/Dkey.png");
 
-    this.load.image(PLATFORM, "assets/images/pad_small.png");
+    this.load.image(PLATFORM, "assets/images/Game/pad_small.png");
 
-    this.load.image(RED_BIRD, "assets/images/guide/redBirdForguide.png");
-    this.load.image(PLUS_ONE, "assets/images/guide/plusOne.png");
-    this.load.image(WHITE_CIRCLE, "assets/images/guide/whiteCircle.png");
+    this.load.image(RED_BIRD, "assets/images/Game/guide/redBirdForguide.png");
+    this.load.image(PLUS_ONE, "assets/images/Game/guide/plusOne.png");
+    this.load.image(WHITE_CIRCLE, "assets/images/Game/guide/whiteCircle.png");
   }
 
   create() {
