@@ -1,6 +1,6 @@
 # 🐱‍👤Ninja Run
 
-**Rope swing And Jump Over!**
+## Rope swing And Jump Over!
 
 스파이더맨 처럼 로프를 타고 장애물을 넘어가는 게임입니다!
 
@@ -42,22 +42,22 @@
 
 # 💿 Install
 
-## 설치
-
-설치엔 2가지 방법이 있습니다.
-
-- .zip 파일을 직접 다운받아 압축풀기
-- 원하는 path에서 git clone https://github.com/Jay-WKJun/ninjaRun
-
-## 실행
-
 **FrontEnd**
 
 ```
 $ git clone https://github.com/Jay-WKJun/ninjaRun
 $ cd ninjaRun
-$ npm i
-$ npm run start
+$ npm install
+$ npm start
+```
+
+**BackEnd**
+
+```
+$ git clone https://github.com/Jay-WKJun/ninjaRunBack
+$ cd ninjaRunBack
+$ npm install
+$ npm start
 ```
 
 후에 **localhost://8080**에 접속
