@@ -1,6 +1,7 @@
 const { merge } = require("webpack-merge");
 const common = require("./webpack.common");
 const TerserPlugin = require("terser-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = merge(common, {
@@ -23,5 +24,6 @@ module.exports = merge(common, {
   },
   plugins: [
     new CleanWebpackPlugin(),
+    new Dotenv(),
   ],
 });

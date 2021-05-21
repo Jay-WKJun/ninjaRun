@@ -15,7 +15,8 @@
     "babel-polyfill": "^6.26.0",
     "phaser": "^3.54.0",
     "phaser-matter-collision-plugin": "^0.10.2",
-    "webpack-merge": "^5.7.3"
+    "webpack-merge": "^5.7.3",
+    "dotenv-webpack": "^7.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.14.0",
@@ -25,7 +26,6 @@
     "clean-webpack-plugin": "^4.0.0-alpha.0",
     "copy-webpack-plugin": "^8.1.1",
     "css-loader": "^5.2.4",
-    "dotenv-webpack": "^7.0.2",
     "eslint": "^7.25.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
