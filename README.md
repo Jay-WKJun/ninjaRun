@@ -1,6 +1,6 @@
 # 🐱‍👤Ninja Run
 
-### <u>Rope swing And Jump Over!</u>
+### Rope swing And Jump Over!
 
 스파이더맨 처럼 로프를 타고 장애물을 넘어가는 게임입니다!
 
@@ -8,9 +8,9 @@
 
 ## Demo
 
-(게임화면의 일부를 촬영했습니다)
-
 <img src="./readme/mainDemo.gif" />
+
+(게임화면의 일부를 촬영했습니다)
 
 # ❗ Motivation
 
@@ -68,7 +68,7 @@ $ npm start
 
 # 🕹 How to Play?
 
-- 표창 발사
+- **표창 발사**
 
   **클릭**시, 마우스 커서 위치로 표창 발사
 
@@ -80,11 +80,11 @@ $ npm start
 
     **적을 처치!**
 
-- Rope 놓기
+- **Rope 놓기**
 
   **Swing중 클릭**, 관성 그대로 날아간다
 
-- 점수 획득
+- **점수 획득**
 
   적 하나당 1점! 10초 당 1점!
 
