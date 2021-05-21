@@ -81,6 +81,8 @@ export default class initPlayScene extends AnimationLoadScene {
     if (isVisit) {
       this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
     } else {
+      this.scene.pause();
+
       const guideScene = new GuideScene(this, { key: GAME_START_COUNT_SCENE, object: gameStartCountScene }, this.modalZone, this.worldWidth, this.worldHeight);
 
       this.scene.add(GUIDE_SCENE, guideScene, true);

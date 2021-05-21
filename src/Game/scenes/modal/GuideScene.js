@@ -48,8 +48,6 @@ export default class GuideScene extends Phaser.Scene {
   }
 
   create() {
-    this.parent.scene.pause();
-
     this.cameras.main.setBackgroundColor("rgba(0, 0, 0, 0.5)");
 
     this.woodPanel = this.add.image(this.worldCenter.x, this.worldCenter.y, WOOD_PANEL).setOrigin(0.5).setScale(0.6);
