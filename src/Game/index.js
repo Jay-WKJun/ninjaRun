@@ -17,6 +17,8 @@ const DEAD_ZONE = {
   maxY: HEIGHT + DEAD_ZONE_RANGE,
 };
 
+const OBJECT_VELOCITY_CONTROL = 30;
+
 const PLATFORM_START_POSITION = WIDTH;
 const PLATFORM_INTERVAL = 400;
 
@@ -35,6 +37,7 @@ const SHARED_CONFIG = {
   width: WIDTH,
   height: HEIGHT,
   deadZone: DEAD_ZONE,
+  objectVelocityControl: OBJECT_VELOCITY_CONTROL,
   scorePosition: SCORE_POSITION,
   startPosition: START_POSITION,
   accelerationValue: ACCELERATION_VALUE,

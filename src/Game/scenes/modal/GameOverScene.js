@@ -140,6 +140,8 @@ export default class GameOverScene extends Phaser.Scene {
       this.parent.time.removeEvent(this.parent.timedEvent);
       this.parent.timedEvent = null;
 
+      this.parent.initDifficultyFactors();
+
       this.scene.remove();
       this.parent.scene.restart();
     });
