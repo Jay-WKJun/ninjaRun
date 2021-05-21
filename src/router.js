@@ -31,8 +31,10 @@ const fontFace = new FontFace("fontNaruto", `url(${fontNaruto})`);
 fontFace.load().then((loadedFace) => {
   document.fonts.add(loadedFace);
   rootDiv.style.fontFamily = "fontNaruto";
+
   rootDiv.innerHTML = routes[currentRoute].html;
   routes[currentRoute].js();
+
   window.isWindowReady = true;
 });
 

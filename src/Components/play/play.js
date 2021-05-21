@@ -1,7 +1,7 @@
 import html from "./play.html";
 import "./play.css";
 
-import backgroundImage from "../../../assets/images/ForestBG.png";
+import backgroundImage from "../../../assets/images/Game/ForestBG.png";
 import store from "../../store/store";
 import Game from "../../Game/index";
 import { moveToRoute } from "../../router";

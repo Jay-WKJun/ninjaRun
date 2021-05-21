@@ -12,7 +12,7 @@ import Enemy from "../../objects/Enemy";
 import {
   PLATFORM,
   CHARACTER,
-  SHURIKEN,
+  SHURIKEN_SPIN,
   ENEMY
 } from "../../constants/textureNames";
 import {
@@ -235,7 +235,7 @@ export default class initPlayScene extends AnimationLoadScene {
       this.shuriken.spinShuriken();
       this.shuriken.setCollisionCategory(this.collision1);
       this.shuriken.setCollidesWith([this.collision1, this.collision2]);
-      this.shuriken.body.label = SHURIKEN;
+      this.shuriken.body.label = SHURIKEN_SPIN;
     };
 
     this.input.on("pointerdown", (e) => {
@@ -294,8 +294,8 @@ export default class initPlayScene extends AnimationLoadScene {
       );
       const isShurikenCollidesWithoutRope = (
         (
-          b1.label === SHURIKEN ||
-          b2.label === SHURIKEN
+          b1.label === SHURIKEN_SPIN ||
+          b2.label === SHURIKEN_SPIN
         ) &&
         !this.rope
       );
@@ -314,7 +314,7 @@ export default class initPlayScene extends AnimationLoadScene {
       }
 
       if (isShurikenCollidesWithoutRope) {
-        const shurikenOpponent = b1.label === SHURIKEN ? b2 : b1;
+        const shurikenOpponent = b1.label === SHURIKEN_SPIN ? b2 : b1;
         const isEnemyCollides = (
           b1.label === ENEMY ||
           b2.label === ENEMY
