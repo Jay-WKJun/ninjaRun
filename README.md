@@ -1,5 +1,7 @@
 # 🐱‍👤Ninja Run
 
+<p align="center"><img src="./readme/ninja6_hanging_fit.png" width="100"></p>
+
 ### Rope swing And Jump Over!
 
 스파이더맨 처럼 로프를 타고 장애물을 넘어가는 게임입니다!
