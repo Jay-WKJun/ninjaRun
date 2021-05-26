@@ -183,7 +183,7 @@ window.history.pushState({ data, "/" });
 
 그동안 React와 React router를 사용하며 Vanilla Javascript에 대한 감각을 잃어버려서 React가 Vanilla Javascript로 되어 있다는 사실도 잊어가는 참에 거꾸로 Vanilla Javascript로 React의 기능들을 만들어 보면서 Javascript 본연의 프로그래밍에 대한 감각을 다시 살릴 수 있었던 기회가 되었습니다.
 
-또한 어떠한 기술에 얽매이는 개발자가 아닌 어떤 문제든 스스로 해결하고 만들어 낼 수 있다는 프로그래머로서의 자신감을 얻었습니다.
+또한 어떠한 기술에 얽매이는 개발자가 아닌 **어떤 문제든 스스로 해결하고 만들어 낼 수 있다는 프로그래머로서의 자신감을 얻었습니다.**
 
 - 관심사 분리와 코딩 컨벤션들
 
