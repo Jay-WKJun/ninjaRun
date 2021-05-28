@@ -13,17 +13,72 @@ export default class GameOverScene extends Phaser.Scene {
     this.worldWidth = width;
     this.worldHeigth = height;
     this.worldCenter = { x: width / 2, y: height / 2 };
+    this.lineHeight = 50;
+    this.buttonFontStyle = {
+      fontSize: "30px",
+      fontFamily: "fontNaruto",
+    };
+    this.infoFontStyle = {
+      fontSize: "20px",
+      fontFamily: "fontNaruto",
+    };
+
+    this.deadCharacter = null;
+    this.stun = null;
+    this.restartButton = null;
+    this.quitButton = null;
+    this.playerNameLabel = null;
+    this.playerNameText = null;
+    this.scoreLabel = null;
+    this.scoreText = null;
   }
 
   create() {
-    const player = this.game.player;
-    const score = this.registry.get("score");
-
     this.cameras.main.setBackgroundColor("rgba(0, 0, 0, 0.5)");
 
-    const deadCharacter = new Character(this, this.worldCenter.x, this.worldCenter.y, CHARACTER_DEAD, { isStatic: true }).setScale(0.4);
+    this.deadCharacter = new Character(
+      this,
+      this.worldCenter.x,
+      this.worldCenter.y,
+      CHARACTER_DEAD,
+      { isStatic: true }
+    ).setScale(0.4);
 
+    const leftBoundOfDeadCharacter = deadCharacter.x - deadCharacter.displayWidth;
+    const underBoundOfDeadCharacter = deadCharacter.y + deadCharacter.displayHeight;
+    const playerNameYCordinate = this.#moveToNextLine(underBoundOfDeadCharacter);
+    const scoreYCordinate = this.#moveToNextLine(playerNameYCordinate);
+
+    this.#createStunAnimation(
+      this.worldCenter.x,
+      this.worldCenter.y - deadCharacter.displayHeight
+    );
+
+    const { restartButton, quitButton } = this.#createButtons(
+      leftBoundOfDeadCharacter,
+      underBoundOfDeadCharacter
+    );
+
+    this.restartButton = restartButton;
+    this.#handleRestartButtonEvents(this.restartButton);
+
+    this.quitButton = quitButton;
+    this.#handleQuitButtonEvents(this.quitButton);
+
+    this.#createPlayerName(
+      deadCharacter.x,
+      playerNameYCordinate
+    );
+
+    this.#createScore(
+      deadCharacter.x,
+      scoreYCordinate
+    );
+  }
+
+  #createStunAnimation(xCordinate, yCordinate) {
     const animationKey1 = "stunAnimation";
+
     this.anims.create({
       key: animationKey1,
       frames: this.anims.generateFrameNames(STUN, {
@@ -37,65 +92,32 @@ export default class GameOverScene extends Phaser.Scene {
       repeat: -1,
     });
 
-    this.stun = this.add.sprite(this.worldCenter.x, this.worldCenter.y - deadCharacter.displayHeight, STUN).setScale(0.3);
+    this.stun = this.add.sprite(xCordinate, yCordinate, STUN).setScale(0.3);
     this.stun.play(animationKey1);
+  }
 
+  #createButtons(xCordinateToStart, yCordinate) {
     const restartButton = this.add.text(
-      deadCharacter.x - deadCharacter.displayWidth,
-      deadCharacter.y + deadCharacter.displayHeight,
+      xCordinateToStart,
+      yCordinate,
       "Restart?",
-      {
-        fontSize: "30px",
-        fontFamily: "fontNaruto",
-      }
+      this.buttonFontStyle
     ).setOrigin(0.7, 0.5).setInteractive();
 
     const quitButton = this.add.text(
       restartButton.x + restartButton.displayWidth,
-      deadCharacter.y + deadCharacter.displayHeight,
+      yCordinate,
       "Save & Quit?",
-      {
-        fontSize: "30px",
-        fontFamily: "fontNaruto",
-      }
+      this.buttonFontStyle
     ).setOrigin(0.2, 0.5).setInteractive();
-    this.playerNameLabel = this.add.text(
-      deadCharacter.x - 10,
-      deadCharacter.y + deadCharacter.displayHeight + 50,
-      "Player:",
-      {
-        fontSize: "20px",
-        fontFamily: "fontNaruto",
-      }
-    ).setOrigin(1, 0.5);
-    this.playerNameText = this.add.text(
-      deadCharacter.x + 30,
-      deadCharacter.y + deadCharacter.displayHeight + 50,
-      player,
-      {
-        fontSize: "20px",
-        fontFamily: "fontNaruto",
-      }
-    ).setOrigin(0, 0.5);
-    this.scoreLabel = this.add.text(
-      deadCharacter.x - 10,
-      deadCharacter.y + deadCharacter.displayHeight + 100,
-      "Score:",
-      {
-        fontSize: "20px",
-        fontFamily: "fontNaruto",
-      }
-    ).setOrigin(1, 0.5);
-    this.scoreText = this.add.text(
-      deadCharacter.x + 30,
-      deadCharacter.y + deadCharacter.displayHeight + 100,
-      score,
-      {
-        fontSize: "20px",
-        fontFamily: "fontNaruto",
-      }
-    ).setOrigin(0, 0.5);
 
+    return {
+      restartButton,
+      quitButton
+    };
+  }
+
+  #handleRestartButtonEvents(restartButton) {
     restartButton.on("pointerover", () => {
       restartButton.setStyle({ fill: "red" });
     });
@@ -124,6 +146,7 @@ export default class GameOverScene extends Phaser.Scene {
         enemy.removeCounter();
         enemy.destroy();
       });
+
       this.parent.enemies = {};
 
       this.parent.input.removeAllListeners("pointerdown");
@@ -145,7 +168,9 @@ export default class GameOverScene extends Phaser.Scene {
       this.scene.remove();
       this.parent.scene.restart();
     });
+  }
 
+  #handleQuitButtonEvents(quitButton) {
     quitButton.on("pointerover", () => {
       quitButton.setStyle({ fill: "red" });
     });
@@ -158,6 +183,50 @@ export default class GameOverScene extends Phaser.Scene {
       this.game.saveRecord(player, score);
       this.game.router("", "/");
     });
+  }
+
+  #createPlayerName(xCordinate, yCordinate) {
+    const player = this.game.player;
+    const labelOffsetX = 10;
+    const textOffsetX = 30;
+
+    this.playerNameLabel = this.add.text(
+      xCordinate - labelOffsetX,
+      yCordinate,
+      "Player:",
+      this.infoFontStyle
+    ).setOrigin(1, 0.5);
+
+    this.playerNameText = this.add.text(
+      xCordinate + textOffsetX,
+      yCordinate,
+      player,
+      this.infoFontStyle
+    ).setOrigin(0, 0.5);
+  }
+
+  #createScore(xCordinate, yCordinate) {
+    const score = this.registry.get("score");
+    const labelOffsetX = 10;
+    const textOffsetX = 30;
+
+    this.scoreLabel = this.add.text(
+      xCordinate - labelOffsetX,
+      yCordinate,
+      "Score:",
+      this.infoFontStyle
+    ).setOrigin(1, 0.5);
+
+    this.scoreText = this.add.text(
+      deadCharacter.x + textOffsetX,
+      yCordinate,
+      score,
+      this.infoFontStyle
+    ).setOrigin(0, 0.5);
+  }
+
+  #moveToNextLine(yCordinate) {
+    return yCordinate + this.lineHeight;
   }
 
   refresh() {
