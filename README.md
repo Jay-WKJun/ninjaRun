@@ -14,6 +14,11 @@
 
 (게임화면의 일부를 촬영했습니다)
 
+## 시연영상
+
+![stand-up event](https://youtu.be/F8OHnevCS30?t=9741)
+(2시간 42분 21초 시작)
+
 # ❗ Motivation
 
 - why game?
