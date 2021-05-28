@@ -18,6 +18,7 @@
 ## 시연영상
 
 [![stand-up event](https://img.youtube.com/vi/F8OHnevCS30/0.jpg)](https://youtu.be/F8OHnevCS30?t=9741)
+
 (2시간 42분 21초 시작)
 
 # ❗ Motivation
