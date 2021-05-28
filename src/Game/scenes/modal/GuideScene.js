@@ -93,45 +93,42 @@ export default class GuideScene extends Phaser.Scene {
   }
 
   #createTitle(xCordinate, yCordinate) {
-    createWoodTitlePanel(xCordinate, yCordinate);
-    createTitleText(xCordinate, yCordinate, "How To Play!");
-
-    function createWoodTitlePanel(xCordinate, yCordinate) {
+    const createWoodTitlePanel = (xCordinate, yCordinate) => {
       this.woodTitlePanel = this.add.image(xCordinate, yCordinate, WOOD_TITLE_PANEL)
         .setOrigin(0.5, 0.3)
         .setScale(0.2);
-    }
+    };
 
-    function createTitleText(xCordinate, yCordinate, textContent) {
+    const createTitleText = (xCordinate, yCordinate, textContent) => {
       this.guideTitleText = this.add.text(xCordinate, yCordinate, textContent, {
         fontSize: this.fontSize,
         fontStyle: "bold",
       }).setOrigin(0.45, 0);
-    }
+    };
+
+    createWoodTitlePanel(xCordinate, yCordinate);
+    createTitleText(xCordinate, yCordinate, "How To Play!");
   }
 
   #createExitButton(xCordinate, yCordinate) {
-    createWoodRoundPanel(xCordinate, yCordinate);
-    createRedCross(xCordinate, yCordinate);
-
-    function createWoodRoundPanel(xCordinate, yCordinate) {
+    const createWoodRoundPanel = (xCordinate, yCordinate) => {
       this.woodRoundPanel = this.add.image(xCordinate, yCordinate, WOOD_ROUND_PANEL)
         .setOrigin(1, 0.3)
         .setScale(0.1);
-    }
+    };
 
-    function createRedCross(xCordinate, yCordinate) {
-      this.redCross = this.add.image(xCordinate - 15, yCordinate, RED_CROSS)
-        .setOrigin(1, 0.1)
-        .setScale(0.1)
-        .setInteractive();
-
-      this.redCrossShadow = this.add.image(xCordinate - 15 + 5, yCordinate + 5, RED_CROSS)
+    const createRedCross = (xCordinate, yCordinate) => {
+      this.redCrossShadow = this.add.image(xCordinate - 15 + 3, yCordinate + 3, RED_CROSS)
         .setOrigin(1, 0.1)
         .setScale(0.1)
         .setVisible(false);
       this.redCrossShadow.tint = 0x000000;
       this.redCrossShadow.alpha = 0.6;
+
+      this.redCross = this.add.image(xCordinate - 15, yCordinate, RED_CROSS)
+        .setOrigin(1, 0.1)
+        .setScale(0.1)
+        .setInteractive();
 
       this.redCross.on("pointerover", () => {
         this.redCrossShadow.setVisible(true);
@@ -149,7 +146,10 @@ export default class GuideScene extends Phaser.Scene {
         this.parent.scene.add(this.nextScene.key, this.nextScene.object, true);
         this.parent.scene.resume();
       });
-    }
+    };
+
+    createWoodRoundPanel(xCordinate, yCordinate);
+    createRedCross(xCordinate, yCordinate);
   }
 
   #writeFirstLine(firstXCoord, yCoord, wSpace) {
