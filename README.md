@@ -7,6 +7,7 @@
 스파이더맨 처럼 로프를 타고 장애물을 넘어가는 게임입니다!
 
 👉Deploy Address: https://www.ninjarun.fun/
+
 👉Backend Address: https://github.com/Jay-WKJun/ninjaRunBack
 
 ## Demo
