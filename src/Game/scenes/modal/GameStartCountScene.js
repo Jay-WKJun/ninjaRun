@@ -11,40 +11,33 @@ export default class GameStartCountScene extends Phaser.Scene {
     this.worldWidth = width;
     this.worldHeigth = height;
     this.worldCenter = { x: width / 2, y: height / 2 };
-    this.count = 4;
     this.alert = "Ready?";
+    this.count = 4;
+
+    this.chracterPositionInfo = null;
+    this.centerText = null;
   }
 
   create() {
     this.cameras.main.setBackgroundColor("rgba(0, 0, 0, 0.5)");
 
-    this.add.text(50, 50, "<- CHARACTER", {
+    this.chracterPositionInfo = this.add.text(50, 50, "<- CHARACTER", {
       fontSize: "50px",
       fontStyle: "bold",
       color: "silver",
       fontFamily: "fontNaruto",
     }).setOrigin(0);
 
-    this.text = this.add.text(this.worldCenter.x, this.worldCenter.y, this.alert, {
-      fontSize: "50px",
-      fontStyle: "bold",
-      color: "red",
-      fontFamily: "fontNaruto",
-    }).setOrigin(0.5);
+    this.centerText = this.#createCenterText(this.alert);
 
     this.countingInterval = setInterval(() => {
       this.count--;
 
       if (this.count <= 0) return;
 
-      this.text.destroy();
+      this.centerText.destroy();
 
-      this.text = this.add.text(this.worldCenter.x, this.worldCenter.y, this.count, {
-        fontSize: "50px",
-        fontStyle: "bold",
-        color: "red",
-        fontFamily: "fontNaruto",
-      }).setOrigin(0.5);
+      this.centerText = this.#createCenterText(this.count);
     }, 1000);
   }
 
@@ -55,9 +48,18 @@ export default class GameStartCountScene extends Phaser.Scene {
 
       this.scene.remove();
 
-      this.parent.startTime = this.time.now;
-      this.parent.timedEvent = this.parent.createTimerEvent();
-      this.parent.createCharacter();
+      this.parent.startGame();
     }
+  }
+
+  #createCenterText(textContent) {
+    const centerText = this.add.text(this.worldCenter.x, this.worldCenter.y, textContent, {
+      fontSize: "50px",
+      fontStyle: "bold",
+      color: "red",
+      fontFamily: "fontNaruto",
+    }).setOrigin(0.5);
+
+    return centerText;
   }
 }

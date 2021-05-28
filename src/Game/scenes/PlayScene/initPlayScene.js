@@ -174,24 +174,6 @@ export default class initPlayScene extends AnimationLoadScene {
     }).setOrigin(0);
   }
 
-  createCharacter() {
-    const startX = this.startPosition.x;
-    const startY = this.startPosition.y;
-
-    this.character = new Character(this, startX, startY, CHARACTER);
-    this.character.setCollisionCategory(this.collision1);
-    this.character.setCollidesWith(this.collision1);
-    this.character.body.label = CHARACTER;
-
-    this.character.dieAnimation = this.characterDieAnimation;
-    this.character.throwAnimation = this.charaterThrowAnimation;
-
-    delete this.characterDieAnimation;
-    delete this.charaterThrowAnimation;
-
-    this.character.setVelocity(10, 0);
-  }
-
   createEnemy(xPosition) {
     const enemyType = this.#getEnemyTypeInRandom();
     const yPosition = Number(Math.random() * this.worldHeight);
@@ -427,7 +409,31 @@ export default class initPlayScene extends AnimationLoadScene {
     this.scene.add(GAMEOVER_SCENE, gameOverScene, true);
   }
 
-  createTimerEvent() {
+  startGame() {
+    this.startTime = this.time.now;
+    this.timedEvent = this.#createTimerEvent();
+    this.#createCharacter();
+  }
+
+  #createCharacter() {
+    const startX = this.startPosition.x;
+    const startY = this.startPosition.y;
+
+    this.character = new Character(this, startX, startY, CHARACTER);
+    this.character.setCollisionCategory(this.collision1);
+    this.character.setCollidesWith(this.collision1);
+    this.character.body.label = CHARACTER;
+
+    this.character.dieAnimation = this.characterDieAnimation;
+    this.character.throwAnimation = this.charaterThrowAnimation;
+
+    delete this.characterDieAnimation;
+    delete this.charaterThrowAnimation;
+
+    this.character.setVelocity(10, 0);
+  }
+
+  #createTimerEvent() {
     return (this.time.addEvent({
       delay: 1000,
       callback: this.#createTimeBoard,
