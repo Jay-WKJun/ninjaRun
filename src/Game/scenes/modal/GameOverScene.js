@@ -44,14 +44,14 @@ export default class GameOverScene extends Phaser.Scene {
       { isStatic: true }
     ).setScale(0.4);
 
-    const leftBoundOfDeadCharacter = deadCharacter.x - deadCharacter.displayWidth;
-    const underBoundOfDeadCharacter = deadCharacter.y + deadCharacter.displayHeight;
+    const leftBoundOfDeadCharacter = this.deadCharacter.x - this.deadCharacter.displayWidth;
+    const underBoundOfDeadCharacter = this.deadCharacter.y + this.deadCharacter.displayHeight;
     const playerNameYCordinate = this.#moveToNextLine(underBoundOfDeadCharacter);
     const scoreYCordinate = this.#moveToNextLine(playerNameYCordinate);
 
     this.#createStunAnimation(
       this.worldCenter.x,
-      this.worldCenter.y - deadCharacter.displayHeight
+      this.worldCenter.y - this.deadCharacter.displayHeight
     );
 
     const { restartButton, quitButton } = this.#createButtons(
@@ -66,12 +66,12 @@ export default class GameOverScene extends Phaser.Scene {
     this.#handleQuitButtonEvents(this.quitButton);
 
     this.#createPlayerName(
-      deadCharacter.x,
+      this.deadCharacter.x,
       playerNameYCordinate
     );
 
     this.#createScore(
-      deadCharacter.x,
+      this.deadCharacter.x,
       scoreYCordinate
     );
   }
@@ -127,46 +127,8 @@ export default class GameOverScene extends Phaser.Scene {
     });
 
     restartButton.once("pointerup", () => {
-      this.parent.bgm.stop();
-      this.parent.bgm.destroy();
-
-      this.parent.backgroundScenes.forEach(background => {
-        background.removeCounter();
-        background.destroy();
-      });
-      this.parent.backgroundScenes = [];
-
-      this.parent.platforms.forEach(platform => {
-        platform.removeCounter();
-        platform.destroy();
-      });
-      this.parent.platforms = [];
-
-      Object.values(this.parent.enemies).forEach(enemy => {
-        enemy.removeCounter();
-        enemy.destroy();
-      });
-
-      this.parent.enemies = {};
-
-      this.parent.input.removeAllListeners("pointerdown");
-      this.parent.input.removeAllListeners("keydown");
-      this.parent.matter.world.off("collisionstart");
-
-      this.parent.character && this.parent.character.destroy();
-      this.parent.character = null;
-
-      this.parent.startTime = this.time.now;
-
-      this.parent.isGameOver = false;
-
-      this.parent.time.removeEvent(this.parent.timedEvent);
-      this.parent.timedEvent = null;
-
-      this.parent.initDifficultyFactors();
-
       this.scene.remove();
-      this.parent.scene.restart();
+      this.parent.restartGame();
     });
   }
 
@@ -180,6 +142,9 @@ export default class GameOverScene extends Phaser.Scene {
     });
 
     quitButton.on("pointerup", () => {
+      const player = this.game.player;
+      const score = this.registry.get("score");
+
       this.game.saveRecord(player, score);
       this.game.router("", "/");
     });
@@ -218,7 +183,7 @@ export default class GameOverScene extends Phaser.Scene {
     ).setOrigin(1, 0.5);
 
     this.scoreText = this.add.text(
-      deadCharacter.x + textOffsetX,
+      xCordinate + textOffsetX,
       yCordinate,
       score,
       this.infoFontStyle

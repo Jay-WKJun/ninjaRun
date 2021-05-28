@@ -64,8 +64,8 @@ export default class initPlayScene extends AnimationLoadScene {
     this.timedEvent = null;
     this.bgm = null;
     this.modalZone = null;
-    this.collision1 = null;
-    this.collision2 = null;
+    this.collision1 = 2;
+    this.collision2 = 4;
 
     this.character = null;
     this.platforms = [];
@@ -76,30 +76,25 @@ export default class initPlayScene extends AnimationLoadScene {
   };
 
   create() {
-    this.bgm = this.sound.add(BGM, { loop: true, volume: 1 });
-    this.bgm.play();
-
     this.modalZone = this.add.zone(0, 0, this.worldWidth, this.worldHeight).setOrigin(0.5);
-
-    const gameStartCountScene = new GameStartCountScene(this, this.modalZone, this.worldWidth, this.worldHeight);
-    const isVisit = window.localStorage.getItem(IS_VISIT);
-
-    if (isVisit) {
-      this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
-    } else {
-      this.scene.pause();
-
-      const guideScene = new GuideScene(this, { key: GAME_START_COUNT_SCENE, object: gameStartCountScene }, this.modalZone, this.worldWidth, this.worldHeight);
-
-      this.scene.add(GUIDE_SCENE, guideScene, true);
-    }
-
-    this.collision1 = this.matter.world.nextCategory();
-    this.collision2 = this.matter.world.nextCategory();
-
     this.registry.set(SCORE, 0);
 
+    const gameStartCountScene = new GameStartCountScene(
+      this,
+      this.modalZone,
+      this.worldWidth,
+      this.worldHeight
+    );
+    const isVisited = window.localStorage.getItem(IS_VISIT);
+
+    if (isVisited) {
+      this.#addGameStartCountModal(gameStartCountScene);
+    } else {
+      this.#addGuideModal(gameStartCountScene);
+    }
+
     super.create();
+    this.#createBGM();
     this.#createScore();
     this.#createTimeBoard();
 
@@ -119,6 +114,29 @@ export default class initPlayScene extends AnimationLoadScene {
     this.#handleKeyDownEvent();
     this.#handleCollisionEvent();
   };
+
+  #createBGM() {
+    this.bgm = this.sound.add(BGM, { loop: true, volume: 1 });
+    this.bgm.play();
+  }
+
+  #addGameStartCountModal(gameStartCountScene) {
+    this.scene.add(GAME_START_COUNT_SCENE, gameStartCountScene, true);
+  }
+
+  #addGuideModal(gameStartCountScene) {
+    this.scene.pause();
+
+    const guideScene = new GuideScene(
+      this,
+      { key: GAME_START_COUNT_SCENE, object: gameStartCountScene },
+      this.modalZone,
+      this.worldWidth,
+      this.worldHeight
+    );
+
+    this.scene.add(GUIDE_SCENE, guideScene, true);
+  }
 
   #createScore() {
     const scoreX = this.scorePosition.x;
@@ -418,7 +436,48 @@ export default class initPlayScene extends AnimationLoadScene {
     }));
   }
 
-  initDifficultyFactors() {
+  restartGame() {
+    this.bgm.stop();
+    this.bgm.destroy();
+
+    this.backgroundScenes.forEach(background => {
+      background.removeCounter();
+      background.destroy();
+    });
+    this.backgroundScenes = [];
+
+    this.platforms.forEach(platform => {
+      platform.removeCounter();
+      platform.destroy();
+    });
+    this.platforms = [];
+
+    Object.values(this.enemies).forEach(enemy => {
+      enemy.removeCounter();
+      enemy.destroy();
+    });
+    this.enemies = {};
+
+    this.input.removeAllListeners("pointerdown");
+    this.input.removeAllListeners("keydown");
+    this.matter.world.off("collisionstart");
+
+    this.character && this.character.destroy();
+    this.character = null;
+
+    this.startTime = this.time.now;
+
+    this.isGameOver = false;
+
+    this.time.removeEvent(this.timedEvent);
+    this.timedEvent = null;
+
+    this.#initDifficultyFactors();
+
+    this.scene.restart();
+  }
+
+  #initDifficultyFactors() {
     this.plaformInterval = this.difficultyFactors.plaformInterval;
     this.enemyInterval = this.difficultyFactors.enemyInterval;
     this.enemyNumberLimit = this.difficultyFactors.enemyNumberLimit;
